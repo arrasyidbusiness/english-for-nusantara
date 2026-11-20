@@ -108,7 +108,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
-                <!-- KARTU A: MASUK SEBAGAI SISWA -->
+                <!-- KARTU A: MASUK SEBAGAI SISWA (MENGGUNAKAN NAMA LENGKAP) -->
                 <div class="bg-white border-2 border-cream-border hover:border-royal rounded-3xl p-6 sm:p-7 shadow-lg transition flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
@@ -118,7 +118,7 @@
                             <span class="text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-mint-bg text-mint">Ruang Belajar Siswa</span>
                         </div>
                         <h2 class="font-display font-extrabold text-xl sm:text-2xl text-navy">Masuk sebagai Siswa</h2>
-                        <p class="text-xs text-navy-muted mt-1 mb-4">Akses materi bacaan &amp; audio, buku panduan guru, flashcard kosakata, tugas LKPD, dan ujian UH / STS / UAS.</p>
+                        <p class="text-xs text-navy-muted mt-1 mb-4">Masuk menggunakan <strong>Nama Lengkap</strong> dan PIN untuk mengakses materi bacaan, audio, buku panduan, tugas LKPD, dan ujian.</p>
 
                         <div class="grid grid-cols-2 gap-1 bg-cream-soft p-1 rounded-xl mb-4">
                             <button type="button" id="st-auth-tab-login" onclick="switchStudentAuthTab('login')" class="py-2 rounded-lg text-xs font-extrabold bg-white text-navy shadow-2xs cursor-pointer">Masuk Siswa</button>
@@ -134,13 +134,13 @@
                                 <label class="block text-xs font-bold text-navy mb-1">Pilih Rombel Kelas</label>
                                 <select id="login-student-rombel" class="w-full border border-slate-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-bold text-navy bg-white focus:outline-royal"></select>
                             </div>
-                            <div class="grid grid-cols-2 gap-2.5">
-                                <div>
-                                    <label class="block text-xs font-bold text-navy mb-1">NIS Siswa</label>
-                                    <input type="text" id="login-student-nis" placeholder="9001" required class="w-full border border-slate-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm bg-white focus:outline-royal">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs font-bold text-navy mb-1">Nama Lengkap Siswa *</label>
+                                    <input type="text" id="login-student-name" placeholder="Contoh: Ahmad Fauzan Pratama" required class="w-full border border-slate-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm bg-white focus:outline-royal">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-navy mb-1">PIN Siswa</label>
+                                    <label class="block text-xs font-bold text-navy mb-1">PIN Siswa *</label>
                                     <input type="password" id="login-student-pin" placeholder="••••" required class="w-full border border-slate-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm bg-white focus:outline-royal">
                                 </div>
                             </div>
@@ -152,27 +152,27 @@
 
                         <form id="form-student-register" onsubmit="handleStudentSelfRegister(event)" class="hidden space-y-3">
                             <div>
+                                <label class="block text-xs font-bold text-navy mb-1">Kode Kelas dari Guru <span class="text-slate-400 font-normal">(Opsional)</span></label>
+                                <input type="text" id="reg-student-classcode" placeholder="Contoh: EFN-IXA26" class="w-full border border-slate-300 rounded-xl px-3 py-1.5 text-xs uppercase font-bold text-royal bg-cream-soft">
+                            </div>
+                            <div>
                                 <label class="block text-xs font-bold text-navy mb-1">Pilih Rombel Kelas</label>
                                 <select id="reg-student-rombel" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold bg-cream-soft"></select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-navy mb-1">Nama Lengkap Siswa</label>
+                                <label class="block text-xs font-bold text-navy mb-1">Nama Lengkap Siswa *</label>
                                 <input type="text" id="reg-student-name" required placeholder="Nama lengkap sesuai absen..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                             </div>
-                            <div class="grid grid-cols-3 gap-2">
+                            <div class="grid grid-cols-2 gap-2">
                                 <div>
-                                    <label class="block text-xs font-bold text-navy mb-1">NIS</label>
-                                    <input type="text" id="reg-student-nis" required placeholder="9015" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy mb-1">L/P</label>
+                                    <label class="block text-xs font-bold text-navy mb-1">Jenis Kelamin (L/P)</label>
                                     <select id="reg-student-gender" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
-                                        <option value="L">L</option>
-                                        <option value="P">P</option>
+                                        <option value="L">Laki-laki (L)</option>
+                                        <option value="P">Perempuan (P)</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-navy mb-1">PIN Baru</label>
+                                    <label class="block text-xs font-bold text-navy mb-1">Buat PIN Login *</label>
                                     <input type="text" id="reg-student-pin" required value="1234" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                                 </div>
                             </div>
@@ -184,7 +184,7 @@
 
                     <div class="mt-4 pt-3.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
                         <button type="button" onclick="demoStudentLogin()" class="text-xs font-extrabold text-royal hover:underline cursor-pointer">
-                            ⚡ Demo Siswa: NIS 9001 • PIN 1234
+                            ⚡ Demo Siswa: Ahmad Fauzan Pratama • PIN 1234
                         </button>
                         <span class="text-[11px] text-slate-400">Terkunci dari Menu Guru</span>
                     </div>
@@ -197,10 +197,10 @@
                             <div class="w-12 h-12 rounded-2xl bg-navy text-gold flex items-center justify-center">
                                 <i data-lucide="shield-check" class="w-6 h-6"></i>
                             </div>
-                            <span class="text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-gold/40 text-navy">Administrasi &amp; Auto-Drive</span>
+                            <span class="text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-gold/40 text-navy">Ruang Guru Terisolasi &amp; Cloud</span>
                         </div>
                         <h2 class="font-display font-extrabold text-xl sm:text-2xl text-navy">Masuk sebagai Guru / Admin</h2>
-                        <p class="text-xs text-navy-muted mt-1 mb-4">Kelola 18 administrasi 2 semester, auto-backup ke Google Drive, upload buku panduan, bank soal &amp; kontrol Admin Pusat.</p>
+                        <p class="text-xs text-navy-muted mt-1 mb-4">Setiap guru memiliki ruang data terpisah dan hanya dapat melihat serta mengedit kelas yang diampunya.</p>
 
                         <div class="grid grid-cols-3 gap-1 bg-cream-soft p-1 rounded-xl mb-4">
                             <button type="button" id="tc-auth-tab-login" onclick="switchTeacherAuthTab('login')" class="py-2 rounded-lg text-xs font-extrabold bg-white text-navy shadow-2xs cursor-pointer">Masuk Guru</button>
@@ -237,6 +237,14 @@
                             <div>
                                 <label class="block text-[11px] font-bold text-navy mb-0.5">Nama Sekolah (SMP/MTs) *</label>
                                 <input type="text" id="reg-tc-sekolah" required placeholder="SMP Negeri 1 Nusantara" class="w-full border border-slate-300 rounded-xl px-3 py-1.5 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-navy mb-1">Kelas / Jenjang yang Diampu *</label>
+                                <div class="flex flex-wrap gap-3 bg-cream-soft border border-cream-border rounded-xl px-3 py-1.5 text-xs font-bold text-navy">
+                                    <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" name="reg-tc-grades" value="VII" checked> Kelas VII</label>
+                                    <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" name="reg-tc-grades" value="VIII"> Kelas VIII</label>
+                                    <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" name="reg-tc-grades" value="IX"> Kelas IX</label>
+                                </div>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <div>
@@ -348,6 +356,7 @@
                         <div class="flex flex-wrap items-center gap-1.5">
                             <span class="font-display font-extrabold text-sm sm:text-base">English For Nusantara</span>
                             <span id="teacher-class-code-badge" class="text-[10px] font-extrabold bg-gold text-navy px-2 py-0.5 rounded-full">Kode Kelas: EFN-IXA26</span>
+                            <span id="teacher-scope-badge" class="text-[10px] font-extrabold bg-white/15 text-blue-100 px-2 py-0.5 rounded-full">Ampuan: Kelas IX</span>
                         </div>
                         <p id="teacher-header-sub" class="text-[11px] text-blue-200 truncate">SMP Negeri 1 Nusantara • TA 2026/2027</p>
                     </div>
@@ -364,7 +373,7 @@
                         <option value="IX" class="text-navy">Kelas IX</option>
                     </select>
                     <select id="sel-rombel" onchange="changeRombel(this.value)" class="bg-white/15 border border-white/25 text-white text-xs font-bold rounded-xl px-2.5 py-1.5 cursor-pointer"></select>
-                    <button type="button" onclick="openRombelModal()" class="bg-royal hover:bg-royal-hover text-white text-xs font-extrabold px-2.5 py-1.5 rounded-xl cursor-pointer" title="Tambah Rombel A-H / Manual">+ Rombel</button>
+                    <button type="button" onclick="openRombelModal()" class="bg-royal hover:bg-royal-hover text-white text-xs font-extrabold px-2.5 py-1.5 rounded-xl cursor-pointer" title="Atur Kelas Ampuan & Rombel A-H">+ Kelas / Rombel</button>
                     <select id="sel-semester" onchange="changeSemester(this.value)" class="bg-gold text-navy text-xs font-extrabold rounded-xl px-2.5 py-1.5 cursor-pointer">
                         <option value="1">Sem 1 (Ganjil)</option>
                         <option value="2">Sem 2 (Genap)</option>
@@ -395,7 +404,7 @@
                     <button type="button" onclick="copyClassCode()" class="bg-cream-soft hover:bg-gold/40 text-navy text-[11px] font-extrabold px-2.5 py-1 rounded-lg border border-cream-border cursor-pointer">
                         📋 Salin Kode Kelas
                     </button>
-                    <span id="teacher-stats-badge" class="text-[11px] font-bold text-navy-muted">6 Siswa • 120 JP</span>
+                    <span id="teacher-stats-badge" class="text-[11px] font-bold text-navy-muted">4 Siswa • 120 JP</span>
                 </div>
             </div>
 
@@ -403,7 +412,7 @@
                 <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-navy">
                     Administrasi Guru <span class="text-royal gold-marker">Satu Tahun Lengkap</span>
                 </h2>
-                <p class="text-xs text-navy-muted mt-1">Pilih modul di bawah untuk mengedit, mengunggah buku/soal, mencetak PDF (&lt;3MB), atau mengunduh Word (<code>.doc</code>) &amp; Excel (<code>.xlsx</code>).</p>
+                <p id="teacher-isolation-note" class="text-xs text-navy-muted mt-1">Ruang kerja pribadi guru — hanya menampilkan dan mengedit data kelas yang Anda ampu.</p>
             </div>
 
             <div id="admin-cards-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4"></div>
@@ -471,7 +480,7 @@
                             <span class="font-display font-extrabold text-sm sm:text-base">Ruang Belajar Siswa</span>
                             <span id="student-rombel-pill" class="text-[10px] font-extrabold bg-gold text-navy px-2 py-0.5 rounded-full">Kelas IX A</span>
                         </div>
-                        <p id="student-profile-line" class="text-[11px] text-blue-200">Ahmad Fauzan Pratama • NIS 9001</p>
+                        <p id="student-profile-line" class="text-[11px] text-blue-200">Ahmad Fauzan Pratama • Kelas IX A</p>
                     </div>
                 </div>
 
@@ -530,7 +539,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- 6. MODAL KONFIRMASI HAPUS AKUN GURU (AMAN DI GOOGLE SITES IFRAME)     -->
+    <!-- 6. MODAL KONFIRMASI HAPUS AKUN GURU                                   -->
     <!-- ===================================================================== -->
     <div id="modal-confirm-delete-teacher" class="no-print fixed inset-0 z-[105] hidden items-center justify-center bg-navy/75 backdrop-blur-xs p-4">
         <div class="bg-white border-2 border-red-200 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
@@ -559,20 +568,30 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- 7. MODAL TAMBAH ROMBEL (A-H & NAMA MANUAL)                            -->
+    <!-- 7. MODAL KELOLA KELAS AMPUAN & ROMBEL (A-H & NAMA MANUAL)             -->
     <!-- ===================================================================== -->
     <div id="modal-rombel" class="no-print fixed inset-0 z-[80] hidden items-center justify-center bg-navy/70 backdrop-blur-xs p-4">
         <div class="bg-white border border-cream-border rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <h3 class="font-display font-extrabold text-lg text-navy">Kelola Rombel Kelas <span id="modal-rombel-grade" class="text-royal">IX</span></h3>
-                    <p class="text-[11px] text-navy-muted">Klik huruf kelas di bawah untuk mengaktifkan atau menambah rombel paralel.</p>
+                    <h3 class="font-display font-extrabold text-lg text-navy">Kelas Ampuan &amp; Rombel <span id="modal-rombel-grade" class="text-royal">IX</span></h3>
+                    <p class="text-[11px] text-navy-muted">Atur jenjang kelas yang Anda ampu serta rombel paralel yang aktif.</p>
                 </div>
                 <button type="button" onclick="closeRombelModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
+
+            <div class="bg-cream-soft border border-cream-border rounded-2xl p-3 space-y-1.5">
+                <p class="text-xs font-bold text-navy">Jenjang Kelas yang Anda Ampu:</p>
+                <div class="flex gap-4 text-xs font-extrabold text-navy">
+                    <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="chk-allowed-VII" value="VII"> Kelas VII</label>
+                    <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="chk-allowed-VIII" value="VIII"> Kelas VIII</label>
+                    <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="chk-allowed-IX" value="IX"> Kelas IX</label>
+                </div>
+            </div>
+
             <div>
                 <div class="flex items-center justify-between mb-2">
-                    <p class="text-xs font-bold text-navy">Pilih Rombel Paralel (A – H):</p>
+                    <p class="text-xs font-bold text-navy">Pilih Rombel Paralel Kelas <span id="modal-rombel-grade-sub">IX</span> (A – H):</p>
                     <button type="button" onclick="selectAllRombelLetters()" class="text-[11px] font-extrabold text-royal hover:underline cursor-pointer">Pilih Semua (A–H)</button>
                 </div>
                 <div id="rombel-letter-grid" class="grid grid-cols-4 gap-2"></div>
@@ -589,7 +608,7 @@
                     Batal
                 </button>
                 <button type="button" onclick="saveSelectedRombels()" class="w-2/3 bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-sm py-3 rounded-2xl shadow cursor-pointer">
-                    Simpan &amp; Terapkan Rombel
+                    Simpan Pengaturan Kelas
                 </button>
             </div>
         </div>
@@ -630,7 +649,8 @@
         // =========================================================================
         const CUSTOM_ADMIN_EMAIL = "taufiqurrohman14@guru.smp.belajar.id";
         const CUSTOM_ADMIN_PIN   = "admin2026";
-        const STORAGE_KEY        = "efn_nusantara_master_v6";
+        const GLOBAL_STORAGE_KEY = "efn_nusantara_global_v7";
+        const TEACHER_SPACE_PREFIX = "efn_nusantara_teacher_v7_";
 
         const ADMIN_MODULES = [
             { id: 'data-kelas', title: 'Data Kelas Saya', desc: 'Identitas Sekolah, Rombel, Siswa & Sync Cloud', icon: 'users', featured: true, hasCsv: true },
@@ -1055,9 +1075,34 @@
         };
 
         // =========================================================================
-        // 2. INISIALISASI STATE APLIKASI (BERSIH TANPA AKUN GURU DUMMY)
+        // 2. MANAJEMEN STATE GLOBAL & RUANG TERISOLASI PER GURU
         // =========================================================================
-        function createInitialState() {
+        function createGlobalState() {
+            return {
+                auth: { role: null, studentId: null, rombelId: 'IX-A', teacherEmail: null },
+                systemConfig: {
+                    gasUrl: '',
+                    googleClientId: '',
+                    adminEmail: CUSTOM_ADMIN_EMAIL,
+                    adminPin: CUSTOM_ADMIN_PIN
+                },
+                adminRegistry: {
+                    activeTab: 'teachers',
+                    teachers: [],
+                    tokens: [
+                        { token: 'NUSANTARA-FREE-30', durasi_hari: 30, status: 'AVAILABLE', used_by_email: '' },
+                        { token: 'NUSANTARA-PRO-365', durasi_hari: 365, status: 'AVAILABLE', used_by_email: '' }
+                    ]
+                }
+            };
+        }
+
+        function createTeacherWorkspaceState(profile = {}) {
+            const allowedGrades = Array.isArray(profile.allowedGrades) && profile.allowedGrades.length > 0
+                ? profile.allowedGrades
+                : ['VII', 'VIII', 'IX'];
+            const initialGrade = allowedGrades[0];
+
             const makeStudents = (prefix) => [
                 { id: `${prefix}1`, nis: `${prefix}01`, pin: '1234', name: 'Ahmad Fauzan Pratama', gender: 'L', completedChapters: ['TP 9.1'], uh1: 88, uh2: 90, uh3: 86, sts: 89, uas: 91, lkpdScores: {}, examResults: {} },
                 { id: `${prefix}2`, nis: `${prefix}02`, pin: '1234', name: 'Nabila Putri Azzahra', gender: 'P', completedChapters: ['TP 9.1'], uh1: 92, uh2: 94, uh3: 90, sts: 93, uas: 95, lkpdScores: {}, examResults: {} },
@@ -1077,93 +1122,122 @@
                 };
             };
 
+            const rombels = {};
+            if (allowedGrades.includes('VII')) rombels['VII-A'] = makeRombelObj('VII-A', 'VII', 'VII A', '70');
+            if (allowedGrades.includes('VIII')) rombels['VIII-A'] = makeRombelObj('VIII-A', 'VIII', 'VIII A', '80');
+            if (allowedGrades.includes('IX')) rombels['IX-A'] = makeRombelObj('IX-A', 'IX', 'IX A', '90');
+
+            const initialRombelId = Object.keys(rombels)[0] || `${initialGrade}-A`;
+
             return {
-                auth: { role: null, studentId: null, rombelId: 'IX-A' },
-                activeGrade: 'IX',
-                activeRombelId: 'IX-A',
+                allowedGrades,
+                activeGrade: initialGrade,
+                activeRombelId: initialRombelId,
                 activeSemester: '1',
                 kkm: 75,
                 school: {
-                    name: 'SMP NEGERI 1 NUSANTARA',
+                    name: profile.sekolah || 'SMP NEGERI 1 NUSANTARA',
                     address: 'Jl. Pendidikan Merdeka No. 45, Kota Nusantara',
                     academicYear: '2026/2027',
                     city: 'Jakarta',
                     docDate: '14 Juli 2026',
                     kepsekName: 'Drs. H. Ahmad Suryana, M.Pd.',
                     kepsekNip: '19680512 199403 1 007',
-                    teacherName: 'Guru Bahasa Inggris',
-                    teacherNip: '-',
-                    teacherEmail: 'guru@nusantara.sch.id',
-                    teacherPin: '2026',
-                    classCode: 'EFN-IXA26'
+                    teacherName: profile.nama || 'Guru Bahasa Inggris',
+                    teacherNip: profile.nip || '-',
+                    teacherEmail: profile.email || 'demo@guru.nusantara.sch.id',
+                    teacherPin: profile.pin || '2026',
+                    classCode: profile.kode_kelas || 'EFN-IXA26'
                 },
-                driveMeta: { connected: false, mainFolderId: '', dbFileId: '', lastSync: '' },
-                systemConfig: {
-                    gasUrl: '',
-                    googleClientId: '',
-                    adminEmail: CUSTOM_ADMIN_EMAIL,
-                    adminPin: CUSTOM_ADMIN_PIN
+                driveMeta: {
+                    connected: false,
+                    mainFolderId: profile.drive_folder_id || '',
+                    dbFileId: profile.drive_db_file_id || '',
+                    lastSync: ''
                 },
-                adminRegistry: {
-                    activeTab: 'teachers',
-                    teachers: [],
-                    tokens: [
-                        { token: 'NUSANTARA-FREE-30', durasi_hari: 30, status: 'AVAILABLE', used_by_email: '' },
-                        { token: 'NUSANTARA-PRO-365', durasi_hari: 365, status: 'AVAILABLE', used_by_email: '' }
-                    ]
-                },
-                rombels: {
-                    'VII-A': makeRombelObj('VII-A', 'VII', 'VII A', '70'),
-                    'VIII-A': makeRombelObj('VIII-A', 'VIII', 'VIII A', '80'),
-                    'IX-A': makeRombelObj('IX-A', 'IX', 'IX A', '90')
-                },
+                rombels,
                 curriculum: JSON.parse(JSON.stringify(CURRICULUM_BANK)),
                 promesChecks: {},
                 questionBanks: JSON.parse(JSON.stringify(DEFAULT_QUESTIONS)),
                 uploadedResources: [
                     {
-                        id: 'res_guide_ix_1',
-                        scope: 'student', grade: 'IX', sem: 1, chapterCode: 'TP 9.1',
+                        id: 'res_guide_default',
+                        scope: 'student', grade: 'ALL', sem: 1, chapterCode: 'ALL',
                         category: 'Buku Panduan / E-Book',
-                        title: 'Buku Panduan Siswa: English For Nusantara IX (Chapter 1 - Fauna)',
-                        description: 'Ringkasan resmi materi Descriptive & Report Text satwa endemik Indonesia beserta pola Passive Voice.',
+                        title: 'Buku Panduan Siswa: English For Nusantara (Kurikulum Merdeka)',
+                        description: 'Ringkasan materi bacaan, kosakata kunci, dan pola tata bahasa resmi English For Nusantara.',
                         sourceType: 'text',
-                        fileName: 'Panduan_Chapter_1_English_For_Nusantara_IX.txt',
+                        fileName: 'Panduan_English_For_Nusantara.txt',
                         mimeType: 'text/plain', fileSize: 2150,
-                        textContent: 'ENGLISH FOR NUSANTARA - KELAS IX (CHAPTER 1: EXPLORING FAUNA OF INDONESIA)\n\n1. TUJUAN PEMBELAJARAN:\nPeserta didik mampu mengidentifikasi ciri fisik, habitat, serta status konservasi satwa endemik Indonesia dan menyusun teks deskriptif menggunakan Passive Voice.\n\n2. POLA TATA BAHASA (PASSIVE VOICE):\nSubject + is/am/are + Verb-3 (Past Participle)\nContoh:\n- Bekantan is found in mangrove forests of Kalimantan.\n- Rare endemic animals are protected by Indonesian law.',
+                        textContent: 'ENGLISH FOR NUSANTARA - KURIKULUM MERDEKA FASE D\n\nGunakan menu Materi Ajar untuk membaca teks & mendengarkan audio pelafalan, menu Flashcard untuk menghafal kosakata baru, serta menu Tugas LKPD dan Ujian untuk mengirimkan hasil belajarmu kepada guru.',
                         dataUrl: '', externalUrl: '', visibleToStudent: true, uploadedAt: '14 Juli 2026'
                     }
                 ],
                 selectedChapterIdx: 0,
                 selectedLkpdIdx: 0,
-                selectedExamKey: 'UH-TP 9.1',
-                studentPortal: { tab: 'materi', activeChapterCode: 'TP 9.1', showTranslation: false, fcIndex: 0, fcFlipped: false, examRunner: null }
+                selectedExamKey: `UH-${CURRICULUM_BANK[initialGrade].chapters[0].code}`,
+                studentPortal: {
+                    tab: 'materi',
+                    activeChapterCode: CURRICULUM_BANK[initialGrade].chapters[0].code,
+                    showTranslation: false,
+                    fcIndex: 0,
+                    fcFlipped: false,
+                    examRunner: null
+                }
             };
         }
 
-        let state = (() => {
+        let globalState = (() => {
             try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                const parsed = saved ? JSON.parse(saved) : createInitialState();
-                if (!parsed.systemConfig) parsed.systemConfig = {};
+                const raw = localStorage.getItem(GLOBAL_STORAGE_KEY);
+                const parsed = raw ? JSON.parse(raw) : createGlobalState();
                 parsed.systemConfig.adminEmail = CUSTOM_ADMIN_EMAIL;
                 parsed.systemConfig.adminPin = CUSTOM_ADMIN_PIN;
-                if (Array.isArray(parsed.adminRegistry?.teachers)) {
-                    parsed.adminRegistry.teachers = parsed.adminRegistry.teachers.filter(
-                        t => t.email !== 'guru@nusantara.sch.id' && t.teacher_id !== 'TCH-01'
-                    );
-                }
                 return parsed;
             } catch (e) {
-                return createInitialState();
+                return createGlobalState();
             }
         })();
+
+        function getTeacherStorageKey(email) {
+            const clean = (email || 'demo@guru.nusantara.sch.id').trim().toLowerCase();
+            return TEACHER_SPACE_PREFIX + clean;
+        }
+
+        function loadTeacherWorkspace(email, profile = {}) {
+            try {
+                const raw = localStorage.getItem(getTeacherStorageKey(email));
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (!Array.isArray(parsed.allowedGrades) || parsed.allowedGrades.length === 0) {
+                        parsed.allowedGrades = profile.allowedGrades || ['VII', 'VIII', 'IX'];
+                    }
+                    if (profile.nama) parsed.school.teacherName = profile.nama;
+                    if (profile.nip) parsed.school.teacherNip = profile.nip;
+                    if (profile.sekolah) parsed.school.name = profile.sekolah;
+                    if (profile.email) parsed.school.teacherEmail = profile.email;
+                    if (profile.kode_kelas) parsed.school.classCode = profile.kode_kelas;
+                    return parsed;
+                }
+            } catch (e) {}
+            const fresh = createTeacherWorkspaceState(Object.assign({}, profile, { email }));
+            localStorage.setItem(getTeacherStorageKey(email), JSON.stringify(fresh));
+            return fresh;
+        }
+
+        let state = loadTeacherWorkspace(globalState.auth.teacherEmail || 'demo@guru.nusantara.sch.id', {
+            allowedGrades: ['IX']
+        });
 
         let activeModuleId = null;
         let pendingRombelIds = [];
         let pendingDeleteTeacherEmail = null;
         let examTimerInterval = null;
         let activeObjectUrls = [];
+
+        function normalizeName(str) {
+            return String(str || '').trim().toLowerCase().replace(/\s+/g, ' ');
+        }
 
         // =========================================================================
         // 3. HELPER STORAGE BINER & KOMUNIKASI APPS SCRIPT (BEBAS BLOKIR SITES)
@@ -1241,7 +1315,7 @@
         }
 
         async function callBackendApi(payload) {
-            const gasUrl = normalizeGasUrl(state.systemConfig?.gasUrl);
+            const gasUrl = normalizeGasUrl(globalState.systemConfig?.gasUrl);
             if (!gasUrl) {
                 return { ok: false, offline: true, message: 'Mode Lokal (URL Apps Script belum diisi di Admin Pusat)' };
             }
@@ -1263,9 +1337,17 @@
             }
         }
 
-        function persist() {
+        function persistGlobal() {
             try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                localStorage.setItem(GLOBAL_STORAGE_KEY, JSON.stringify(globalState));
+            } catch (e) {}
+        }
+
+        function persist() {
+            persistGlobal();
+            try {
+                const activeEmail = globalState.auth.teacherEmail || state.school?.teacherEmail || 'demo@guru.nusantara.sch.id';
+                localStorage.setItem(getTeacherStorageKey(activeEmail), JSON.stringify(state));
             } catch (e) {}
             if (state.driveMeta && state.driveMeta.connected) debounceAutoDriveSync();
         }
@@ -1285,7 +1367,7 @@
         }
 
         // =========================================================================
-        // 4. AUTO-SYNC GOOGLE DRIVE GURU (VIA APPS SCRIPT — BEBAS BLOKIR SITES)
+        // 4. AUTO-SYNC GOOGLE DRIVE GURU (TERISOLASI PER GURU)
         // =========================================================================
         let autoDriveSyncTimer = null;
 
@@ -1303,13 +1385,13 @@
         }
 
         function debounceAutoDriveSync() {
-            if (!state.driveMeta?.connected || !state.systemConfig.gasUrl) return;
+            if (!state.driveMeta?.connected || !globalState.systemConfig.gasUrl) return;
             clearTimeout(autoDriveSyncTimer);
             autoDriveSyncTimer = setTimeout(() => syncTeacherDatabaseToDrive(true), 3000);
         }
 
         async function syncTeacherDatabaseToDrive(silent = false) {
-            const gasUrl = normalizeGasUrl(state.systemConfig?.gasUrl);
+            const gasUrl = normalizeGasUrl(globalState.systemConfig?.gasUrl);
             if (!gasUrl) {
                 if (!silent) showToast('Isi URL Web App Apps Script di ⚙️ Admin Pusat terlebih dahulu.');
                 return false;
@@ -1329,7 +1411,7 @@
                 state.driveMeta.mainFolderId = res.folderId || state.driveMeta.mainFolderId;
                 state.driveMeta.dbFileId = res.fileId || state.driveMeta.dbFileId;
                 state.driveMeta.lastSync = nowStr;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                localStorage.setItem(getTeacherStorageKey(state.school.teacherEmail), JSON.stringify(state));
                 updateDriveStatusUi();
                 if (!silent) showToast(`Auto-Backup Google Drive berhasil! Folder: English For Nusantara (${state.school.classCode})`);
                 return true;
@@ -1341,7 +1423,7 @@
 
         async function connectTeacherGoogleDrive() {
             if (!guardTeacherAccess()) return;
-            const gasUrl = normalizeGasUrl(state.systemConfig?.gasUrl);
+            const gasUrl = normalizeGasUrl(globalState.systemConfig?.gasUrl);
             if (!gasUrl) {
                 showToast('Isi URL Web App di ⚙️ Admin Pusat terlebih dahulu, atau gunakan Backup JSON di Data Kelas.');
                 openModule('data-kelas');
@@ -1353,7 +1435,7 @@
         }
 
         // =========================================================================
-        // 5. OTENTIKASI 3 PERAN & SINKRONISASI PENDAFTARAN GURU REAL-TIME
+        // 5. OTENTIKASI 3 PERAN (SISWA LOGIN NAMA + ISOLASI RUANG GURU)
         // =========================================================================
         function switchStudentAuthTab(tab) {
             const isLogin = tab === 'login';
@@ -1379,47 +1461,71 @@
         }
 
         function populateLoginRombels() {
-            const opts = Object.values(state.rombels)
-                .map(r => `<option value="${r.id}">${r.label} (${r.students.length} Siswa)</option>`)
-                .join('');
+            const rombelList = Object.values(state.rombels || {});
+            const opts = rombelList.length > 0
+                ? rombelList.map(r => `<option value="${r.id}">${r.label} (${r.students.length} Siswa)</option>`).join('')
+                : `<option value="IX-A">IX A</option>`;
             const sel1 = document.getElementById('login-student-rombel');
             const sel2 = document.getElementById('reg-student-rombel');
             if (sel1) sel1.innerHTML = opts;
             if (sel2) sel2.innerHTML = opts;
         }
 
-        async function handleStudentLogin(e) {
-            e.preventDefault();
-            const classCode = document.getElementById('login-student-classcode').value.trim().toUpperCase();
-            const rombelId = document.getElementById('login-student-rombel').value;
-            const nis = document.getElementById('login-student-nis').value.trim();
-            const pin = document.getElementById('login-student-pin').value.trim();
-
-            if (classCode && state.systemConfig.gasUrl) {
+        async function syncStudentClassFromCode(classCode) {
+            if (!classCode) return;
+            const localTeacher = (globalState.adminRegistry.teachers || []).find(
+                t => String(t.kode_kelas || '').toUpperCase() === classCode
+            );
+            if (localTeacher) {
+                globalState.auth.teacherEmail = localTeacher.email;
+                state = loadTeacherWorkspace(localTeacher.email, localTeacher);
+                populateLoginRombels();
+            }
+            if (globalState.systemConfig.gasUrl) {
                 const joinRes = await callBackendApi({ action: 'studentJoinClass', kodeKelas: classCode });
                 if (joinRes.ok && joinRes.public_json_url) {
                     try {
                         const dbResp = await fetch(joinRes.public_json_url);
                         const remoteState = await dbResp.json();
                         if (remoteState && remoteState.rombels) {
-                            state.rombels = remoteState.rombels;
-                            state.curriculum = remoteState.curriculum || state.curriculum;
-                            state.questionBanks = remoteState.questionBanks || state.questionBanks;
-                            state.uploadedResources = remoteState.uploadedResources || state.uploadedResources;
-                            state.school = remoteState.school || state.school;
+                            state = remoteState;
                             populateLoginRombels();
                         }
                     } catch (err) {}
                 }
             }
+        }
 
-            const r = state.rombels[rombelId] || Object.values(state.rombels)[0];
-            const found = r.students.find(s => s.nis === nis && s.pin === pin);
-            if (!found) {
-                showToast('NIS atau PIN siswa tidak ditemukan pada rombel ini.');
+        async function handleStudentLogin(e) {
+            e.preventDefault();
+            const classCode = document.getElementById('login-student-classcode').value.trim().toUpperCase();
+            const rombelId = document.getElementById('login-student-rombel').value;
+            const inputName = normalizeName(document.getElementById('login-student-name').value);
+            const pin = document.getElementById('login-student-pin').value.trim();
+
+            if (!inputName) {
+                showToast('Masukkan Nama Lengkap Siswa terlebih dahulu.');
                 return;
             }
-            state.auth = { role: 'student', studentId: found.id, rombelId: r.id };
+
+            await syncStudentClassFromCode(classCode);
+
+            const r = state.rombels[rombelId] || Object.values(state.rombels)[0];
+            if (!r) {
+                showToast('Rombel kelas tidak ditemukan.');
+                return;
+            }
+            const found = r.students.find(s => normalizeName(s.name) === inputName && String(s.pin).trim() === pin);
+            if (!found) {
+                showToast('Nama Lengkap atau PIN siswa tidak cocok pada rombel ini.');
+                return;
+            }
+            globalState.auth = {
+                role: 'student',
+                studentId: found.id,
+                rombelId: r.id,
+                teacherEmail: state.school.teacherEmail || 'demo@guru.nusantara.sch.id'
+            };
             state.activeRombelId = r.id;
             state.activeGrade = r.grade;
             persist();
@@ -1427,28 +1533,45 @@
             showToast(`Selamat belajar, ${found.name}!`);
         }
 
-        function handleStudentSelfRegister(e) {
+        async function handleStudentSelfRegister(e) {
             e.preventDefault();
+            const classCode = document.getElementById('reg-student-classcode').value.trim().toUpperCase();
+            await syncStudentClassFromCode(classCode);
+
             const rombelId = document.getElementById('reg-student-rombel').value;
-            const name = document.getElementById('reg-student-name').value.trim();
-            const nis = document.getElementById('reg-student-nis').value.trim();
+            const name = document.getElementById('reg-student-name').value.trim().replace(/\s+/g, ' ');
             const gender = document.getElementById('reg-student-gender').value;
             const pin = document.getElementById('reg-student-pin').value.trim() || '1234';
 
-            const r = state.rombels[rombelId];
-            if (!r) return;
-            if (r.students.some(s => s.nis === nis)) {
-                showToast('NIS sudah terdaftar di rombel ini, silakan langsung masuk.');
+            const r = state.rombels[rombelId] || Object.values(state.rombels)[0];
+            if (!r || !name) return;
+
+            if (r.students.some(s => normalizeName(s.name) === normalizeName(name))) {
+                showToast('Nama siswa sudah terdaftar di rombel ini, silakan langsung masuk.');
                 switchStudentAuthTab('login');
+                document.getElementById('login-student-name').value = name;
                 return;
             }
+
             const newSt = {
-                id: 'st_' + Date.now(), nis, pin, name, gender,
-                completedChapters: [], uh1: 80, uh2: 80, uh3: 80, sts: 80, uas: 80, lkpdScores: {}, examResults: {}
+                id: 'st_' + Date.now(),
+                nis: '-',
+                pin,
+                name,
+                gender,
+                completedChapters: [],
+                uh1: 80, uh2: 80, uh3: 80, sts: 80, uas: 80,
+                lkpdScores: {}, examResults: {}
             };
             r.students.push(newSt);
             r.attendance[newSt.id] = ['H', 'H', 'H', 'H', 'H', 'H'];
-            state.auth = { role: 'student', studentId: newSt.id, rombelId: r.id };
+
+            globalState.auth = {
+                role: 'student',
+                studentId: newSt.id,
+                rombelId: r.id,
+                teacherEmail: state.school.teacherEmail || 'demo@guru.nusantara.sch.id'
+            };
             state.activeRombelId = r.id;
             state.activeGrade = r.grade;
             persist();
@@ -1457,9 +1580,15 @@
         }
 
         function demoStudentLogin() {
+            state = loadTeacherWorkspace('demo@guru.nusantara.sch.id', { allowedGrades: ['IX'] });
             const r = state.rombels['IX-A'] || Object.values(state.rombels)[0];
             const st = r.students[0];
-            state.auth = { role: 'student', studentId: st.id, rombelId: r.id };
+            globalState.auth = {
+                role: 'student',
+                studentId: st.id,
+                rombelId: r.id,
+                teacherEmail: 'demo@guru.nusantara.sch.id'
+            };
             state.activeRombelId = r.id;
             state.activeGrade = r.grade;
             persist();
@@ -1477,11 +1606,14 @@
             const pin = document.getElementById('reg-tc-pin').value.trim();
             const token = document.getElementById('reg-tc-token').value.trim().toUpperCase();
 
+            const checkedGrades = Array.from(document.querySelectorAll('input[name="reg-tc-grades"]:checked')).map(el => el.value);
+            const allowedGrades = checkedGrades.length > 0 ? checkedGrades : ['IX'];
+
             if (btn) { btn.disabled = true; btn.textContent = 'Menyimpan Pendaftaran...'; }
 
             let status = 'PENDING';
             let expiredAt = '';
-            const tokObj = state.adminRegistry.tokens.find(tk => tk.token === token && tk.status === 'AVAILABLE');
+            const tokObj = globalState.adminRegistry.tokens.find(tk => tk.token === token && tk.status === 'AVAILABLE');
             if (tokObj) {
                 status = 'ACTIVE';
                 tokObj.status = 'USED';
@@ -1494,27 +1626,33 @@
             const newRecord = {
                 teacher_id: 'TCH-' + Date.now(),
                 nama, nip, sekolah, email, pin, status,
-                expired_at: expiredAt, kode_kelas: kodeKelas, drive_folder_id: ''
+                expired_at: expiredAt, kode_kelas: kodeKelas,
+                allowedGrades, drive_folder_id: ''
             };
 
-            if (!state.adminRegistry.teachers.some(t => t.email === email)) {
-                state.adminRegistry.teachers.push(newRecord);
-                persist();
+            if (!globalState.adminRegistry.teachers.some(t => t.email === email)) {
+                globalState.adminRegistry.teachers.push(newRecord);
+                persistGlobal();
             }
+
+            // Buat ruang kerja khusus guru ini secara terisolasi
+            loadTeacherWorkspace(email, newRecord);
 
             const cloudRes = await callBackendApi({
                 action: 'registerTeacher',
-                nama, nip, sekolah, email, pin, token, kodeKelas
+                nama, nip, sekolah, email, pin, token, kodeKelas,
+                allowedGrades: allowedGrades.join(',')
             });
 
             if (btn) { btn.disabled = false; btn.textContent = 'Daftarkan Akun Guru'; }
 
             if (!cloudRes.offline) {
                 if (cloudRes.ok && cloudRes.teacher) {
-                    const idx = state.adminRegistry.teachers.findIndex(t => t.email === email);
-                    if (idx >= 0) state.adminRegistry.teachers[idx] = cloudRes.teacher;
-                    else state.adminRegistry.teachers.push(cloudRes.teacher);
-                    persist();
+                    cloudRes.teacher.allowedGrades = allowedGrades;
+                    const idx = globalState.adminRegistry.teachers.findIndex(t => t.email === email);
+                    if (idx >= 0) globalState.adminRegistry.teachers[idx] = cloudRes.teacher;
+                    else globalState.adminRegistry.teachers.push(cloudRes.teacher);
+                    persistGlobal();
                 }
                 showToast(cloudRes.message || 'Pendaftaran guru tersinkron ke Google Sheets!');
                 switchTeacherAuthTab('login');
@@ -1535,20 +1673,27 @@
             const email = document.getElementById('login-teacher-email').value.trim().toLowerCase();
             const pin = document.getElementById('login-teacher-pin').value.trim();
 
-            if (state.systemConfig.gasUrl) {
+            if (globalState.systemConfig.gasUrl) {
                 const res = await callBackendApi({ action: 'loginTeacher', email, pin });
                 if (res.ok && res.teacher) {
-                    state.school.teacherName = res.teacher.nama;
-                    state.school.teacherNip = res.teacher.nip;
-                    state.school.name = res.teacher.sekolah;
-                    state.school.teacherEmail = res.teacher.email;
-                    state.school.classCode = res.teacher.kode_kelas;
-                    state.driveMeta.mainFolderId = res.teacher.drive_folder_id || '';
-                    state.driveMeta.dbFileId = res.teacher.drive_db_file_id || '';
-                    state.auth = { role: 'teacher', studentId: null, rombelId: state.activeRombelId };
+                    const localMatch = globalState.adminRegistry.teachers.find(t => t.email === email);
+                    const allowedGrades = localMatch?.allowedGrades || (res.teacher.allowed_grades ? String(res.teacher.allowed_grades).split(',') : ['IX']);
+                    state = loadTeacherWorkspace(email, Object.assign({}, res.teacher, { allowedGrades }));
+
+                    if (res.teacher.public_json_url) {
+                        try {
+                            const dbResp = await fetch(res.teacher.public_json_url);
+                            const remoteDb = await dbResp.json();
+                            if (remoteDb && remoteDb.rombels) {
+                                state = Object.assign(state, remoteDb);
+                            }
+                        } catch (err) {}
+                    }
+
+                    globalState.auth = { role: 'teacher', studentId: null, rombelId: state.activeRombelId, teacherEmail: email };
                     persist();
                     renderAppView();
-                    showToast(`Selamat datang, ${res.teacher.nama}!`);
+                    showToast(`Selamat datang, ${res.teacher.nama}! (Kelas Ampuan: ${state.allowedGrades.join(', ')})`);
                     return;
                 } else if (!res.offline) {
                     showToast(res.message);
@@ -1556,21 +1701,17 @@
                 }
             }
 
-            const localTeacher = state.adminRegistry.teachers.find(t => t.email === email && t.pin === pin);
+            const localTeacher = globalState.adminRegistry.teachers.find(t => t.email === email && t.pin === pin);
             if (localTeacher) {
                 if (localTeacher.status !== 'ACTIVE') {
                     showToast(`Akun berstatus ${localTeacher.status}. Aktifkan melalui Admin Pusat atau gunakan Token!`);
                     return;
                 }
-                state.school.teacherName = localTeacher.nama;
-                state.school.teacherNip = localTeacher.nip;
-                state.school.name = localTeacher.sekolah;
-                state.school.teacherEmail = localTeacher.email;
-                state.school.classCode = localTeacher.kode_kelas;
-                state.auth = { role: 'teacher', studentId: null, rombelId: state.activeRombelId };
+                state = loadTeacherWorkspace(email, localTeacher);
+                globalState.auth = { role: 'teacher', studentId: null, rombelId: state.activeRombelId, teacherEmail: email };
                 persist();
                 renderAppView();
-                showToast(`Selamat datang, ${localTeacher.nama}!`);
+                showToast(`Selamat datang, ${localTeacher.nama}! (Kelas Ampuan: ${state.allowedGrades.join(', ')})`);
                 return;
             }
 
@@ -1578,10 +1719,16 @@
         }
 
         function demoTeacherLogin() {
-            state.auth = { role: 'teacher', studentId: null, rombelId: state.activeRombelId };
+            const demoEmail = 'demo@guru.nusantara.sch.id';
+            state = loadTeacherWorkspace(demoEmail, {
+                nama: 'Guru Bahasa Inggris (Simulasi)',
+                sekolah: 'SMP NEGERI 1 NUSANTARA',
+                allowedGrades: ['IX']
+            });
+            globalState.auth = { role: 'teacher', studentId: null, rombelId: state.activeRombelId, teacherEmail: demoEmail };
             persist();
             renderAppView();
-            showToast('Masuk Mode Simulasi Guru (18 Administrasi Aktif)');
+            showToast('Masuk Mode Simulasi Guru (Terisolasi hanya pada Kelas IX)');
         }
 
         // =========================================================================
@@ -1609,9 +1756,9 @@
         }
 
         function resetAdminLocalCache() {
-            localStorage.removeItem(STORAGE_KEY);
-            state = createInitialState();
-            persist();
+            localStorage.removeItem(GLOBAL_STORAGE_KEY);
+            globalState = createGlobalState();
+            persistGlobal();
             showToast('Cache lokal dibersihkan! Silakan masuk kembali.');
         }
 
@@ -1619,25 +1766,25 @@
             const email = (rawEmail || '').trim().toLowerCase();
             const pin = (rawPin || '').trim().toLowerCase();
 
-            const validEmails = [CUSTOM_ADMIN_EMAIL.toLowerCase(), (state.systemConfig.adminEmail || '').toLowerCase(), 'admin'];
-            const validPins = [CUSTOM_ADMIN_PIN.toLowerCase(), (state.systemConfig.adminPin || '').toLowerCase()];
+            const validEmails = [CUSTOM_ADMIN_EMAIL.toLowerCase(), (globalState.systemConfig.adminEmail || '').toLowerCase(), 'admin'];
+            const validPins = [CUSTOM_ADMIN_PIN.toLowerCase(), (globalState.systemConfig.adminPin || '').toLowerCase()];
 
             if (validEmails.includes(email) && validPins.includes(pin)) {
-                state.systemConfig.adminEmail = CUSTOM_ADMIN_EMAIL;
-                state.systemConfig.adminPin = CUSTOM_ADMIN_PIN;
-                state.auth = { role: 'admin', studentId: null, rombelId: state.activeRombelId };
-                persist();
+                globalState.systemConfig.adminEmail = CUSTOM_ADMIN_EMAIL;
+                globalState.systemConfig.adminPin = CUSTOM_ADMIN_PIN;
+                globalState.auth = { role: 'admin', studentId: null, rombelId: null, teacherEmail: null };
+                persistGlobal();
                 closeAdminAuthModal();
                 renderAppView();
                 showToast(`Selamat datang Super Admin (${CUSTOM_ADMIN_EMAIL})!`);
-                if (state.systemConfig.gasUrl) await syncAdminWithBackend(true);
+                if (globalState.systemConfig.gasUrl) await syncAdminWithBackend(true);
                 return;
             }
 
             const cloudRes = await callBackendApi({ action: 'adminLogin', email, pin });
             if (cloudRes.ok) {
-                state.auth = { role: 'admin', studentId: null, rombelId: state.activeRombelId };
-                persist();
+                globalState.auth = { role: 'admin', studentId: null, rombelId: null, teacherEmail: null };
+                persistGlobal();
                 closeAdminAuthModal();
                 renderAppView();
                 showToast('Selamat datang di Dashboard Admin Pusat!');
@@ -1659,15 +1806,19 @@
 
         function logout() {
             clearInterval(examTimerInterval);
-            state.auth = { role: null, studentId: null, rombelId: state.activeRombelId };
+            globalState.auth = { role: null, studentId: null, rombelId: null, teacherEmail: null };
             activeModuleId = null;
-            persist();
+            persistGlobal();
             renderAppView();
         }
 
         function guardTeacherAccess() {
-            if (state.auth.role !== 'teacher') {
+            if (globalState.auth.role !== 'teacher') {
                 showToast('Akses ditolak! Fitur ini khusus untuk Guru.');
+                return false;
+            }
+            if (!state.allowedGrades.includes(state.activeGrade)) {
+                showToast(`Akses dibatasi! Anda hanya dapat melihat & mengedit kelas yang Anda ampu (${state.allowedGrades.join(', ')}).`);
                 return false;
             }
             return true;
@@ -1677,7 +1828,7 @@
         // 6. DASHBOARD ADMIN PUSAT (SINKRON CLOUD, AKTIVASI & HAPUS GURU)
         // =========================================================================
         async function syncAdminWithBackend(silent = false) {
-            const gasUrl = normalizeGasUrl(state.systemConfig?.gasUrl);
+            const gasUrl = normalizeGasUrl(globalState.systemConfig?.gasUrl);
             if (!gasUrl) {
                 if (!silent) {
                     showToast('URL Web App Google Apps Script belum diisi! Buka tab "3. Konfigurasi Backend".');
@@ -1699,7 +1850,7 @@
 
             if (res.ok) {
                 const cloudTeachers = Array.isArray(res.teachers) ? res.teachers : [];
-                const localOnlyTeachers = (state.adminRegistry.teachers || []).filter(
+                const localOnlyTeachers = (globalState.adminRegistry.teachers || []).filter(
                     lt => !cloudTeachers.some(ct => (ct.email || '').toLowerCase() === (lt.email || '').toLowerCase())
                 );
 
@@ -1713,17 +1864,17 @@
 
                 if (localOnlyTeachers.length > 0) {
                     const reFetch = await callBackendApi({ action: 'adminGetDashboard', email: CUSTOM_ADMIN_EMAIL, pin: CUSTOM_ADMIN_PIN });
-                    if (reFetch.ok) state.adminRegistry.teachers = reFetch.teachers || cloudTeachers;
+                    if (reFetch.ok) globalState.adminRegistry.teachers = reFetch.teachers || cloudTeachers;
                 } else {
-                    state.adminRegistry.teachers = cloudTeachers;
+                    globalState.adminRegistry.teachers = cloudTeachers;
                 }
 
                 if (Array.isArray(res.tokens) && res.tokens.length > 0) {
-                    state.adminRegistry.tokens = res.tokens;
+                    globalState.adminRegistry.tokens = res.tokens;
                 }
-                persist();
+                persistGlobal();
                 renderAdminDashboard();
-                if (!silent) showToast(`Sinkronisasi Cloud berhasil! (${state.adminRegistry.teachers.length} guru dimuat dari Google Sheets)`);
+                if (!silent) showToast(`Sinkronisasi Cloud berhasil! (${globalState.adminRegistry.teachers.length} guru dimuat dari Google Sheets)`);
             } else {
                 if (!silent) showToast(res.message || 'Gagal sinkronisasi dengan Google Sheets.');
             }
@@ -1731,14 +1882,14 @@
         }
 
         function setAdminTab(tab) {
-            state.adminRegistry.activeTab = tab;
-            persist();
+            globalState.adminRegistry.activeTab = tab;
+            persistGlobal();
             renderAdminDashboard();
         }
 
         function renderAdminDashboard() {
-            const teachers = state.adminRegistry.teachers || [];
-            const tokens = state.adminRegistry.tokens || [];
+            const teachers = globalState.adminRegistry.teachers || [];
+            const tokens = globalState.adminRegistry.tokens || [];
             const activeCount = teachers.filter(t => t.status === 'ACTIVE').length;
             const pendingCount = teachers.filter(t => t.status === 'PENDING').length;
 
@@ -1761,7 +1912,7 @@
                 </div>
             `;
 
-            const tab = state.adminRegistry.activeTab || 'teachers';
+            const tab = globalState.adminRegistry.activeTab || 'teachers';
             ['teachers', 'tokens', 'config'].forEach(t => {
                 const btn = document.getElementById(`adm-tab-${t}`);
                 if (btn) btn.className = t === tab
@@ -1771,7 +1922,7 @@
 
             const body = document.getElementById('admin-tab-body');
             if (tab === 'teachers') {
-                const gasConnected = Boolean(normalizeGasUrl(state.systemConfig?.gasUrl));
+                const gasConnected = Boolean(normalizeGasUrl(globalState.systemConfig?.gasUrl));
                 body.innerHTML = `
                     <div class="bg-white border border-cream-border rounded-3xl p-5 shadow-xs space-y-4 overflow-x-auto">
                         <div class="flex flex-wrap items-center justify-between gap-2">
@@ -1886,7 +2037,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="sm:col-span-2">
                                 <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (Berakhiran /exec) *</label>
-                                <input type="url" id="cfg-gas-url" value="${state.systemConfig.gasUrl || ''}" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-mono">
+                                <input type="url" id="cfg-gas-url" value="${globalState.systemConfig.gasUrl || ''}" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-mono">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-navy mb-1">Email Super Admin</label>
@@ -1907,7 +2058,7 @@
         }
 
         async function adminSetTeacherStatus(targetEmail, newStatus, addDays) {
-            const localT = state.adminRegistry.teachers.find(t => (t.email || '').toLowerCase() === targetEmail.toLowerCase());
+            const localT = globalState.adminRegistry.teachers.find(t => (t.email || '').toLowerCase() === targetEmail.toLowerCase());
             if (localT) {
                 localT.status = newStatus;
                 if (addDays > 0) {
@@ -1916,7 +2067,7 @@
                     localT.expired_at = exp.toISOString().split('T')[0];
                 }
             }
-            persist();
+            persistGlobal();
             renderAdminDashboard();
             await callBackendApi({
                 action: 'adminUpdateTeacher',
@@ -1951,10 +2102,11 @@
             const btn = document.getElementById('btn-confirm-del-teacher');
             if (btn) { btn.disabled = true; btn.textContent = 'Menghapus...'; }
 
-            state.adminRegistry.teachers = (state.adminRegistry.teachers || []).filter(
+            globalState.adminRegistry.teachers = (globalState.adminRegistry.teachers || []).filter(
                 t => (t.email || '').toLowerCase() !== targetEmail.toLowerCase()
             );
-            persist();
+            localStorage.removeItem(getTeacherStorageKey(targetEmail));
+            persistGlobal();
             closeDeleteTeacherModal();
             renderAdminDashboard();
 
@@ -1974,8 +2126,8 @@
             const custom = document.getElementById('new-token-code').value.trim().toUpperCase();
             const days = parseInt(document.getElementById('new-token-days').value, 10);
             const code = custom || ('EFN-' + Math.random().toString(36).substring(2, 8).toUpperCase());
-            state.adminRegistry.tokens.unshift({ token: code, durasi_hari: days, status: 'AVAILABLE', used_by_email: '' });
-            persist();
+            globalState.adminRegistry.tokens.unshift({ token: code, durasi_hari: days, status: 'AVAILABLE', used_by_email: '' });
+            persistGlobal();
             renderAdminDashboard();
             await callBackendApi({
                 action: 'adminCreateToken',
@@ -1993,17 +2145,17 @@
                 showToast('URL salah! Salin URL Web App yang berakhiran /exec dari menu Deploy Apps Script.');
                 return;
             }
-            state.systemConfig.gasUrl = rawUrl;
-            persist();
+            globalState.systemConfig.gasUrl = rawUrl;
+            persistGlobal();
             showToast('Konfigurasi tersimpan! Menyinkronkan data dengan Google Sheets...');
             if (rawUrl) await syncAdminWithBackend(false);
         }
 
         // =========================================================================
-        // 7. NAVIGASI TAMPILAN UTAMA, GRID 18 MODUL GURU & WORKSPACE LENGKAP
+        // 7. NAVIGASI TAMPILAN UTAMA & ISOLASI KELAS YANG DIAMPU GURU
         // =========================================================================
         function renderAppView() {
-            const role = state.auth.role;
+            const role = globalState.auth.role;
             document.getElementById('view-login').classList.toggle('hidden', Boolean(role));
             document.getElementById('view-admin').classList.toggle('hidden', role !== 'admin');
             document.getElementById('view-teacher').classList.toggle('hidden', role !== 'teacher');
@@ -2013,8 +2165,8 @@
                 populateLoginRombels();
                 const pill = document.getElementById('backend-status-pill');
                 if (pill) {
-                    pill.textContent = state.systemConfig.gasUrl ? 'Cloud Google Aktif' : 'Mode Lokal Siap';
-                    pill.className = state.systemConfig.gasUrl ? 'text-[11px] font-bold text-mint' : 'text-[11px] font-bold text-slate-400';
+                    pill.textContent = globalState.systemConfig.gasUrl ? 'Cloud Google Aktif' : 'Mode Lokal Siap';
+                    pill.className = globalState.systemConfig.gasUrl ? 'text-[11px] font-bold text-mint' : 'text-[11px] font-bold text-slate-400';
                 }
             } else if (role === 'admin') {
                 renderAdminDashboard();
@@ -2030,9 +2182,23 @@
         }
 
         function getActiveRombel() {
-            if (!state.rombels[state.activeRombelId]) {
-                const firstKey = Object.keys(state.rombels).find(k => state.rombels[k].grade === state.activeGrade) || Object.keys(state.rombels)[0];
-                state.activeRombelId = firstKey;
+            const allowed = state.allowedGrades || ['IX'];
+            if (!allowed.includes(state.activeGrade)) {
+                state.activeGrade = allowed[0];
+            }
+            const current = state.rombels[state.activeRombelId];
+            if (!current || !allowed.includes(current.grade)) {
+                const firstKey = Object.keys(state.rombels).find(k => state.rombels[k].grade === state.activeGrade);
+                if (firstKey) {
+                    state.activeRombelId = firstKey;
+                } else {
+                    const fallbackId = `${state.activeGrade}-A`;
+                    state.rombels[fallbackId] = {
+                        id: fallbackId, grade: state.activeGrade, label: `${state.activeGrade} A`,
+                        students: [], attendance: {}, journals: []
+                    };
+                    state.activeRombelId = fallbackId;
+                }
             }
             return state.rombels[state.activeRombelId];
         }
@@ -2049,11 +2215,20 @@
 
         function renderTeacherHeader() {
             const r = getActiveRombel();
-            document.getElementById('sel-grade').value = state.activeGrade;
+            const allowed = state.allowedGrades || ['IX'];
+
+            const selGrade = document.getElementById('sel-grade');
+            selGrade.innerHTML = allowed
+                .map(g => `<option value="${g}" class="text-navy" ${g === state.activeGrade ? 'selected' : ''}>Kelas ${g}</option>`)
+                .join('');
+            selGrade.value = state.activeGrade;
+
             document.getElementById('sel-semester').value = state.activeSemester;
             document.getElementById('teacher-class-code-badge').textContent = `Kode Kelas: ${state.school.classCode}`;
-            document.getElementById('teacher-header-sub').textContent = `${state.school.name} • ${r.label} • TA ${state.school.academicYear}`;
+            document.getElementById('teacher-scope-badge').textContent = `Ampuan: Kelas ${allowed.join(', ')}`;
+            document.getElementById('teacher-header-sub').textContent = `${state.school.teacherName} • ${state.school.name} • ${r.label}`;
             document.getElementById('teacher-stats-badge').textContent = `${r.students.length} Siswa • 120 JP`;
+            document.getElementById('teacher-isolation-note').textContent = `Ruang kerja khusus ${state.school.teacherName} — hanya menampilkan & mengedit Kelas ${allowed.join(', ')} yang Anda ampu.`;
 
             const gradeRombels = Object.values(state.rombels).filter(x => x.grade === state.activeGrade);
             document.getElementById('sel-rombel').innerHTML = gradeRombels
@@ -2062,6 +2237,11 @@
         }
 
         function changeGrade(grade) {
+            if (!(state.allowedGrades || []).includes(grade)) {
+                showToast(`Kelas ${grade} tidak termasuk dalam kelas yang Anda ampu.`);
+                renderTeacherHeader();
+                return;
+            }
             state.activeGrade = grade;
             const match = Object.values(state.rombels).find(x => x.grade === grade);
             if (match) state.activeRombelId = match.id;
@@ -2074,6 +2254,11 @@
         }
 
         function changeRombel(rombelId) {
+            const target = state.rombels[rombelId];
+            if (!target || !(state.allowedGrades || []).includes(target.grade)) {
+                showToast('Anda hanya dapat mengakses rombel pada kelas yang Anda ampu.');
+                return;
+            }
             state.activeRombelId = rombelId;
             persist();
             renderTeacherHeader();
@@ -2149,6 +2334,7 @@
 
         function saveSchoolIdentity(e) {
             e.preventDefault();
+            if (!guardTeacherAccess()) return;
             state.school.name = document.getElementById('id-school-name').value.trim();
             state.school.address = document.getElementById('id-school-addr').value.trim();
             state.school.academicYear = document.getElementById('id-school-ta').value.trim();
@@ -2167,12 +2353,17 @@
 
         function addSingleStudent(e) {
             e.preventDefault();
+            if (!guardTeacherAccess()) return;
             const r = getActiveRombel();
-            const nis = document.getElementById('new-st-nis').value.trim();
-            const name = document.getElementById('new-st-name').value.trim();
+            const name = document.getElementById('new-st-name').value.trim().replace(/\s+/g, ' ');
+            const nis = document.getElementById('new-st-nis').value.trim() || '-';
             const gender = document.getElementById('new-st-gender').value;
             const pin = document.getElementById('new-st-pin').value.trim() || '1234';
-            if (!nis || !name) return;
+            if (!name) return;
+            if (r.students.some(s => normalizeName(s.name) === normalizeName(name))) {
+                showToast(`Siswa dengan nama "${name}" sudah ada di ${r.label}.`);
+                return;
+            }
             const id = 'st_' + Date.now();
             r.students.push({ id, nis, pin, name, gender, completedChapters: [], uh1: 80, uh2: 80, uh3: 80, sts: 80, uas: 80, lkpdScores: {}, examResults: {} });
             r.attendance[id] = ['H', 'H', 'H', 'H', 'H', 'H'];
@@ -2183,6 +2374,7 @@
         }
 
         function deleteStudentFromRombel(studentId) {
+            if (!guardTeacherAccess()) return;
             const r = getActiveRombel();
             r.students = r.students.filter(s => s.id !== studentId);
             delete r.attendance[studentId];
@@ -2249,7 +2441,10 @@
 
                         <div class="no-print bg-blue-50/70 border border-blue-200 rounded-2xl p-4 space-y-3 text-xs">
                             <div class="flex flex-wrap items-center justify-between gap-2">
-                                <h4 class="font-display font-extrabold text-sm text-navy">2. Tambah &amp; Impor Daftar Siswa (${r.label})</h4>
+                                <div>
+                                    <h4 class="font-display font-extrabold text-sm text-navy">2. Tambah &amp; Impor Daftar Siswa (${r.label})</h4>
+                                    <p class="text-[11px] text-navy-muted">Siswa login menggunakan <strong>Nama Lengkap</strong> dan <strong>PIN</strong> masing-masing.</p>
+                                </div>
                                 <div class="flex flex-wrap gap-1.5">
                                     <button type="button" onclick="downloadStudentTemplateExcel()" class="bg-white border border-blue-300 text-royal font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">📥 Template Excel (.xlsx)</button>
                                     <label class="bg-mint text-white font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">
@@ -2257,29 +2452,29 @@
                                     </label>
                                 </div>
                             </div>
-                            <form onsubmit="addSingleStudent(event)" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                                <input id="new-st-nis" placeholder="NIS" required class="border rounded-xl px-3 py-1.5 bg-white">
-                                <input id="new-st-name" placeholder="Nama Lengkap Siswa" required class="sm:col-span-2 border rounded-xl px-3 py-1.5 bg-white">
+                            <form onsubmit="addSingleStudent(event)" class="grid grid-cols-2 sm:grid-cols-6 gap-2">
+                                <input id="new-st-name" placeholder="Nama Lengkap Siswa *" required class="col-span-2 border rounded-xl px-3 py-1.5 bg-white">
+                                <input id="new-st-nis" placeholder="NIS (Opsional)" class="border rounded-xl px-3 py-1.5 bg-white">
                                 <select id="new-st-gender" class="border rounded-xl px-2 py-1.5 bg-white"><option value="L">L</option><option value="P">P</option></select>
-                                <button type="submit" class="bg-navy text-white font-extrabold rounded-xl py-1.5 cursor-pointer">+ Tambah Siswa</button>
-                                <input id="new-st-pin" type="hidden" value="1234">
+                                <input id="new-st-pin" value="1234" placeholder="PIN Login" required class="border rounded-xl px-3 py-1.5 bg-white">
+                                <button type="submit" class="bg-navy text-white font-extrabold rounded-xl py-1.5 cursor-pointer">+ Tambah</button>
                             </form>
                             <div class="flex gap-2">
-                                <textarea id="paste-students-excel" rows="2" placeholder="Atau copy-paste langsung baris dari Excel (Kolom: NIS | Nama Siswa | L/P | PIN)..." class="flex-1 border rounded-xl p-2 bg-white"></textarea>
+                                <textarea id="paste-students-excel" rows="2" placeholder="Atau copy-paste langsung baris dari Excel (Kolom: Nama Lengkap Siswa | L/P | PIN Login | NIS Opsional)..." class="flex-1 border rounded-xl p-2 bg-white"></textarea>
                                 <button type="button" onclick="importStudentsFromPaste()" class="bg-royal text-white font-extrabold px-3 rounded-xl cursor-pointer">Tempel</button>
                             </div>
                         </div>
 
                         <table class="doc-table">
-                            <thead><tr><th>No</th><th>NIS</th><th>Nama Peserta Didik</th><th>L/P</th><th>PIN Siswa</th><th class="no-print">Aksi</th></tr></thead>
+                            <thead><tr><th>No</th><th>Nama Peserta Didik (Username Login)</th><th>L/P</th><th>PIN Siswa</th><th>NIS</th><th class="no-print">Aksi</th></tr></thead>
                             <tbody>
                                 ${r.students.map((s, i) => `
                                     <tr>
                                         <td class="text-center">${i + 1}</td>
-                                        <td class="text-center font-bold">${s.nis}</td>
-                                        <td class="font-semibold">${s.name}</td>
+                                        <td class="font-bold text-navy">${s.name}</td>
                                         <td class="text-center">${s.gender}</td>
-                                        <td class="text-center">${s.pin}</td>
+                                        <td class="text-center font-bold text-royal">${s.pin}</td>
+                                        <td class="text-center text-slate-500">${s.nis || '-'}</td>
                                         <td class="text-center no-print"><button type="button" onclick="deleteStudentFromRombel('${s.id}')" class="text-red-600 font-bold hover:underline cursor-pointer">Hapus</button></td>
                                     </tr>
                                 `).join('')}
@@ -2494,12 +2689,11 @@
             } else if (modId === 'daftar-nilai') {
                 body.innerHTML = `
                     <table class="doc-table">
-                        <thead><tr><th>No</th><th>NIS</th><th>Nama Siswa</th><th>UH 1</th><th>UH 2</th><th>UH 3</th><th>STS</th><th>UAS</th><th>Nilai Akhir</th></tr></thead>
+                        <thead><tr><th>No</th><th>Nama Siswa</th><th>UH 1</th><th>UH 2</th><th>UH 3</th><th>STS</th><th>UAS</th><th>Nilai Akhir</th></tr></thead>
                         <tbody>
                             ${r.students.map((s, i) => `
                                 <tr>
                                     <td class="text-center">${i + 1}</td>
-                                    <td class="text-center">${s.nis}</td>
                                     <td class="font-bold">${s.name}</td>
                                     <td class="text-center"><input type="number" value="${s.uh1}" onchange="updateStudentGrade('${s.id}', 'uh1', this.value)" class="w-12 text-center border rounded"></td>
                                     <td class="text-center"><input type="number" value="${s.uh2}" onchange="updateStudentGrade('${s.id}', 'uh2', this.value)" class="w-12 text-center border rounded"></td>
@@ -2564,11 +2758,11 @@
             } else if (modId === 'rekap-rapor') {
                 body.innerHTML = `
                     <table class="doc-table">
-                        <thead><tr><th>No</th><th>NIS</th><th>Nama Siswa</th><th>Nilai Rapor</th><th>KKTP</th><th>Predikat</th></tr></thead>
+                        <thead><tr><th>No</th><th>Nama Siswa</th><th>Nilai Rapor</th><th>KKTP</th><th>Predikat</th></tr></thead>
                         <tbody>
                             ${r.students.map((s, i) => {
                                 const na = calcFinalScore(s);
-                                return `<tr><td class="text-center">${i + 1}</td><td class="text-center">${s.nis}</td><td class="font-bold">${s.name}</td><td class="text-center font-extrabold text-royal">${na}</td><td class="text-center">${state.kkm}</td><td class="text-center font-bold">${getPredikat(na)}</td></tr>`;
+                                return `<tr><td class="text-center">${i + 1}</td><td class="font-bold">${s.name}</td><td class="text-center font-extrabold text-royal">${na}</td><td class="text-center">${state.kkm}</td><td class="text-center font-bold">${getPredikat(na)}</td></tr>`;
                             }).join('')}
                         </tbody>
                     </table>
@@ -2595,9 +2789,9 @@
                 body.innerHTML = `
                     <div class="p-5 bg-cream-soft border rounded-2xl text-xs space-y-2 leading-relaxed">
                         <h4 class="font-display font-extrabold text-sm text-navy">Panduan Penggunaan Cepat Portal English For Nusantara</h4>
-                        <p>1. Gunakan pemilih <strong>Kelas (VII/VIII/IX)</strong>, <strong>Rombel (+ Rombel A–H)</strong>, dan <strong>Semester (1/2)</strong> di bilah atas untuk beralih antar kelas secara otomatis.</p>
-                        <p>2. Bagikan <strong>Kode Kelas</strong> di pojok kiri atas kepada siswa agar siswa dapat login dan mengakses materi, buku panduan PDF, LKPD, serta ujian online.</p>
-                        <p>3. Klik <strong>Hubungkan Google Drive Saya</strong> untuk mencadangkan otomatis seluruh database kelas ke Google Drive Anda.</p>
+                        <p>1. Setiap akun guru bersifat terisolasi dan hanya dapat melihat serta mengedit data pada kelas yang diampu. Klik <strong>+ Kelas / Rombel</strong> di bilah atas untuk mengatur jenjang yang Anda ampu dan menambahkan rombel A–H.</p>
+                        <p>2. Bagikan <strong>Kode Kelas</strong> kepada siswa Anda. Siswa cukup login menggunakan <strong>Nama Lengkap</strong> dan <strong>PIN</strong>.</p>
+                        <p>3. Klik <strong>Hubungkan Google Drive Saya</strong> untuk mencadangkan otomatis seluruh database kelas Anda ke Google Drive pribadi.</p>
                     </div>
                 `;
             }
@@ -2608,13 +2802,13 @@
             const r = getActiveRombel();
             let added = 0;
             rows.forEach(cols => {
-                if (!cols || cols.length < 2) return;
-                const nis = String(cols[0] ?? '').trim();
-                const name = String(cols[1] ?? '').trim();
-                const gender = String(cols[2] ?? 'L').trim().toUpperCase().startsWith('P') ? 'P' : 'L';
-                const pin = String(cols[3] ?? '1234').trim() || '1234';
-                if (!nis || !name || nis.toLowerCase() === 'nis') return;
-                if (!r.students.some(s => s.nis === nis)) {
+                if (!cols || cols.length < 1) return;
+                const name = String(cols[0] ?? '').trim().replace(/\s+/g, ' ');
+                const gender = String(cols[1] ?? 'L').trim().toUpperCase().startsWith('P') ? 'P' : 'L';
+                const pin = String(cols[2] ?? '1234').trim() || '1234';
+                const nis = String(cols[3] ?? '-').trim() || '-';
+                if (!name || normalizeName(name).startsWith('nama')) return;
+                if (!r.students.some(s => normalizeName(s.name) === normalizeName(name))) {
                     const id = 'st_' + Date.now() + '_' + added;
                     r.students.push({ id, nis, pin, name, gender, completedChapters: [], uh1: 80, uh2: 80, uh3: 80, sts: 80, uas: 80, lkpdScores: {}, examResults: {} });
                     r.attendance[id] = ['H', 'H', 'H', 'H', 'H', 'H'];
@@ -2627,11 +2821,11 @@
                 renderWorkspace('data-kelas');
                 showToast(`${added} siswa baru berhasil ditambahkan ke ${r.label}!`);
             } else {
-                showToast('Tidak ada data siswa baru yang valid (pastikan kolom NIS & Nama terisi).');
+                showToast('Tidak ada data siswa baru yang valid (pastikan kolom Nama Lengkap Siswa terisi).');
             }
         }
 
-        // Modal Kelola Rombel A-H & Manual
+        // Modal Kelola Kelas Ampuan & Rombel A-H
         function renderRombelLetterGrid() {
             const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
             const gridEl = document.getElementById('rombel-letter-grid');
@@ -2640,753 +2834,4 @@
                 const id = `${state.activeGrade}-${l}`;
                 const active = pendingRombelIds.includes(id);
                 return `<button type="button" onclick="togglePendingRombel('${id}')"
-                    class="py-2.5 px-2 rounded-xl text-xs font-extrabold border transition cursor-pointer flex items-center justify-center gap-1 ${active ? 'bg-royal text-white border-royal shadow-xs' : 'bg-cream-soft hover:bg-blue-50 text-navy border-slate-300'}">
-                    <span>${active ? '✓' : '+'}</span>
-                    <span>${state.activeGrade} ${l}</span>
-                </button>`;
-            }).join('');
-        }
-
-        function openRombelModal() {
-            const gradeSpan = document.getElementById('modal-rombel-grade');
-            if (gradeSpan) gradeSpan.textContent = state.activeGrade;
-            pendingRombelIds = Object.keys(state.rombels).filter(k => state.rombels[k].grade === state.activeGrade);
-            if (pendingRombelIds.length === 0) pendingRombelIds = [`${state.activeGrade}-A`];
-            renderRombelLetterGrid();
-            const m = document.getElementById('modal-rombel');
-            if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
-        }
-
-        function togglePendingRombel(id) {
-            if (pendingRombelIds.includes(id)) {
-                if (pendingRombelIds.length > 1) pendingRombelIds = pendingRombelIds.filter(x => x !== id);
-                else { showToast('Minimal harus ada 1 rombel kelas yang aktif.'); return; }
-            } else {
-                pendingRombelIds.push(id);
-            }
-            renderRombelLetterGrid();
-        }
-
-        function selectAllRombelLetters() {
-            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].forEach(l => {
-                const id = `${state.activeGrade}-${l}`;
-                if (!pendingRombelIds.includes(id)) pendingRombelIds.push(id);
-            });
-            renderRombelLetterGrid();
-            showToast(`Seluruh rombel ${state.activeGrade} A–H dipilih!`);
-        }
-
-        function addCustomRombel() {
-            const inputEl = document.getElementById('custom-rombel-name');
-            const name = (inputEl?.value || '').trim();
-            if (!name) { showToast('Ketik nama rombel manual terlebih dahulu.'); return; }
-            const id = `${state.activeGrade}-${name.replace(/\s+/g, '-')}`;
-            if (!state.rombels[id]) {
-                const baseStudents = JSON.parse(JSON.stringify(getActiveRombel().students));
-                const attendance = {};
-                baseStudents.forEach(s => { attendance[s.id] = ['H', 'H', 'H', 'H', 'H', 'H']; });
-                state.rombels[id] = { id, grade: state.activeGrade, label: name, students: baseStudents, attendance, journals: [] };
-            }
-            state.activeRombelId = id;
-            if (inputEl) inputEl.value = '';
-            persist();
-            closeRombelModal();
-            renderTeacherHeader();
-            if (activeModuleId) renderWorkspace(activeModuleId);
-            showToast(`Rombel "${name}" berhasil ditambahkan!`);
-        }
-
-        function saveSelectedRombels() {
-            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].forEach(l => {
-                const id = `${state.activeGrade}-${l}`;
-                if (pendingRombelIds.includes(id) && !state.rombels[id]) {
-                    const label = `${state.activeGrade} ${l}`;
-                    const baseStudents = JSON.parse(JSON.stringify(getActiveRombel().students));
-                    const attendance = {};
-                    baseStudents.forEach(s => { attendance[s.id] = ['H', 'H', 'H', 'H', 'H', 'H']; });
-                    state.rombels[id] = { id, grade: state.activeGrade, label, students: baseStudents, attendance, journals: [] };
-                } else if (!pendingRombelIds.includes(id) && state.rombels[id]) {
-                    delete state.rombels[id];
-                }
-            });
-            if (!state.rombels[state.activeRombelId]) state.activeRombelId = pendingRombelIds[0];
-            persist();
-            closeRombelModal();
-            renderTeacherHeader();
-            if (activeModuleId) renderWorkspace(activeModuleId);
-            showToast(`Rombel Kelas ${state.activeGrade} diperbarui (${pendingRombelIds.length} Rombel aktif)!`);
-        }
-
-        function closeRombelModal() {
-            const m = document.getElementById('modal-rombel');
-            if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
-        }
-
-        function importStudentsExcel(e) {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                try {
-                    if (typeof XLSX !== 'undefined') {
-                        const wb = XLSX.read(evt.target.result, { type: 'array' });
-                        const ws = wb.Sheets[wb.SheetNames[0]];
-                        appendParsedStudentRows(XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' }));
-                    }
-                } catch (err) { showToast('Gagal membaca file Excel: ' + err.message); }
-                e.target.value = '';
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        function importStudentsFromPaste() {
-            const raw = (document.getElementById('paste-students-excel')?.value || '').trim();
-            if (!raw) { showToast('Tempelkan terlebih dahulu baris tabel dari Excel.'); return; }
-            const rows = raw.split(/\r?\n/).map(line => line.includes('\t') ? line.split('\t') : line.split(/[;|,]/));
-            appendParsedStudentRows(rows);
-        }
-
-        function downloadStudentTemplateExcel() {
-            writeAoaToExcelFile([
-                ['NIS', 'Nama Peserta Didik', 'L/P', 'PIN Login'],
-                ['9007', 'Budi Santoso', 'L', '1234'],
-                ['9008', 'Citra Ayu Lestari', 'P', '1234']
-            ], 'Template_Data_Siswa_EnglishForNusantara.xlsx', 'Data_Siswa');
-            showToast('Template Excel (.xlsx) Data Siswa berhasil diunduh!');
-        }
-
-        function togglePromesCheck(key) {
-            state.promesChecks[key] = !state.promesChecks[key];
-            persist();
-            renderWorkspace('promes');
-        }
-
-        function saveTeacherLkpd(e, idx) {
-            e.preventDefault();
-            const ch = getGradeTps()[idx];
-            ch.lkpd.title = document.getElementById('ed-lkpd-title').value.trim();
-            ch.lkpd.instruction = document.getElementById('ed-lkpd-inst').value.trim();
-            ch.lkpd.questions = document.getElementById('ed-lkpd-qs').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-            persist();
-            renderWorkspace('lkpd');
-            showToast('Tugas LKPD berhasil diperbarui & tampil di siswa!');
-        }
-
-        function gradeStudentLkpd(studentId, chapterCode) {
-            const r = getActiveRombel();
-            const s = r.students.find(x => x.id === studentId);
-            if (!s || !s.lkpdScores[chapterCode]) return;
-            s.lkpdScores[chapterCode].score = Number(document.getElementById(`lkpd-sc-${studentId}`).value || 0);
-            s.lkpdScores[chapterCode].feedback = document.getElementById(`lkpd-fb-${studentId}`).value.trim();
-            persist();
-            renderWorkspace('lkpd');
-            showToast(`Nilai LKPD ${s.name} tersimpan!`);
-        }
-
-        function addExamQuestion(e, examKey, modId) {
-            e.preventDefault();
-            if (!state.questionBanks[examKey]) state.questionBanks[examKey] = [];
-            state.questionBanks[examKey].push({
-                q: document.getElementById('new-q-text').value.trim(),
-                opts: [
-                    document.getElementById('new-q-a').value.trim(),
-                    document.getElementById('new-q-b').value.trim(),
-                    document.getElementById('new-q-c').value.trim(),
-                    document.getElementById('new-q-d').value.trim()
-                ],
-                ans: Number(document.getElementById('new-q-ans').value),
-                explain: document.getElementById('new-q-exp').value.trim() || 'Sesuai materi English For Nusantara.'
-            });
-            persist();
-            renderWorkspace(modId);
-            showToast('Soal baru berhasil ditambahkan & aktif di Ujian Siswa!');
-        }
-
-        function deleteExamQuestion(examKey, idx, modId) {
-            state.questionBanks[examKey].splice(idx, 1);
-            persist();
-            renderWorkspace(modId);
-            showToast('Soal dihapus.');
-        }
-
-        function autoGenerateSampleQuestions(examKey, modId) {
-            if (!state.questionBanks[examKey]) state.questionBanks[examKey] = [];
-            const ch = getGradeTps()[0];
-            state.questionBanks[examKey].push(
-                { q: `What is the main topic discussed in "${ch.readingTitle}"?`, opts: [ch.chapter, 'Mathematics Formula', 'Geography Map', 'Sports Rules'], ans: 0, explain: `Teks tersebut membahas materi ${ch.chapter}.` },
-                { q: `Which grammar pattern is emphasized in ${ch.code}?`, opts: [ch.grammarNote, 'Future Perfect Continuous', 'Subjunctive Mood', 'Conditional Type 3'], ans: 0, explain: `Fokus tata bahasa bab ini adalah ${ch.grammarNote}.` }
-            );
-            persist();
-            renderWorkspace(modId);
-            showToast('2 soal latihan otomatis ditambahkan!');
-        }
-
-        function appendParsedQuestionRows(rows, examKey, modId) {
-            if (!state.questionBanks[examKey]) state.questionBanks[examKey] = [];
-            const ansMap = { A: 0, B: 1, C: 2, D: 3, '0': 0, '1': 1, '2': 2, '3': 3 };
-            let count = 0;
-            rows.forEach(cols => {
-                if (!cols || cols.length < 6) return;
-                const qText = String(cols[0] ?? '').trim();
-                const optA = String(cols[1] ?? '').trim();
-                const optB = String(cols[2] ?? '').trim();
-                const optC = String(cols[3] ?? '').trim();
-                const optD = String(cols[4] ?? '').trim();
-                const keyRaw = String(cols[5] ?? 'A').trim().toUpperCase();
-                if (!qText || !optA || qText.toLowerCase().startsWith('pertanyaan')) return;
-                state.questionBanks[examKey].push({
-                    q: qText, opts: [optA, optB, optC, optD],
-                    ans: ansMap[keyRaw] ?? 0,
-                    explain: String(cols[6] ?? 'Sesuai materi English For Nusantara.').trim()
-                });
-                count++;
-            });
-            if (count > 0) {
-                persist();
-                renderWorkspace(modId);
-                showToast(`${count} soal dari Excel berhasil ditambahkan ke ${examKey}!`);
-            } else {
-                showToast('Format kolom belum sesuai. Gunakan: Pertanyaan | A | B | C | D | Kunci (A/B/C/D) | Pembahasan.');
-            }
-        }
-
-        function importQuestionsFromExcel(e, examKey, modId) {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                try {
-                    if (typeof XLSX !== 'undefined') {
-                        const wb = XLSX.read(evt.target.result, { type: 'array' });
-                        const ws = wb.Sheets[wb.SheetNames[0]];
-                        appendParsedQuestionRows(XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' }), examKey, modId);
-                    }
-                } catch (err) { showToast('Gagal membaca file Excel soal: ' + err.message); }
-                e.target.value = '';
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        function downloadQuestionTemplateExcel() {
-            writeAoaToExcelFile([
-                ['Pertanyaan', 'Pilihan A', 'Pilihan B', 'Pilihan C', 'Pilihan D', 'Kunci (A/B/C/D)', 'Pembahasan'],
-                ['Where do Bekantans naturally live?', 'Mangrove forests of Kalimantan', 'Savanna of Komodo', 'Highlands of Papua', 'Deserts of Africa', 'A', 'Bekantan hidup di hutan bakau Kalimantan.']
-            ], 'Template_Bank_Soal_EnglishForNusantara.xlsx', 'Bank_Soal');
-            showToast('Template Excel (.xlsx) Bank Soal berhasil diunduh!');
-        }
-
-        function updateStudentGrade(studentId, field, val) {
-            const r = getActiveRombel();
-            const s = r.students.find(x => x.id === studentId);
-            if (!s) return;
-            s[field] = Math.min(100, Math.max(0, Number(val || 0)));
-            persist();
-            renderWorkspace('daftar-nilai');
-            showToast(`Nilai ${s.name} diperbarui.`);
-        }
-
-        function cycleAttendance(studentId, idx) {
-            const r = getActiveRombel();
-            const order = ['H', 'S', 'I', 'A'];
-            const cur = r.attendance[studentId][idx] || 'H';
-            r.attendance[studentId][idx] = order[(order.indexOf(cur) + 1) % order.length];
-            persist();
-            renderWorkspace('presensi');
-        }
-
-        function addJournalEntry(e) {
-            e.preventDefault();
-            const r = getActiveRombel();
-            r.journals.unshift({
-                id: Date.now(),
-                sem: state.activeSemester === '2' ? 2 : 1,
-                date: document.getElementById('j-date').value,
-                jam: '1-2',
-                tp: document.getElementById('j-tp').value,
-                activity: document.getElementById('j-act').value.trim(),
-                absen: 'Hadir semua',
-                reflection: 'Terlaksana dengan baik.'
-            });
-            persist();
-            renderWorkspace('jurnal-mengajar');
-            showToast('Jurnal mengajar harian ditambahkan!');
-        }
-
-        function autoFillTitleFromFile(input, titleId) {
-            const f = input.files?.[0];
-            const el = document.getElementById(titleId);
-            if (f && el && !el.value.trim()) el.value = f.name.replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' ');
-        }
-
-        async function handleTeacherResourceUpload(e, scope) {
-            e.preventDefault();
-            const file = document.getElementById('up-res-file')?.files?.[0] || null;
-            const externalUrl = (document.getElementById('up-res-url')?.value || '').trim();
-            const title = (document.getElementById('up-res-title')?.value || '').trim();
-            const category = document.getElementById('up-res-category')?.value || 'Buku Panduan / E-Book';
-            const chapterCode = document.getElementById('up-res-chapter')?.value || 'ALL';
-            const description = (document.getElementById('up-res-desc')?.value || '').trim();
-            const visibleToStudent = document.getElementById('up-res-visible')?.checked ?? true;
-
-            if (!file && !externalUrl) { showToast('Pilih file dari perangkat atau masukkan tautan digital.'); return; }
-            const id = `res_${Date.now()}`;
-            let textContent = '';
-            let dataUrl = '';
-            if (file) {
-                if (file.type.startsWith('text/') || /\.(txt|md|csv)$/i.test(file.name)) textContent = await file.text();
-                const saved = await saveBinaryFile(id, file);
-                dataUrl = saved.dataUrl || '';
-            }
-            state.uploadedResources.unshift({
-                id, scope, grade: state.activeGrade, sem: state.activeSemester === '2' ? 2 : 1,
-                chapterCode, category, title, description,
-                sourceType: file ? 'file' : 'link',
-                fileName: file ? file.name : 'Tautan_Digital.url',
-                mimeType: file ? (file.type || 'application/octet-stream') : 'text/url',
-                fileSize: file ? file.size : 0,
-                textContent, dataUrl, externalUrl, visibleToStudent,
-                uploadedAt: new Date().toLocaleDateString('id-ID')
-            });
-            persist();
-            renderWorkspace('modul-ajar');
-            showToast(`"${title}" berhasil diterbitkan ke Ruang Siswa!`);
-        }
-
-        function deleteUploadedResource(resId, returnMod) {
-            state.uploadedResources = state.uploadedResources.filter(r => r.id !== resId);
-            persist();
-            renderWorkspace(returnMod);
-            showToast('Sumber belajar dihapus.');
-        }
-
-        function closeMediaViewer() {
-            activeObjectUrls.forEach(u => URL.revokeObjectURL(u));
-            activeObjectUrls = [];
-            const m = document.getElementById('mediaViewerModal');
-            m.classList.add('hidden');
-            m.classList.remove('flex');
-            document.getElementById('mv-body').innerHTML = '';
-        }
-
-        async function openMediaViewer(resId) {
-            const res = state.uploadedResources.find(r => r.id === resId);
-            if (!res) return;
-            document.getElementById('mv-badge').textContent = `${res.category} • ${res.chapterCode}`;
-            document.getElementById('mv-title').textContent = res.title;
-            document.getElementById('mv-meta').textContent = `${res.fileName} • ${formatBytes(res.fileSize)}`;
-            document.getElementById('mv-desc').textContent = res.description || '';
-            const bodyEl = document.getElementById('mv-body');
-            const dlBtn = document.getElementById('mv-download-btn');
-            const modal = document.getElementById('mediaViewerModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-
-            if (res.sourceType === 'text') {
-                bodyEl.innerHTML = `<div class="w-full max-w-2xl bg-white border rounded-2xl p-5 text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">${res.textContent}</div>`;
-                dlBtn.onclick = () => {
-                    const b = new Blob([res.textContent], { type: 'text/plain;charset=utf-8' });
-                    const u = URL.createObjectURL(b);
-                    const a = document.createElement('a'); a.href = u; a.download = res.fileName; a.click();
-                    URL.revokeObjectURL(u);
-                };
-            } else if (res.sourceType === 'link') {
-                bodyEl.innerHTML = `<div class="text-center bg-white border rounded-3xl p-6 space-y-3 max-w-md"><h4 class="font-display font-extrabold text-base text-navy">Tautan Sumber Belajar Digital</h4><p class="text-xs text-navy-muted break-all">${res.externalUrl}</p><a href="${res.externalUrl}" target="_blank" rel="noopener noreferrer" class="inline-block bg-royal text-white text-xs font-extrabold px-5 py-2.5 rounded-xl">Buka Tautan di Tab Baru ↗</a></div>`;
-                dlBtn.onclick = () => window.open(res.externalUrl, '_blank', 'noopener,noreferrer');
-            } else {
-                const blob = await loadBinaryBlob(res.id, res.dataUrl);
-                if (!blob) { bodyEl.innerHTML = '<p class="text-xs text-red-600 font-bold">File tidak tersedia.</p>'; return; }
-                const blobUrl = URL.createObjectURL(blob);
-                activeObjectUrls.push(blobUrl);
-                dlBtn.onclick = () => { const a = document.createElement('a'); a.href = blobUrl; a.download = res.fileName; a.click(); };
-                if (res.mimeType === 'application/pdf' || /\.pdf$/i.test(res.fileName)) {
-                    bodyEl.innerHTML = `<iframe src="${blobUrl}" class="w-full h-[65vh] rounded-2xl border bg-white"></iframe>`;
-                } else if (res.mimeType.startsWith('image/')) {
-                    bodyEl.innerHTML = `<img src="${blobUrl}" alt="${res.title}" class="max-h-[65vh] rounded-2xl shadow object-contain bg-white">`;
-                } else if (res.mimeType.startsWith('audio/')) {
-                    bodyEl.innerHTML = `<div class="bg-white border rounded-3xl p-6 w-full max-w-md text-center space-y-3"><p class="font-bold text-sm text-navy">${res.title}</p><audio controls src="${blobUrl}" class="w-full"></audio></div>`;
-                } else {
-                    bodyEl.innerHTML = `<div class="bg-white border rounded-3xl p-6 text-center space-y-3"><p class="font-bold text-sm">${res.fileName}</p><button type="button" onclick="document.getElementById('mv-download-btn').click()" class="bg-royal text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">↓ Unduh Dokumen</button></div>`;
-                }
-            }
-            lucide.createIcons();
-        }
-
-        // Ekspor Word, Excel, Print & Backup JSON
-        function exportCurrentDocWord() {
-            const mod = ADMIN_MODULES.find(m => m.id === activeModuleId);
-            const r = getActiveRombel();
-            const clone = document.getElementById('printable-document').cloneNode(true);
-            clone.querySelectorAll('.no-print').forEach(el => el.remove());
-            const html = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>${mod.title}</title><style>body{font-family:'Times New Roman',serif;font-size:11pt;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #000;padding:5px 7px;}th{background:#E2E8F0;}</style></head><body>${clone.innerHTML}</body></html>`;
-            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `${mod.title.replace(/[^a-zA-Z0-9]/g, '_')}_${r.label.replace(/\s+/g, '')}.doc`; a.click();
-            URL.revokeObjectURL(url);
-            showToast(`Dokumen Word "${mod.title}" berhasil diunduh!`);
-        }
-
-        function exportFullSupervisionBundleWord() {
-            const r = getActiveRombel();
-            const tps = getGradeTps();
-            const html = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><style>body{font-family:'Times New Roman',serif;font-size:11pt;}table{border-collapse:collapse;width:100%;margin-bottom:14pt;}th,td{border:1px solid #000;padding:5px;}th{background:#E2E8F0;}h2,h3{text-align:center;}</style></head><body><h2>${state.school.name}</h2><h3>BUNDEL ADMINISTRASI GURU BAHASA INGGRIS (${r.label}) — TA ${state.school.academicYear}</h3><table><tr><th>Kode</th><th>Sem</th><th>Chapter</th><th>Tujuan Pembelajaran</th><th>JP</th></tr>${tps.map(t => `<tr><td>${t.code}</td><td>${t.sem}</td><td>${t.chapter}</td><td>${t.tp}</td><td>${t.jp}</td></tr>`).join('')}</table><table><tr><th>No</th><th>NIS</th><th>Nama Siswa</th><th>UH1</th><th>UH2</th><th>UH3</th><th>STS</th><th>UAS</th><th>Rapor</th></tr>${r.students.map((s, i) => `<tr><td>${i + 1}</td><td>${s.nis}</td><td>${s.name}</td><td>${s.uh1}</td><td>${s.uh2}</td><td>${s.uh3}</td><td>${s.sts}</td><td>${s.uas}</td><td>${calcFinalScore(s)}</td></tr>`).join('')}</table></body></html>`;
-            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `BUNDEL_SUPERVISI_LENGKAP_${r.label.replace(/\s+/g, '')}.doc`; a.click();
-            URL.revokeObjectURL(url);
-            showToast('Bundel Supervisi Lengkap (.doc) berhasil diunduh!');
-        }
-
-        function writeAoaToExcelFile(aoa, filename, sheetName = 'Sheet1') {
-            if (typeof XLSX !== 'undefined') {
-                const ws = XLSX.utils.aoa_to_sheet(aoa);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, sheetName.slice(0, 31));
-                XLSX.writeFile(wb, filename);
-            }
-        }
-
-        function exportCurrentModuleExcel() {
-            const r = getActiveRombel();
-            const mod = ADMIN_MODULES.find(m => m.id === activeModuleId);
-            const fileName = `${mod ? mod.title.replace(/[^a-zA-Z0-9]/g, '_') : activeModuleId}_${r.label.replace(/\s+/g, '')}.xlsx`;
-            const table = document.querySelector('#doc-module-body table');
-            if (!table) { showToast('Tidak ada tabel data untuk diekspor.'); return; }
-            const aoa = Array.from(table.querySelectorAll('tr')).map(tr =>
-                Array.from(tr.querySelectorAll('th, td')).filter(td => !td.classList.contains('no-print')).map(td => {
-                    const inp = td.querySelector('input');
-                    return String(inp ? inp.value : td.innerText).replace(/\s+/g, ' ').trim();
-                })
-            );
-            writeAoaToExcelFile(aoa, fileName, mod ? mod.title : 'Data');
-            showToast(`File Excel (.xlsx) berhasil diunduh!`);
-        }
-
-        function printOrSavePdf() { window.print(); }
-
-        function downloadJsonBackup() {
-            const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `Backup_EnglishForNusantara_${new Date().toISOString().split('T')[0]}.json`; a.click();
-            URL.revokeObjectURL(url);
-            showToast('Backup database (.json) berhasil diunduh!');
-        }
-
-        function restoreJsonBackup(e) {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = () => {
-                try {
-                    const parsed = JSON.parse(reader.result);
-                    if (parsed && parsed.rombels) {
-                        state = parsed;
-                        state.systemConfig.adminEmail = CUSTOM_ADMIN_EMAIL;
-                        state.systemConfig.adminPin = CUSTOM_ADMIN_PIN;
-                        persist();
-                        renderAppView();
-                        showToast('Database berhasil dipulihkan dari file JSON!');
-                    }
-                } catch (err) { showToast('Format file backup JSON tidak valid.'); }
-            };
-            reader.readAsText(file);
-        }
-
-        // =========================================================================
-        // 8. PORTAL BELAJAR SISWA INTERAKTIF
-        // =========================================================================
-        function getLoggedStudent() {
-            const r = state.rombels[state.auth.rombelId] || getActiveRombel();
-            return r.students.find(s => s.id === state.auth.studentId) || r.students[0];
-        }
-
-        function changeStudentSemester(sem) {
-            state.activeSemester = sem;
-            const tps = getFilteredTps();
-            if (tps.length > 0) state.studentPortal.activeChapterCode = tps[0].code;
-            persist();
-            renderStudentPortal();
-        }
-
-        function setStudentTab(tab) {
-            clearInterval(examTimerInterval);
-            state.studentPortal.tab = tab;
-            state.studentPortal.examRunner = null;
-            persist();
-            renderStudentPortal();
-        }
-
-        async function syncStudentClassData() {
-            renderStudentPortal();
-            showToast('Materi, Buku Panduan & Soal kelas terbaru dimuat!');
-        }
-
-        function speakEnglishText(text) {
-            if (!('speechSynthesis' in window)) { showToast('Browser tidak mendukung fitur suara otomatis.'); return; }
-            window.speechSynthesis.cancel();
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.lang = 'en-US'; utter.rate = 0.92;
-            window.speechSynthesis.speak(utter);
-        }
-
-        function toggleStudentChapterComplete(code) {
-            const st = getLoggedStudent();
-            if (!st.completedChapters) st.completedChapters = [];
-            if (st.completedChapters.includes(code)) st.completedChapters = st.completedChapters.filter(c => c !== code);
-            else st.completedChapters.push(code);
-            persist();
-            renderStudentPortal();
-            showToast('Progres belajar diperbarui!');
-        }
-
-        function renderStudentPortal() {
-            const r = state.rombels[state.auth.rombelId] || getActiveRombel();
-            const st = getLoggedStudent();
-            const sp = state.studentPortal;
-
-            document.getElementById('student-rombel-pill').textContent = r.label;
-            document.getElementById('student-profile-line').textContent = `${st.name} • NIS ${st.nis} • Guru: ${state.school.teacherName}`;
-            document.getElementById('student-sem-filter').value = state.activeSemester === '2' ? '2' : '1';
-
-            const filteredTps = getGradeTps().filter(t => String(t.sem) === String(state.activeSemester === '2' ? 2 : 1));
-            const activeCh = filteredTps.find(t => t.code === sp.activeChapterCode) || filteredTps[0];
-            if (activeCh) sp.activeChapterCode = activeCh.code;
-
-            const container = document.getElementById('student-portal-container');
-            container.innerHTML = `
-                <div class="grid grid-cols-2 sm:grid-cols-6 gap-1.5 bg-white p-1.5 rounded-2xl border border-cream-border mb-5 shadow-2xs">
-                    <button type="button" onclick="setStudentTab('materi')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${sp.tab === 'materi' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">📖 Materi Ajar</button>
-                    <button type="button" onclick="setStudentTab('pustaka')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${sp.tab === 'pustaka' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">📚 Buku Panduan</button>
-                    <button type="button" onclick="setStudentTab('flashcard')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${sp.tab === 'flashcard' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">✨ Flashcard</button>
-                    <button type="button" onclick="setStudentTab('lkpd')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${sp.tab === 'lkpd' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">📝 Tugas LKPD</button>
-                    <button type="button" onclick="setStudentTab('ujian')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${sp.tab === 'ujian' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">⏱️ Ujian UH/STS/UAS</button>
-                    <button type="button" onclick="setStudentTab('nilai')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${sp.tab === 'nilai' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">🏆 Rapor Saya</button>
-                </div>
-                <div id="student-tab-body"></div>
-            `;
-
-            const tabBody = document.getElementById('student-tab-body');
-
-            if (sp.tab === 'materi' && activeCh) {
-                const isDone = (st.completedChapters || []).includes(activeCh.code);
-                tabBody.innerHTML = `
-                    <div class="flex flex-wrap gap-1.5 mb-4">
-                        ${filteredTps.map(t => `
-                            <button type="button" onclick="state.studentPortal.activeChapterCode='${t.code}'; state.studentPortal.fcIndex=0; renderStudentPortal();"
-                                class="px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${t.code === activeCh.code ? 'bg-royal text-white shadow-xs' : 'bg-white text-navy border'}">
-                                ${t.chapter} ${(st.completedChapters || []).includes(t.code) ? '✓' : ''}
-                            </button>
-                        `).join('')}
-                    </div>
-                    <div class="bg-white border border-cream-border rounded-3xl p-5 sm:p-7 shadow-sm space-y-5">
-                        <div class="flex flex-wrap items-start justify-between gap-3 border-b pb-4">
-                            <div>
-                                <span class="bg-royal-light text-royal text-[11px] font-extrabold px-2.5 py-1 rounded-full">${activeCh.code} • Semester ${activeCh.sem}</span>
-                                <h3 class="font-display font-extrabold text-lg sm:text-xl text-navy mt-2">${activeCh.chapter}</h3>
-                                <p class="text-xs text-navy-muted mt-1"><strong>Tujuan Pembelajaran:</strong> ${activeCh.tp}</p>
-                            </div>
-                            <button type="button" onclick="toggleStudentChapterComplete('${activeCh.code}')" class="px-4 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${isDone ? 'bg-mint-bg text-mint border border-green-300' : 'bg-gold text-navy'}">
-                                ${isDone ? '✓ Selesai Dipelajari' : 'Tandai Selesai Dipelajari'}
-                            </button>
-                        </div>
-                        <div class="bg-cream-soft border border-cream-border rounded-2xl p-4 sm:p-5 space-y-3">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <h4 class="font-display font-extrabold text-sm sm:text-base text-navy">📖 Reading Passage: ${activeCh.readingTitle}</h4>
-                                <div class="flex gap-1.5">
-                                    <button type="button" onclick="speakEnglishText(\`${activeCh.readingText.replace(/`/g, '')}\`)" class="bg-royal text-white text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">🔊 Dengarkan Audio</button>
-                                    <button type="button" onclick="state.studentPortal.showTranslation=!state.studentPortal.showTranslation; renderStudentPortal();" class="bg-white border text-navy text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer">
-                                        ${sp.showTranslation ? 'Sembunyikan Arti' : 'Terjemahan ID'}
-                                    </button>
-                                </div>
-                            </div>
-                            <p class="text-xs sm:text-sm leading-relaxed text-slate-800">${activeCh.readingText}</p>
-                            ${sp.showTranslation ? `<p class="text-xs text-navy-muted italic border-t pt-2">${activeCh.readingTranslation}</p>` : ''}
-                        </div>
-                        <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-3.5 text-xs"><strong>Grammar Focus:</strong> ${activeCh.grammarNote}</div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            ${activeCh.vocab.map(v => `
-                                <div onclick="speakEnglishText('${v.en}')" class="p-3 rounded-2xl border hover:border-royal bg-white cursor-pointer flex items-center justify-between">
-                                    <div>
-                                        <p class="font-display font-extrabold text-sm text-royal">${v.en} <span class="text-xs font-normal text-navy-muted">(${v.id})</span></p>
-                                        <p class="text-[11px] text-slate-600 italic mt-0.5">"${v.ex}"</p>
-                                    </div>
-                                    <span class="text-base">🔊</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            } else if (sp.tab === 'pustaka') {
-                const guides = state.uploadedResources.filter(x => x.scope === 'student' && x.visibleToStudent && (x.grade === state.activeGrade || x.grade === 'ALL'));
-                tabBody.innerHTML = `
-                    <div class="bg-white border border-cream-border rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-                        <h3 class="font-display font-extrabold text-lg text-navy">Rak Buku Panduan, E-Book &amp; Audio Pembelajaran (${r.label})</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                            ${guides.map(g => `
-                                <div class="border rounded-2xl p-4 bg-cream-soft/60 flex flex-col justify-between gap-3">
-                                    <div>
-                                        <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-navy text-gold">${g.category}</span>
-                                        <h4 class="font-display font-extrabold text-sm text-navy mt-1.5">${g.title}</h4>
-                                        <p class="text-xs text-navy-muted mt-1">${g.description || ''}</p>
-                                    </div>
-                                    <button type="button" onclick="openMediaViewer('${g.id}')" class="bg-royal text-white text-xs font-extrabold px-3.5 py-2 rounded-xl cursor-pointer self-end">Baca / Pratinjau</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            } else if (sp.tab === 'flashcard' && activeCh) {
-                const list = activeCh.vocab;
-                const item = list[sp.fcIndex % list.length];
-                tabBody.innerHTML = `
-                    <div class="max-w-md mx-auto text-center space-y-4">
-                        <div onclick="state.studentPortal.fcFlipped=!state.studentPortal.fcFlipped; renderStudentPortal();"
-                            class="bg-white border-2 border-royal rounded-3xl p-8 shadow-lg cursor-pointer min-h-[210px] flex flex-col items-center justify-center">
-                            <span class="text-[11px] font-extrabold uppercase text-royal mb-2">${sp.fcFlipped ? 'Arti & Contoh Kalimat' : 'Kosakata Bahasa Inggris (Klik Balik)'}</span>
-                            <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-navy">${sp.fcFlipped ? item.id : item.en}</h3>
-                            ${sp.fcFlipped ? `<p class="text-xs text-navy-muted italic mt-2">"${item.ex}"</p>` : ''}
-                        </div>
-                        <div class="flex justify-center gap-2">
-                            <button type="button" onclick="speakEnglishText('${item.en}')" class="bg-gold text-navy text-xs font-extrabold px-4 py-2.5 rounded-xl cursor-pointer">🔊 Lafalkan</button>
-                            <button type="button" onclick="state.studentPortal.fcIndex=(state.studentPortal.fcIndex+1)%${list.length}; state.studentPortal.fcFlipped=false; renderStudentPortal();" class="bg-navy text-white text-xs font-extrabold px-4 py-2.5 rounded-xl cursor-pointer">Kartu Berikutnya →</button>
-                        </div>
-                    </div>
-                `;
-            } else if (sp.tab === 'lkpd') {
-                tabBody.innerHTML = `
-                    <div class="space-y-4">
-                        ${filteredTps.map(t => {
-                            const sub = (st.lkpdScores || {})[t.code];
-                            return `
-                                <div class="bg-white border border-cream-border rounded-3xl p-5 shadow-xs space-y-3">
-                                    <div class="flex justify-between gap-2">
-                                        <h4 class="font-display font-extrabold text-base text-navy">${t.lkpd.title}</h4>
-                                        <span class="px-3 py-1 rounded-full text-xs font-extrabold ${sub ? 'bg-mint-bg text-mint' : 'bg-slate-100 text-slate-600'}">${sub ? (sub.score !== null ? `Nilai: ${sub.score}/100` : 'Terkirim') : 'Belum Dikerjakan'}</span>
-                                    </div>
-                                    <p class="text-xs text-navy-muted">${t.lkpd.instruction}</p>
-                                    <div class="bg-cream-soft p-3 rounded-2xl text-xs space-y-1">${t.lkpd.questions.map(q => `<p class="font-semibold text-navy">${q}</p>`).join('')}</div>
-                                    <form onsubmit="submitStudentLkpd(event, '${t.code}')" class="space-y-2">
-                                        <textarea id="st-lkpd-ans-${t.code}" rows="3" required placeholder="Tulis jawaban lengkapmu..." class="w-full border rounded-2xl p-3 text-xs">${sub ? sub.answer : ''}</textarea>
-                                        <button type="submit" class="bg-royal text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">Kirim Jawaban LKPD</button>
-                                    </form>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                `;
-            } else if (sp.tab === 'ujian') {
-                if (sp.examRunner) {
-                    const run = sp.examRunner;
-                    const qList = state.questionBanks[run.examKey] || [];
-                    tabBody.innerHTML = `
-                        <div class="bg-white border-2 border-royal rounded-3xl p-5 sm:p-7 shadow-md space-y-4">
-                            <div class="flex items-center justify-between border-b pb-3">
-                                <h3 class="font-display font-extrabold text-base text-navy">${run.examKey} — ${st.name}</h3>
-                                <span id="exam-timer-box" class="bg-navy text-gold font-mono font-extrabold text-sm px-3.5 py-1.5 rounded-xl">30:00</span>
-                            </div>
-                            <div class="space-y-4">
-                                ${qList.map((item, idx) => `
-                                    <div class="p-4 rounded-2xl border bg-cream-soft/50 space-y-2">
-                                        <p class="font-bold text-xs sm:text-sm text-navy">${idx + 1}. ${item.q}</p>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                            ${item.opts.map((opt, oi) => `
-                                                <label class="flex items-center gap-2 p-2.5 rounded-xl border bg-white text-xs cursor-pointer">
-                                                    <input type="radio" name="ex_q_${idx}" value="${oi}" ${run.answers[idx] === oi ? 'checked' : ''} onchange="state.studentPortal.examRunner.answers[${idx}]=${oi}">
-                                                    <span><strong>${['A', 'B', 'C', 'D'][oi]}.</strong> ${opt}</span>
-                                                </label>
-                                            `).join('')}
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <button type="button" onclick="finishStudentExam()" class="w-full bg-mint text-white font-display font-extrabold text-sm py-3 rounded-2xl shadow cursor-pointer">Selesai &amp; Kirim Jawaban Ujian</button>
-                        </div>
-                    `;
-                } else {
-                    const keys = Object.keys(state.questionBanks).filter(k => (state.questionBanks[k] || []).length > 0);
-                    tabBody.innerHTML = `
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                            ${keys.map(k => {
-                                const doneRes = (st.examResults || {})[k];
-                                return `
-                                    <div class="bg-white border border-cream-border rounded-3xl p-5 shadow-xs flex flex-col justify-between gap-3">
-                                        <div>
-                                            <h4 class="font-display font-extrabold text-base text-navy">${k}</h4>
-                                            <p class="text-xs text-navy-muted mt-0.5">${state.questionBanks[k].length} Soal Pilihan Ganda</p>
-                                        </div>
-                                        <div class="flex items-center justify-between pt-2 border-t">
-                                            ${doneRes ? `<span class="text-xs font-extrabold text-mint">Nilai: ${doneRes.score}/100</span>` : `<span class="text-xs text-slate-400">Belum dikerjakan</span>`}
-                                            <button type="button" onclick="startStudentExam('${k}')" class="bg-royal text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">${doneRes ? 'Ulangi' : 'Mulai Ujian'}</button>
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    `;
-                }
-            } else if (sp.tab === 'nilai') {
-                const na = calcFinalScore(st);
-                tabBody.innerHTML = `
-                    <div class="bg-white border border-cream-border rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
-                        <div class="flex items-center justify-between border-b pb-4">
-                            <div><h3 class="font-display font-extrabold text-lg text-navy">Rapor Capaian Belajar Siswa</h3><p class="text-xs text-navy-muted">${st.name} • NIS ${st.nis}</p></div>
-                            <div class="bg-navy text-white px-4 py-2 rounded-2xl text-center"><span class="text-[10px] uppercase text-blue-200 block">Nilai Rapor</span><span class="font-display font-extrabold text-xl text-gold">${na}</span></div>
-                        </div>
-                        <p class="text-xs font-bold text-mint">Predikat Capaian: ${getPredikat(na)} (KKTP: ${state.kkm})</p>
-                    </div>
-                `;
-            }
-            lucide.createIcons();
-        }
-
-        async function submitStudentLkpd(e, chapterCode) {
-            e.preventDefault();
-            const st = getLoggedStudent();
-            const ans = document.getElementById(`st-lkpd-ans-${chapterCode}`).value.trim();
-            if (!st.lkpdScores) st.lkpdScores = {};
-            st.lkpdScores[chapterCode] = { answer: ans, score: null, feedback: '' };
-            persist();
-            renderStudentPortal();
-            showToast('Jawaban LKPD berhasil dikirim ke guru!');
-        }
-
-        function startStudentExam(examKey) {
-            state.studentPortal.tab = 'ujian';
-            state.studentPortal.examRunner = { examKey, answers: {}, secondsLeft: 1800 };
-            renderStudentPortal();
-            clearInterval(examTimerInterval);
-            examTimerInterval = setInterval(() => {
-                if (!state.studentPortal.examRunner) return clearInterval(examTimerInterval);
-                state.studentPortal.examRunner.secondsLeft--;
-                const s = state.studentPortal.examRunner.secondsLeft;
-                const box = document.getElementById('exam-timer-box');
-                if (box) box.textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
-                if (s <= 0) finishStudentExam();
-            }, 1000);
-        }
-
-        async function finishStudentExam() {
-            clearInterval(examTimerInterval);
-            const run = state.studentPortal.examRunner;
-            if (!run) return;
-            const qList = state.questionBanks[run.examKey] || [];
-            let correct = 0;
-            qList.forEach((q, idx) => { if (run.answers[idx] === q.ans) correct++; });
-            const score = qList.length > 0 ? Math.round((correct / qList.length) * 100) : 100;
-            const st = getLoggedStudent();
-            if (!st.examResults) st.examResults = {};
-            st.examResults[run.examKey] = { score, correct, total: qList.length };
-            if (run.examKey.startsWith('UH-')) st.uh1 = score;
-            else if (run.examKey.startsWith('STS')) st.sts = score;
-            else if (run.examKey.startsWith('UAS')) st.uas = score;
-            state.studentPortal.examRunner = null;
-            persist();
-            renderStudentPortal();
-            showToast(`Ujian selesai! Nilai Anda: ${score}/100`);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderAppView();
-        });
-    </script>
-</body>
-</html>
+                    class="py-2.5 px-2 rounded-xl text-xs font-extrabold border transition cursor-pointer flex items-center justify-center gap-1 ${active ? 'bg-royal text-white border-royal shadow-xs' : 'bg-cream
