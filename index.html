@@ -110,7 +110,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- 1. HALAMAN LOGIN UTAMA (SISWA SEDERHANA, GURU KHUSUS, ADMIN DI ATAS)  -->
+    <!-- 1. HALAMAN LOGIN UTAMA                                                -->
     <!-- ===================================================================== -->
     <main id="view-login" class="flex-1 flex flex-col justify-between">
         <nav class="w-full bg-white/90 backdrop-blur-md border-b border-cream-border px-4 py-3 sticky top-0 z-30">
@@ -140,7 +140,7 @@
                     English For <span class="text-royal gold-marker">Nusantara</span>
                 </h1>
                 <p class="text-xs sm:text-base text-navy-muted mt-3 leading-relaxed">
-                    Satu platform terpadu untuk pembelajaran Bahasa Inggris interaktif siswa dan perangkat administrasi guru 2 semester, lengkap dengan penyimpanan Google Drive pribadi tiap guru.
+                    Platform pembelajaran Bahasa Inggris interaktif siswa dan perangkat administrasi guru 2 semester yang terhubung dengan Cloud &amp; Google Drive.
                 </p>
             </div>
 
@@ -156,7 +156,7 @@
                         </div>
                         <h2 class="font-display font-extrabold text-2xl text-navy">Masuk sebagai Siswa</h2>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
-                            Cukup masukkan <strong>Nama Lengkap Siswa</strong> dan <strong>PIN</strong> untuk membaca materi, membuka buku panduan, mengerjakan LKPD, dan mengikuti ujian.
+                            Masukkan <strong>Nama Lengkap Siswa</strong> dan <strong>PIN</strong> untuk mengakses materi ajar, buku panduan, LKPD, dan ujian CBT.
                         </p>
 
                         <div class="grid grid-cols-2 gap-1.5 bg-cream-soft p-1.5 rounded-2xl mb-5">
@@ -166,7 +166,7 @@
 
                         <form id="form-student-login" onsubmit="handleStudentLogin(event)" class="space-y-3.5">
                             <div>
-                                <label class="block text-xs font-bold text-navy mb-1">Kode Kelas dari Guru <span class="text-slate-400 font-normal">(Isi jika buka dari HP/perangkat lain)</span></label>
+                                <label class="block text-xs font-bold text-navy mb-1">Kode Kelas dari Guru <span class="text-slate-400 font-normal">(Isi jika membuka dari HP/perangkat lain)</span></label>
                                 <input type="text" id="login-st-code" placeholder="Contoh: EFN-IXA26" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm uppercase font-bold text-royal bg-cream-soft focus:outline-royal">
                             </div>
                             <div>
@@ -234,7 +234,7 @@
                         </div>
                         <h2 class="font-display font-extrabold text-2xl text-navy">Masuk sebagai Guru</h2>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
-                            Kelola perangkat ajar, bank soal, presensi, dan rapor khusus untuk jenjang kelas &amp; rombel yang Anda ampu, tersinkronisasi ke Google Drive pribadi Anda.
+                            Kelola 18 perangkat administrasi, presensi 30 pertemuan, bank soal, dan rapor khusus untuk jenjang kelas &amp; rombel yang Anda ampu.
                         </p>
 
                         <div class="grid grid-cols-2 gap-1.5 bg-cream-soft p-1.5 rounded-2xl mb-5">
@@ -319,7 +319,7 @@
         <footer class="w-full border-t border-cream-border bg-white/80 px-4 py-3.5">
             <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs text-navy-muted">
                 <span>© 2026 English For Nusantara • Kurikulum Merdeka SMP/MTs</span>
-                <span>Multi-Guru • Google Drive Pribadi Tiap Guru &amp; Sinkron Lintas Perangkat</span>
+                <span>Multi-Guru • Google Drive Sync &amp; Sinkron Lintas Perangkat</span>
             </div>
         </footer>
     </main>
@@ -337,7 +337,7 @@
                             <span class="font-display font-extrabold text-sm sm:text-base">Admin Pusat — English For Nusantara</span>
                             <span class="text-[10px] font-extrabold bg-gold text-navy px-2 py-0.5 rounded-full">SUPER ADMIN</span>
                         </div>
-                        <p class="text-[11px] text-blue-200">Manajemen Lisensi Guru, Token &amp; Konfigurasi Multi-Guru Google Drive</p>
+                        <p class="text-[11px] text-blue-200">Manajemen Lisensi Guru, Token &amp; Konfigurasi Cloud Google Drive</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -354,7 +354,7 @@
             <div class="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-cream-border shadow-2xs">
                 <button type="button" onclick="setAdminTab('teachers')" id="adm-nav-teachers" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-navy text-white cursor-pointer">1. Akun &amp; Lisensi Guru</button>
                 <button type="button" onclick="setAdminTab('tokens')" id="adm-nav-tokens" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">2. Generator Token</button>
-                <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Konfigurasi Cloud &amp; OAuth Multi-Guru</button>
+                <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Konfigurasi Cloud &amp; OAuth</button>
             </div>
             <div id="admin-content-area"></div>
         </div>
@@ -505,7 +505,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- 6. MODAL GOOGLE DRIVE PRIBADI TIAP GURU (MULTI-GURU MANDIRI)          -->
+    <!-- 6. MODAL GOOGLE DRIVE SYNC                                            -->
     <!-- ===================================================================== -->
     <div id="modal-drive-sync" class="no-print fixed inset-0 z-[82] hidden items-center justify-center bg-navy/75 backdrop-blur-xs p-4">
         <div class="bg-white border border-cream-border rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
@@ -513,8 +513,8 @@
                 <div class="flex items-center gap-2.5">
                     <div class="w-9 h-9 rounded-xl bg-royal-light text-royal flex items-center justify-center"><i data-lucide="hard-drive" class="w-5 h-5"></i></div>
                     <div>
-                        <h3 class="font-display font-extrabold text-base text-navy">Google Drive Pribadi Guru</h3>
-                        <p class="text-[11px] text-navy-muted">Setiap guru menyimpan data di akun Google Drive-nya masing-masing</p>
+                        <h3 class="font-display font-extrabold text-base text-navy">Sinkronisasi Google Drive</h3>
+                        <p class="text-[11px] text-navy-muted">Backup otomatis per guru ke Google Drive &amp; lintas perangkat</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeDriveModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
@@ -581,451 +581,561 @@
 
     <script>
         // =========================================================================
-        // 1. KONFIGURASI SISTEM & DATA KURIKULUM MERDEKA FASE D (VII, VIII, IX)
+        // 1. KONFIGURASI UTAMA, KREDENSIAL ADMIN & DATA KURIKULUM LENGKAP
         // =========================================================================
-        const SUPER_ADMIN_EMAIL = "taufiqurrohman14@guru.smp.belajar.id";
-        const SUPER_ADMIN_PIN   = "admin2026";
-        const MASTER_STORE_KEY  = "efn_nusantara_master_v13";
-        // Tempelkan URL Web App Apps Script (/exec) dan OAuth Client ID di sini sebelum upload ke GitHub Pages
-        const DEFAULT_GAS_URL   = "";
-        const DEFAULT_OAUTH_ID  = "";
+        const MASTER_STORE_KEY = 'efn_master_v6';
+        const SUPER_ADMIN_EMAIL = 'admin@englishnusantara.id';
+        const SUPER_ADMIN_PIN = 'ADMIN2026';
+        const DEFAULT_GAS_URL = '';
+        const DEFAULT_OAUTH_ID = '';
 
         const TEACHER_MODULES = [
-            { id: 'data-kelas', title: 'Data Kelas & Siswa', icon: 'users', highlight: true },
+            { id: 'data-kelas', title: 'Data Kelas Saya', icon: 'users', highlight: true },
             { id: 'cp-tp', title: 'CP dan TP', icon: 'target', highlight: true },
-            { id: 'atp', title: 'ATP (Alur Tujuan)', icon: 'git-branch', highlight: false },
-            { id: 'prota', title: 'PROTA (120 JP)', icon: 'calendar', highlight: false },
-            { id: 'promes', title: 'PROMES (Sem 1 & 2)', icon: 'calendar-days', highlight: false },
-            { id: 'silabus', title: 'Silabus Lengkap', icon: 'list-checks', highlight: false },
-            { id: 'modul-ajar', title: 'Modul Ajar & Buku Siswa', icon: 'book-open', highlight: true },
-            { id: 'lkpd', title: 'LKPD & Koreksi', icon: 'file-edit', highlight: false },
+            { id: 'atp', title: 'ATP', icon: 'git-branch', highlight: false },
+            { id: 'prota', title: 'Prota (120 JP)', icon: 'calendar', highlight: false },
+            { id: 'promes', title: 'Promes', icon: 'calendar-days', highlight: false },
+            { id: 'silabus', title: 'Silabus', icon: 'book-open', highlight: false },
+            { id: 'modul-ajar', title: 'Modul Ajar / RPP', icon: 'file-plus-2', highlight: true },
+            { id: 'lkpd', title: 'LKPD & Koreksi', icon: 'clipboard-edit', highlight: false },
             { id: 'bank-soal-uh', title: 'Bank Soal UH', icon: 'help-circle', highlight: false },
-            { id: 'soal-sts', title: 'Soal STS (Tengah Sem)', icon: 'file-question', highlight: false },
+            { id: 'soal-sts', title: 'Soal STS', icon: 'file-check-2', highlight: false },
             { id: 'soal-uas-sas', title: 'Soal UAS / SAS', icon: 'award', highlight: false },
             { id: 'daftar-nilai', title: 'Daftar Nilai', icon: 'bar-chart-3', highlight: false },
-            { id: 'presensi', title: 'Presensi Siswa', icon: 'user-check', highlight: false },
+            { id: 'presensi', title: 'Presensi (30 P)', icon: 'user-check', highlight: false },
             { id: 'jurnal-mengajar', title: 'Jurnal Mengajar', icon: 'notebook-pen', highlight: false },
             { id: 'deskripsi-rapor', title: 'Deskripsi Rapor', icon: 'sparkles', highlight: true },
             { id: 'rekap-rapor', title: 'Rekap Nilai Rapor', icon: 'table', highlight: true },
             { id: 'paket-supervisi', title: 'Paket Siap Supervisi', icon: 'folder-check', highlight: true },
-            { id: 'template-kelas', title: 'Administrasi Kelas', icon: 'layout-grid', highlight: true }
+            { id: 'template-kelas', title: 'Template Administrasi', icon: 'layout-template', highlight: true }
         ];
 
         const CURRICULUM_DATA = {
             'VII': [
                 {
-                    code: 'TP 7.1', sem: 1, jp: 20, chapter: 'Chapter 1: About Me',
-                    tp: 'Memperkenalkan diri, identitas, hobi, dan keluarga secara lisan dan tulis menggunakan Simple Present Tense (to be & have/has).',
+                    code: 'TP 7.1', sem: 1, jp: 18,
+                    chapter: 'Chapter 1: About Me',
+                    tp: 'Memperkenalkan diri, identitas, hobi, dan anggota keluarga dalam interaksi lisan dan tulis menggunakan Simple Present Tense (to be & have/has).',
                     materi: 'Greetings, Self-Introduction, Pronouns, Simple Present Tense',
-                    teacherNote: 'Perhatikan penggunaan am/is/are serta kata ganti kepunyaan (my, your, his, her).',
+                    teacherNote: 'Perhatikan penggunaan "am / is / are" serta kata ganti kepunyaan (my, your, his, her) saat memperkenalkan diri.',
                     readingTitle: 'Hello, My Name is Galang!',
-                    readingText: 'Hello! My name is Galang. I am thirteen years old. I am from Kalimantan, and I study at SMP Merdeka. I have one sister named Sinta. My hobbies are fishing and cycling in the afternoon. Nice to meet you!',
-                    readingTrans: 'Halo! Nama saya Galang. Saya berumur tiga belas tahun. Saya berasal dari Kalimantan, dan saya bersekolah di SMP Merdeka. Saya punya satu saudara perempuan bernama Sinta. Hobi saya memancing dan bersepeda di sore hari. Senang bertemu denganmu!',
+                    readingText: 'Hello! My name is Galang. I am thirteen years old. I am from Kalimantan, Indonesia. I live with my parents and my younger sister, Sinta. My hobbies are fishing and cycling. Every Sunday morning, I ride my bicycle around the village with my friends.',
+                    readingTrans: 'Halo! Nama saya Galang. Saya berumur tiga belas tahun. Saya berasal dari Kalimantan, Indonesia. Saya tinggal bersama orang tua dan adik perempuan saya, Sinta. Hobi saya adalah memancing dan bersepeda. Setiap Minggu pagi, saya mengendarai sepeda berkeliling desa bersama teman-teman.',
                     vocab: [
-                        { en: 'Introduce', id: 'Memperkenalkan', ex: 'Let me introduce myself.' },
-                        { en: 'Hobby', id: 'Hobi / Kegemaran', ex: 'My hobby is reading books.' },
-                        { en: 'Sibling', id: 'Saudara kandung', ex: 'I have two siblings.' },
-                        { en: 'Hometown', id: 'Kampung halaman', ex: 'My hometown is Cirebon.' }
+                        { en: 'introduce', id: 'memperkenalkan', ex: 'Let me introduce myself to the class.' },
+                        { en: 'hobby', id: 'kegemaran / hobi', ex: 'My favorite hobby is reading English stories.' },
+                        { en: 'sibling', id: 'saudara kandung', ex: 'I have two siblings, one brother and one sister.' },
+                        { en: 'village', id: 'desa', ex: 'Our village is peaceful and green.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 7.1: My Identity Profile',
-                        instruction: 'Jawablah pertanyaan berikut berdasarkan teks perkenalan Galang di atas!',
-                        questions: ['1. How old is Galang?', '2. Where does Galang come from?', '3. Write two sentences introducing yourself!']
+                        title: 'LKPD 7.1: Introducing Myself & My Family',
+                        instruction: 'Bacalah teks "Hello, My Name is Galang!" lalu jawablah pertanyaan berikut dengan kalimat lengkap!',
+                        questions: [
+                            '1. Where does Galang come from?',
+                            '2. What are Galang’s hobbies?',
+                            '3. Write 3 sentences introducing yourself (name, age, and hobby)!'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 7.2', sem: 1, jp: 22, chapter: 'Chapter 2: Culinary and Me',
-                    tp: 'Mendeskripsikan makanan dan minuman favorit beserta rasa, tekstur, dan bahan utamanya.',
-                    materi: 'Descriptive Words for Food, Articles (a/an/the), Procedure Text (Recipe)',
-                    teacherNote: 'Gunakan kosakata rasa seperti sweet, spicy, savory, crunchy, dan sour.',
-                    readingTitle: 'Nasi Goreng: Indonesia’s Favorite Fried Rice',
-                    readingText: 'Nasi Goreng is a famous Indonesian dish. It is cooked with steamed rice, sweet soy sauce, garlic, shallots, and chili. It tastes savory and slightly sweet. People usually serve it with fried egg and crackers.',
-                    readingTrans: 'Nasi Goreng adalah hidangan terkenal Indonesia. Makanan ini dimasak dengan nasi putih, kecap manis, bawang putih, bawang merah, dan cabai. Rasanya gurih dan sedikit manis. Orang biasanya menyajikannya dengan telur goreng dan kerupuk.',
+                    code: 'TP 7.2', sem: 1, jp: 18,
+                    chapter: 'Chapter 2: Culinary and Me',
+                    tp: 'Mendeskripsikan makanan/minuman favorit serta menyusun resep sederhana menggunakan Imperative Sentences dan Articles (a/an/the).',
+                    materi: 'Describing Food & Taste, Procedure Text (Recipe), Imperatives',
+                    teacherNote: 'Gunakan kata sifat rasa seperti savory (gurih), sweet (manis), spicy (pedas), dan crispy (renyah).',
+                    readingTitle: 'Monita’s Favorite Snack: Pisang Goreng',
+                    readingText: 'Monita loves traditional Indonesian snacks. Her favorite snack is Pisang Goreng or fried banana. It tastes sweet and crispy on the outside, yet soft on the inside. To make it, peel ripe bananas, dip them into sweet flour batter, and fry them until golden brown.',
+                    readingTrans: 'Monita menyukai jajanan tradisional Indonesia. Jajanan favoritnya adalah Pisang Goreng. Rasanya manis dan renyah di luar, namun lembut di dalam. Untuk membuatnya, kupas pisang matang, celupkan ke adonan tepung manis, dan goreng hingga cokelat keemasan.',
                     vocab: [
-                        { en: 'Savory', id: 'Gurih', ex: 'Chicken soup tastes very savory.' },
-                        { en: 'Spicy', id: 'Pedas', ex: 'Sambal is spicy.' },
-                        { en: 'Ingredients', id: 'Bahan-bahan', ex: 'Prepare all the ingredients first.' },
-                        { en: 'Serve', id: 'Menyajikan', ex: 'Serve the meal while warm.' }
+                        { en: 'crispy', id: 'renyah', ex: 'The fried banana is warm and crispy.' },
+                        { en: 'savory', id: 'gurih', ex: 'Nasi goreng has a delicious savory flavor.' },
+                        { en: 'ingredient', id: 'bahan-bahan', ex: 'Prepare all ingredients before cooking.' },
+                        { en: 'peel', id: 'mengupas', ex: 'Peel the bananas carefully.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 7.2: Describing My Favorite Food',
-                        instruction: 'Lengkapi tugas deskripsi makanan berikut dengan kalimat bahasa Inggris yang tepat!',
-                        questions: ['1. Mention three ingredients used to cook Nasi Goreng!', '2. How does Nasi Goreng taste?', '3. Describe your favorite traditional food in 2 sentences!']
+                        title: 'LKPD 7.2: My Favorite Indonesian Food',
+                        instruction: 'Jawablah pertanyaan berikut berdasarkan teks dan pengalamanmu!',
+                        questions: [
+                            '1. How does Pisang Goreng taste according to the text?',
+                            '2. Mention 3 steps to make Pisang Goreng!',
+                            '3. Describe your favorite Indonesian dish in 3 sentences!'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 7.3', sem: 2, jp: 28, chapter: 'Chapter 3: Home Sweet Home',
-                    tp: 'Mendeskripsikan ruangan di rumah, letak benda (prepositions of place), serta kegiatan kebersihan rumah.',
-                    materi: 'Rooms in a House, Prepositions (in, on, under, next to), Imperatives',
-                    teacherNote: 'Latih penggunaan There is (tunggal) dan There are (jamak).',
-                    readingTitle: 'My Cozy Living Room',
-                    readingText: 'In my house, the living room is clean and bright. There is a blue sofa against the wall. A wooden table is in front of the sofa, and there are two family photos on the wall. We always sweep the floor every morning.',
-                    readingTrans: 'Di rumah saya, ruang tamunya bersih dan terang. Ada sebuah sofa biru merapat ke dinding. Sebuah meja kayu berada di depan sofa, dan ada dua foto keluarga di dinding. Kami selalu menyapu lantai setiap pagi.',
+                    code: 'TP 7.3', sem: 1, jp: 18,
+                    chapter: 'Chapter 3: Home Sweet Home',
+                    tp: 'Mendeskripsikan ruangan dan benda di dalam rumah serta kegiatan membersihkan rumah menggunakan There is / There are & Prepositions of Place.',
+                    materi: 'Rooms in a House, Furniture, Prepositions (in, on, under, next to)',
+                    teacherNote: 'Gunakan "There is" untuk benda tunggal dan "There are" untuk benda jamak.',
+                    readingTitle: 'A Cozy Living Room',
+                    readingText: 'In Galang’s house, the living room is clean and comfortable. There is a wooden sofa near the window and a small coffee table in front of it. On the wall, there are two family photos. Every afternoon, Galang sweeps the floor to keep the room tidy.',
+                    readingTrans: 'Di rumah Galang, ruang tamunya bersih dan nyaman. Ada sofa kayu di dekat jendela dan meja kopi kecil di depannya. Di dinding, ada dua foto keluarga. Setiap sore, Galang menyapu lantai agar ruangan tetap rapi.',
                     vocab: [
-                        { en: 'Cozy', id: 'Nyaman', ex: 'My bedroom is very cozy.' },
-                        { en: 'In front of', id: 'Di depan', ex: 'The table is in front of the sofa.' },
-                        { en: 'Sweep', id: 'Menyapu', ex: 'Please sweep the floor.' },
-                        { en: 'Tidy', id: 'Rapi', ex: 'Keep your desk tidy.' }
+                        { en: 'comfortable', id: 'nyaman', ex: 'Our living room is very comfortable.' },
+                        { en: 'tidy', id: 'rapi', ex: 'Keep your bedroom clean and tidy.' },
+                        { en: 'furniture', id: 'perabotan rumah', ex: 'The wooden furniture looks classic.' },
+                        { en: 'sweep', id: 'menyapu', ex: 'I sweep the floor every morning.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 7.3: Around My House',
-                        instruction: 'Jawab pertanyaan tentang ruangan dan preposisi tempat!',
-                        questions: ['1. Where is the wooden table located?', '2. How many family photos are on the wall?', '3. Write 2 sentences describing your bedroom!']
+                        title: 'LKPD 7.3: Describing Rooms at Home',
+                        instruction: 'Amati ruang tamu atau kamar tidurmu lalu kerjakan tugas berikut!',
+                        questions: [
+                            '1. Where are the two family photos located in Galang’s living room?',
+                            '2. Write 2 sentences using "There is" and 2 sentences using "There are" about your bedroom!'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 7.4', sem: 2, jp: 28, chapter: 'Chapter 4: My School Activities',
-                    tp: 'Menyatakan jadwal pelajaran sekolah, waktu (telling time), dan kebiasaan belajar.',
+                    code: 'TP 7.4', sem: 2, jp: 20,
+                    chapter: 'Chapter 4: My School Activities',
+                    tp: 'Membicarakan jadwal pelajaran, kegiatan ekstrakurikuler, dan kebiasaan belajar di sekolah menggunakan Adverbs of Frequency.',
                     materi: 'School Subjects, Days & Time, Adverbs of Frequency (always, usually, often)',
-                    teacherNote: 'Perhatikan penggunaan preposisi waktu: on Monday, at 07.30.',
-                    readingTitle: 'My Monday School Schedule',
-                    readingText: 'On Monday, our flag ceremony starts at seven o’clock. After that, we have English class from half past seven to nine o’clock. I always bring my dictionary to school. On Wednesday afternoon, I join the English Club.',
-                    readingTrans: 'Pada hari Senin, upacara bendera kami dimulai pukul tujuh tepat. Setelah itu, kami ada pelajaran Bahasa Inggris dari pukul setengah delapan sampai pukul sembilan. Saya selalu membawa kamus ke sekolah. Pada Rabu sore, saya mengikuti Klub Bahasa Inggris.',
+                    teacherNote: 'Perhatikan penulisan hari dalam bahasa Inggris yang selalu diawali huruf kapital.',
+                    readingTitle: 'Andre’s School Schedule',
+                    readingText: 'Andre studies at SMP Merdeka. On Mondays, he always attends the flag ceremony at seven o’clock before English and Science classes. After school, Andre usually joins the basketball club on Wednesdays and scouts on Fridays.',
+                    readingTrans: 'Andre bersekolah di SMP Merdeka. Pada hari Senin, ia selalu mengikuti upacara bendera pukul tujuh sebelum pelajaran Bahasa Inggris dan IPA. Sepulang sekolah, Andre biasanya mengikuti klub basket pada hari Rabu dan pramuka pada hari Jumat.',
                     vocab: [
-                        { en: 'Schedule', id: 'Jadwal', ex: 'Check your class schedule.' },
-                        { en: 'Half past', id: 'Lewat 30 menit', ex: 'Class starts at half past seven.' },
-                        { en: 'Dictionary', id: 'Kamus', ex: 'Use a dictionary to find new words.' },
-                        { en: 'Extracurricular', id: 'Ekstrakurikuler', ex: 'Scouting is my favorite extracurricular.' }
+                        { en: 'schedule', id: 'jadwal', ex: 'Check your class schedule every evening.' },
+                        { en: 'attend', id: 'menghadiri / mengikuti', ex: 'Students attend the flag ceremony on Monday.' },
+                        { en: 'extracurricular', id: 'ekstrakurikuler', ex: 'Pramuka is a popular extracurricular activity.' },
+                        { en: 'usually', id: 'biasanya', ex: 'I usually study English in the evening.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 7.4: My Study Habits',
-                        instruction: 'Jawablah pertanyaan mengenai jadwal sekolah dan kebiasaan belajar!',
-                        questions: ['1. What time does the English class start on Monday?', '2. What does the writer always bring to school?', '3. When do you have English class at your school?']
+                        title: 'LKPD 7.4: My Weekly Class Schedule',
+                        instruction: 'Tuliskan jadwal dan kegiatan sekolahmu!',
+                        questions: [
+                            '1. What extracurricular activities does Andre join?',
+                            '2. Write 3 sentences about your school subjects using "always", "usually", and "often"!'
+                        ]
+                    }
+                },
+                {
+                    code: 'TP 7.5', sem: 2, jp: 20,
+                    chapter: 'Chapter 5: This is My School',
+                    tp: 'Mendeskripsikan gedung, fasilitas sekolah, dan petunjuk arah menuju ruangan di sekolah menggunakan Imperatives & Prepositions.',
+                    materi: 'School Facilities, Giving Directions, Descriptive Text',
+                    teacherNote: 'Gunakan ungkapan petunjuk arah seperti turn left, turn right, go straight, dan across from.',
+                    readingTitle: 'Our Green School Library',
+                    readingText: 'The school library is located next to the teachers’ room and across from the science laboratory. It has hundreds of storybooks, encyclopedias, and comfortable reading corners. Students love visiting the library during break time.',
+                    readingTrans: 'Perpustakaan sekolah terletak di sebelah ruang guru dan di seberang laboratorium IPA. Perpustakaan ini memiliki ratusan buku cerita, ensiklopedia, dan sudut baca yang nyaman. Siswa senang mengunjungi perpustakaan saat jam istirahat.',
+                    vocab: [
+                        { en: 'library', id: 'perpustakaan', ex: 'We borrow English books from the library.' },
+                        { en: 'across from', id: 'di seberang', ex: 'The canteen is across from the school garden.' },
+                        { en: 'laboratory', id: 'laboratorium', ex: 'We do science experiments in the laboratory.' },
+                        { en: 'corner', id: 'sudut / pojok', ex: 'There is a cozy reading corner near the window.' }
+                    ],
+                    lkpd: {
+                        title: 'LKPD 7.5: Exploring My School Buildings',
+                        instruction: 'Jawablah pertanyaan tentang fasilitas sekolah!',
+                        questions: [
+                            '1. Where is the school library located?',
+                            '2. Describe 2 favorite facilities in your school and their locations!'
+                        ]
                     }
                 }
             ],
             'VIII': [
                 {
-                    code: 'TP 8.1', sem: 1, jp: 22, chapter: 'Chapter 1: Celebrating Independence Day',
-                    tp: 'Menceritakan pengalaman mengikuti lomba perayaan Hari Kemerdekaan menggunakan Simple Past Tense.',
-                    materi: 'Recount Text, Regular & Irregular Past Verbs, Time Connectives',
-                    teacherNote: 'Fokus pada perubahan kata kerja bentuk kedua (Verb-2) seperti won, ran, joined.',
-                    readingTitle: 'The Sack Race at My School',
-                    readingText: 'Last August 17th, our school celebrated Independence Day. I joined the sack race in the school yard. When the whistle blew, I jumped as fast as I could. Although I fell once, I stood up and finished in second place!',
-                    readingTrans: 'Tanggal 17 Agustus lalu, sekolah kami merayakan Hari Kemerdekaan. Saya mengikuti lomba balap karung di halaman sekolah. Ketika peluit berbunyi, saya melompat secepat mungkin. Meskipun sempat terjatuh sekali, saya bangkit dan finis di posisi kedua!',
+                    code: 'TP 8.1', sem: 1, jp: 18,
+                    chapter: 'Chapter 1: Celebrating Independence Day',
+                    tp: 'Menceritakan pengalaman mengikuti perlombaan perayaan Hari Kemerdekaan menggunakan Simple Past Tense (Regular & Irregular Verbs).',
+                    materi: 'Recount Text, Simple Past Tense, Time Connectives',
+                    teacherNote: 'Gunakan Verb-2 (went, won, joined, celebrated) untuk menceritakan peristiwa yang sudah berlalu.',
+                    readingTitle: 'Panjat Pinang and Sack Race at School',
+                    readingText: 'Last August, our school celebrated Indonesian Independence Day with exciting traditional games. First, I joined the sack race and finished in second place. After that, my classmates cheered loudly while watching the tug-of-war competition. Everyone felt proud and joyful.',
+                    readingTrans: 'Agustus lalu, sekolah kami merayakan Hari Kemerdekaan Indonesia dengan lomba tradisional yang seru. Pertama, saya mengikuti balap karung dan meraih juara kedua. Setelah itu, teman-teman sekelas bersorak meriah saat menonton lomba tarik tambang. Semua merasa bangga dan gembira.',
                     vocab: [
-                        { en: 'Celebrated', id: 'Merayakan (V2)', ex: 'We celebrated Independence Day.' },
-                        { en: 'Sack race', id: 'Balap karung', ex: 'The sack race was very funny.' },
-                        { en: 'Whistle', id: 'Peluit', ex: 'The referee blew the whistle.' },
-                        { en: 'Participate', id: 'Berpartisipasi', ex: 'All students participated happily.' }
+                        { en: 'celebrate', id: 'merayakan', ex: 'We celebrate Independence Day every August 17th.' },
+                        { en: 'sack race', id: 'balap karung', ex: 'The sack race made everyone laugh.' },
+                        { en: 'tug-of-war', id: 'tarik tambang', ex: 'Class VIII-A won the tug-of-war match.' },
+                        { en: 'cheer', id: 'bersorak menyemangati', ex: 'Students cheered for their class team.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 8.1: Independence Day Recount',
-                        instruction: 'Identifikasi kata kerja bentuk lampau dan jawab pertanyaan berikut!',
-                        questions: ['1. What competition did the writer join?', '2. Write three Past Tense verbs (Verb-2) from the text!', '3. Write 2 sentences about your experience on August 17th!']
+                        title: 'LKPD 8.1: My Independence Day Experience',
+                        instruction: 'Kerjakan soal Recount Text berikut menggunakan Simple Past Tense!',
+                        questions: [
+                            '1. What games did the writer mention in the text?',
+                            '2. Write 3 Regular Verbs and 3 Irregular Verbs in Past Tense (Verb-2)!'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 8.2', sem: 1, jp: 22, chapter: 'Chapter 2: Kindness Begins with Me',
-                    tp: 'Menganalisis unsur intrinsik dan pesan moral cerita naratif fabel/dongeng.',
-                    materi: 'Narrative Text, Past Continuous Tense, Adjectives of Character',
-                    teacherNote: 'Perhatikan penggunaan was/were + Verb-ing untuk kejadian yang sedang berlangsung di masa lampau.',
-                    readingTitle: 'The Ugly Duckling’s New Beginning',
-                    readingText: 'Once upon a time, a gray duckling felt sad because the other animals laughed at him. While he was swimming alone in the lake, winter passed and spring arrived. He looked into the water and realized he had grown into a graceful white swan.',
-                    readingTrans: 'Pada zaman dahulu, seekor anak itik kelabu merasa sedih karena hewan lain menertawakannya. Ketika ia sedang berenang sendirian di danau, musim dingin berlalu dan musim semi tiba. Ia melihat ke air dan menyadari dirinya telah tumbuh menjadi angsa putih yang anggun.',
+                    code: 'TP 8.2', sem: 1, jp: 18,
+                    chapter: 'Chapter 2: Kindness Begins with Me',
+                    tp: 'Menganalisis pesan moral dalam cerita fabel/narasi imajinatif menggunakan Past Tense dan kata sifat karakter tokoh.',
+                    materi: 'Narrative Text (Fable), Character Traits, Moral Value',
+                    teacherNote: 'Perhatikan bagian Orientation, Complication, dan Resolution pada teks naratif.',
+                    readingTitle: 'The Ugly Duckling and Kindness',
+                    readingText: 'Once upon a time, a little gray duckling felt sad because the other animals laughed at his appearance. He walked away alone through the cold winter. When spring arrived, he looked into the clear pond and discovered that he had grown into a graceful white swan.',
+                    readingTrans: 'Pada zaman dahulu, seekor anak itik kelabu kecil merasa sedih karena hewan lain menertawakan penampilannya. Ia berjalan pergi sendirian melewati musim dingin. Ketika musim semi tiba, ia melihat ke kolam jernih dan menyadari dirinya telah tumbuh menjadi angsa putih yang anggun.',
                     vocab: [
-                        { en: 'Graceful', id: 'Anggun', ex: 'The white swan looked graceful.' },
-                        { en: 'Realized', id: 'Menyadari', ex: 'He realized his true beauty.' },
-                        { en: 'Kindness', id: 'Kebaikan hati', ex: 'Kindness makes the world better.' },
-                        { en: 'Moral value', id: 'Pesan moral', ex: 'Never judge someone by appearance.' }
+                        { en: 'appearance', id: 'penampilan', ex: 'Never judge someone only by appearance.' },
+                        { en: 'graceful', id: 'anggun', ex: 'The white swan swam gracefully on the lake.' },
+                        { en: 'kindness', id: 'kebaikan hati', ex: 'Kindness makes our friendship stronger.' },
+                        { en: 'discover', id: 'menemukan / menyadari', ex: 'He discovered his true strength.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 8.2: Analyzing Narrative Story',
-                        instruction: 'Jawablah pertanyaan pemahaman cerita di atas!',
-                        questions: ['1. Why did the gray duckling feel sad?', '2. What did he become when spring arrived?', '3. What is the moral value of the story?']
+                        title: 'LKPD 8.2: Analyzing Fables & Moral Values',
+                        instruction: 'Analisislah unsur cerita dari teks di atas!',
+                        questions: [
+                            '1. Why did the little gray duckling feel sad at the beginning of the story?',
+                            '2. What is the moral value we can learn from this story?'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 8.3', sem: 2, jp: 28, chapter: 'Chapter 3: Love Our World',
-                    tp: 'Menyusun poster/prosedur kampanye pelestarian lingkungan dan penghematan air/listrik.',
-                    materi: 'Imperative Sentences, Giving Advice (Should/Should not), Poster Language',
-                    teacherNote: 'Gunakan kalimat ajakan singkat, jelas, dan persuasif.',
+                    code: 'TP 8.3', sem: 1, jp: 18,
+                    chapter: 'Chapter 3: Love Our World',
+                    tp: 'Menyusun poster dan imbauan menjaga kebersihan lingkungan serta hemat air/listrik menggunakan Imperatives & Modals (should/must).',
+                    materi: 'Environmental Campaign, Imperative Sentences, Poster Presentation',
+                    teacherNote: 'Gunakan kalimat ajakan singkat, jelas, dan persuasif untuk poster lingkungan.',
                     readingTitle: 'Save Water, Save Our Future',
-                    readingText: 'Clean water is essential for all living things. We should turn off the tap tightly while brushing our teeth. Do not throw plastic waste into the river because it pollutes the water. Small actions at home can protect our earth.',
-                    readingTrans: 'Air bersih sangat penting bagi semua makhluk hidup. Kita sebaiknya menutup keran dengan rapat saat menggosok gigi. Jangan membuang sampah plastik ke sungai karena mencemari air. Tindakan kecil di rumah dapat melindungi bumi kita.',
+                    readingText: 'Clean water is essential for all living things on Earth. However, many people still waste water every day. Turn off the tap tightly while brushing your teeth, collect rainwater for watering plants, and keep rivers free from plastic trash.',
+                    readingTrans: 'Air bersih sangat penting bagi semua makhluk hidup di Bumi. Namun, banyak orang masih membuang-buang air setiap hari. Matikan keran dengan rapat saat menyikat gigi, tampung air hujan untuk menyiram tanaman, dan jaga sungai bebas dari sampah plastik.',
                     vocab: [
-                        { en: 'Essential', id: 'Sangat penting', ex: 'Water is essential for life.' },
-                        { en: 'Pollute', id: 'Mencemari', ex: 'Plastic waste pollutes the ocean.' },
-                        { en: 'Turn off', id: 'Mematikan / Menutup', ex: 'Turn off the lights before leaving.' },
-                        { en: 'Preserve', id: 'Melestarikan', ex: 'Let us preserve our nature.' }
+                        { en: 'essential', id: 'sangat penting', ex: 'Water is essential for human life.' },
+                        { en: 'waste', id: 'membuang-buang / limbah', ex: 'Do not waste clean water or electricity.' },
+                        { en: 'tap', id: 'keran air', ex: 'Close the tap after washing your hands.' },
+                        { en: 'environment', id: 'lingkungan', ex: 'We must protect our school environment.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 8.3: Environmental Campaign',
-                        instruction: 'Susunlah saran dan kalimat larangan pelestarian lingkungan!',
-                        questions: ['1. What should we do while brushing our teeth?', '2. Why must we not throw plastic into the river?', '3. Write 2 eco-friendly slogans in English!']
+                        title: 'LKPD 8.3: Green School Action Plan',
+                        instruction: 'Susunlah kalimat imbauan menjaga lingkungan!',
+                        questions: [
+                            '1. Mention 2 actions to save water mentioned in the text!',
+                            '2. Write 3 slogans in English to keep your classroom clean!'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 8.4', sem: 2, jp: 28, chapter: 'Chapter 4: No Littering',
-                    tp: 'Menceritakan kejadian nyata terkait kepedulian lingkungan dan pengelolaan sampah.',
-                    materi: 'Factual Recount, Cause & Effect (because, so), Question Words (Wh-Questions)',
-                    teacherNote: 'Latih kalimat tanya Did + Subject + Verb-1.',
-                    readingTitle: 'Beach Clean-Up Day',
-                    readingText: 'Last Sunday morning, our class visited Parangtritis Beach for a clean-up activity. We collected plastic bottles and sorted them into recycle bins. The beach became clean and safe for visitors. We felt proud of our teamwork.',
-                    readingTrans: 'Minggu pagi lalu, kelas kami mengunjungi Pantai Parangtritis untuk kegiatan bersih-bersih. Kami mengumpulkan botol plastik dan memilahnya ke tempat sampah daur ulang. Pantai menjadi bersih dan aman bagi pengunjung. Kami bangga dengan kerja sama tim kami.',
+                    code: 'TP 8.4', sem: 2, jp: 20,
+                    chapter: 'Chapter 4: No Littering',
+                    tp: 'Menceritakan kejadian nyata terkait kepedulian terhadap banjir dan sampah menggunakan Past Continuous & Simple Past (when/while).',
+                    materi: 'Factual Recount, Past Continuous Tense, Conjunctions (when/while)',
+                    teacherNote: 'Past Continuous (was/were + V-ing) digunakan untuk aksi yang sedang berlangsung di masa lampau.',
+                    readingTitle: 'Cleaning the Clogged River',
+                    readingText: 'Yesterday morning, heavy rain fell for two hours in our town. While volunteers were cleaning the clogged drainage ditch, they found dozens of plastic bottles blocking the water flow. Together, residents cleared the rubbish and prevented a flood.',
+                    readingTrans: 'Kemarin pagi, hujan deras turun selama dua jam di kota kami. Ketika para relawan sedang membersihkan saluran air yang tersumbat, mereka menemukan puluhan botol plastik yang menghalangi aliran air. Bersama-sama, warga membersihkan sampah dan mencegah banjir.',
                     vocab: [
-                        { en: 'Littering', id: 'Membuang sampah sembarangan', ex: 'No littering in this area.' },
-                        { en: 'Sort', id: 'Memilah', ex: 'Sort organic and inorganic waste.' },
-                        { en: 'Recycle bin', id: 'Tempat sampah daur ulang', ex: 'Put bottles in the recycle bin.' },
-                        { en: 'Teamwork', id: 'Kerja sama tim', ex: 'Good teamwork brings success.' }
+                        { en: 'clogged', id: 'tersumbat', ex: 'Plastic waste caused the drainage to become clogged.' },
+                        { en: 'volunteer', id: 'relawan', ex: 'Students worked as volunteers to clean the park.' },
+                        { en: 'prevent', id: 'mencegah', ex: 'Proper waste disposal helps prevent floods.' },
+                        { en: 'rubbish', id: 'sampah', ex: 'Put your rubbish into the right bin.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 8.4: Clean-Up Report',
-                        instruction: 'Jawablah pertanyaan berdasarkan teks kegiatan bersih pantai!',
-                        questions: ['1. When did the class visit the beach?', '2. What did the students do with the plastic bottles?', '3. How did they feel after the activity?']
+                        title: 'LKPD 8.4: Past Events & Environmental Care',
+                        instruction: 'Jawablah pertanyaan berikut dengan tepat!',
+                        questions: [
+                            '1. What were the volunteers doing when they found dozens of plastic bottles?',
+                            '2. Complete using when/while: "I was walking home _____ it started to rain."'
+                        ]
+                    }
+                },
+                {
+                    code: 'TP 8.5', sem: 2, jp: 20,
+                    chapter: 'Chapter 5: Embrace Yourself',
+                    tp: 'Membandingkan sifat dan kemampuan tokoh inspiratif menggunakan Degrees of Comparison (Comparative & Superlative Adjectives).',
+                    materi: 'Comparative & Superlative Adjectives, Self-Confidence Story',
+                    teacherNote: 'Gunakan akhiran -er / more untuk perbandingan (Comparative) dan -est / most untuk tingkat paling (Superlative).',
+                    readingTitle: 'Being Confident in Our Own Way',
+                    readingText: 'Every student has unique talents. Rina speaks English more fluently than last year because she practices every day. Meanwhile, Bagas is the most creative painter in our grade. When we support each other, we become stronger together.',
+                    readingTrans: 'Setiap siswa memiliki bakat yang unik. Rina berbicara bahasa Inggris lebih lancar daripada tahun lalu karena ia berlatih setiap hari. Sementara itu, Bagas adalah pelukis paling kreatif di angkatan kami. Ketika kita saling mendukung, kita menjadi lebih kuat bersama.',
+                    vocab: [
+                        { en: 'confident', id: 'percaya diri', ex: 'Be confident when speaking in front of the class.' },
+                        { en: 'fluently', id: 'dengan lancar', ex: 'She speaks English fluently and clearly.' },
+                        { en: 'talent', id: 'bakat', ex: 'Everyone has a special talent to develop.' },
+                        { en: 'support', id: 'mendukung', ex: 'Good friends always support each other.' }
+                    ],
+                    lkpd: {
+                        title: 'LKPD 8.5: Degrees of Comparison',
+                        instruction: 'Latih penggunaan Comparative dan Superlative!',
+                        questions: [
+                            '1. Why does Rina speak English more fluently than last year?',
+                            '2. Write 2 Comparative sentences and 2 Superlative sentences about your classmates!'
+                        ]
                     }
                 }
             ],
             'IX': [
                 {
-                    code: 'TP 9.1', sem: 1, jp: 18, chapter: 'Chapter 1: Exploring Fauna of Indonesia',
-                    tp: 'Mengidentifikasi informasi rinci dan menyusun teks deskriptif tentang satwa endemik Indonesia menggunakan Passive Voice.',
-                    materi: 'Descriptive Text (Fauna), Specific Adjectives, Subject-Verb Agreement, Passive Voice',
+                    code: 'TP 9.1', sem: 1, jp: 18,
+                    chapter: 'Chapter 1: Exploring Fauna of Indonesia',
+                    tp: 'Mengidentifikasi informasi rinci serta menyusun teks deskriptif tentang satwa endemik Indonesia menggunakan Specific Adjectives dan Passive Voice.',
+                    materi: 'Descriptive Text (Animals), Passive Voice, Subject-Verb Agreement',
                     teacherNote: 'Perhatikan pola Passive Voice: Subject + is/am/are + Verb-3 (Contoh: Bekantan is found in Kalimantan).',
                     readingTitle: 'Bekantan: The Unique Proboscis Monkey',
-                    readingText: 'Bekantan (Nasalis larvatus) is a reddish-brown monkey with a long and big nose. It is an endemic animal that is found only in the mangrove forests of Kalimantan. Bekantans live in groups and eat young leaves, fruits, and seeds. Because their habitat is threatened by deforestation, Bekantans are protected by Indonesian law.',
-                    readingTrans: 'Bekantan (Nasalis larvatus) adalah monyet berwarna cokelat kemerahan dengan hidung panjang dan besar. Satwa ini merupakan hewan endemik yang hanya ditemukan di hutan bakau Kalimantan. Bekantan hidup berkelompok dan memakan daun muda, buah-buahan, serta biji-bijian. Karena habitatnya terancam penebangan hutan, Bekantan dilindungi oleh hukum Indonesia.',
+                    readingText: 'Bekantan (Nasalis larvatus) is a reddish-brown monkey with a long and big nose. It is an endemic animal that is found only in the mangrove forests and rivers of Kalimantan, Indonesia. Bekantan spends most of its time in trees and eats young leaves, fruits, and seeds. Because their habitat is threatened by deforestation, Bekantan is protected by Indonesian law.',
+                    readingTrans: 'Bekantan (Nasalis larvatus) adalah monyet berwarna cokelat kemerahan dengan hidung panjang dan besar. Satwa endemik ini hanya ditemukan di hutan bakau dan sungai di Kalimantan, Indonesia. Bekantan menghabiskan sebagian besar waktunya di pepohonan dan memakan daun muda, buah-buahan, serta biji-bijian. Karena habitatnya terancam penggundulan hutan, Bekantan dilindungi oleh hukum Indonesia.',
                     vocab: [
-                        { en: 'Endemic', id: 'Endemik / Khas daerah tertentu', ex: 'Komodo is an endemic reptile.' },
-                        { en: 'Mangrove forest', id: 'Hutan bakau', ex: 'Bekantans live in mangrove forests.' },
-                        { en: 'Protected', id: 'Dilindungi', ex: 'Endangered animals are protected.' },
-                        { en: 'Habitat', id: 'Habitat / Tempat tinggal alami', ex: 'We must protect wildlife habitats.' }
+                        { en: 'endemic', id: 'endemik / asli daerah tertentu', ex: 'Komodo dragon is an endemic reptile of Indonesia.' },
+                        { en: 'mangrove', id: 'hutan bakau', ex: 'Bekantan lives near mangrove forests.' },
+                        { en: 'threatened', id: 'terancam', ex: 'Many wild animals are threatened by habitat loss.' },
+                        { en: 'protected', id: 'dilindungi', ex: 'Rare species are protected by the government.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 9.1: Indonesian Endemic Fauna',
-                        instruction: 'Bacalah teks tentang Bekantan di atas dan kerjakan soal berikut!',
-                        questions: ['1. Where can Bekantan be found?', '2. What do Bekantans eat?', '3. Write 2 Passive Voice sentences about Indonesian animals!']
+                        title: 'LKPD 9.1: Exploring Indonesian Endemic Fauna',
+                        instruction: 'Bacalah teks tentang Bekantan di atas dan kerjakan latihan berikut!',
+                        questions: [
+                            '1. What are the physical characteristics of Bekantan?',
+                            '2. Where is Bekantan found in Indonesia?',
+                            '3. Ubahlah menjadi kalimat pasif (Passive Voice): "Indonesian law protects Bekantan."'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 9.2', sem: 1, jp: 18, chapter: 'Chapter 2: Taking Care of Yourself',
-                    tp: 'Memahami instruksi lisan/tulis dan menyusun teks prosedur menjaga kesehatan fisik dan mental.',
-                    materi: 'Procedure Text, Imperative Sentences, Sequence Adverbs (First, Next, Then, Finally)',
-                    teacherNote: 'Gunakan Sequence Adverbs di awal langkah dan kata kerja dasar (Verb-1).',
-                    readingTitle: 'How to Make Warm Ginger Honey Drink',
-                    readingText: 'First, wash two pieces of fresh ginger and slice them thinly. Next, boil two cups of water in a small pot. Then, put the ginger slices into the boiling water and simmer for five minutes. After that, pour the ginger water into a mug and add one tablespoon of honey. Finally, stir well and drink it while warm.',
-                    readingTrans: 'Pertama, cuci dua potong jahe segar dan iris tipis-tipis. Berikutnya, rebus dua cangkir air di dalam panci kecil. Kemudian, masukkan irisan jahe ke dalam air mendidih dan biarkan selama lima menit. Setelah itu, tuangkan air jahe ke dalam cangkir dan tambahkan satu sendok makan madu. Terakhir, aduk rata dan minum selagi hangat.',
+                    code: 'TP 9.2', sem: 1, jp: 18,
+                    chapter: 'Chapter 2: Taking Care of Yourself',
+                    tp: 'Memahami instruksi lisan/tulis dan menyusun teks prosedur (resep sehat & tips perawatan diri) menggunakan Imperatives dan Sequence Adverbs.',
+                    materi: 'Procedure Text, Imperatives, Sequence Adverbs, Countable/Uncountable Nouns',
+                    teacherNote: 'Gunakan Sequence Adverbs (First, Next, Then, After that, Finally) untuk mengurutkan langkah prosedur.',
+                    readingTitle: 'How to Make Warm Honey Lemon Tea',
+                    readingText: 'Drinking warm honey lemon tea helps soothe a sore throat and boosts immunity. First, boil a cup of clean water. Next, slice half a fresh lemon and squeeze its juice into a mug. Then, pour the warm water into the mug and add two teaspoons of pure honey. Finally, stir well and enjoy it while warm.',
+                    readingTrans: 'Minum teh madu lemon hangat membantu meredakan sakit tenggorokan dan meningkatkan daya tahan tubuh. Pertama, rebus secangkir air bersih. Berikutnya, iris setengah buah lemon segar dan peras airnya ke dalam cangkir. Kemudian, tuangkan air hangat ke cangkir dan tambahkan dua sendok teh madu murni. Terakhir, aduk rata dan nikmati selagi hangat.',
                     vocab: [
-                        { en: 'Slice', id: 'Mengiris', ex: 'Slice the ginger thinly.' },
-                        { en: 'Boil', id: 'Merebus / Mendidihkan', ex: 'Boil two cups of water.' },
-                        { en: 'Stir well', id: 'Aduk hingga rata', ex: 'Stir well before drinking.' },
-                        { en: 'Healthy habit', id: 'Kebiasaan sehat', ex: 'Drinking water is a healthy habit.' }
+                        { en: 'soothe', id: 'meredakan / menenangkan', ex: 'Warm tea can soothe a sore throat.' },
+                        { en: 'squeeze', id: 'memeras', ex: 'Squeeze the fresh lemon juice into the cup.' },
+                        { en: 'stir', id: 'mengaduk', ex: 'Stir the honey and warm water well.' },
+                        { en: 'immunity', id: 'daya tahan tubuh', ex: 'Healthy food improves our body immunity.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 9.2: Healthy Procedure Text',
-                        instruction: 'Analisis teks prosedur minuman jahe madu di atas!',
-                        questions: ['1. How long should we simmer the ginger slices?', '2. List four Sequence Adverbs used in the text!', '3. Write 3 steps on how to stay healthy during exam week!']
+                        title: 'LKPD 9.2: Healthy Habits Procedure Text',
+                        instruction: 'Susunlah jawaban berdasarkan teks prosedur di atas!',
+                        questions: [
+                            '1. Mention 4 Sequence Adverbs used in the text!',
+                            '2. Why is warm honey lemon tea good for our health?',
+                            '3. Write 4 steps of your daily healthy routine!'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 9.3', sem: 1, jp: 18, chapter: 'Chapter 3: Journey to Fantasy Worlds',
-                    tp: 'Menganalisis unsur naratif cerita fantasi serta menyusun cerita rekaan menggunakan Past Simple & Past Continuous.',
-                    materi: 'Narrative Text (Fantasy), Simple Past vs Past Continuous, Direct & Indirect Speech',
-                    teacherNote: 'Bedakan aksi yang sedang berlangsung (was/were + V-ing) dengan aksi yang menyela (Verb-2).',
-                    readingTitle: 'The Crystal Key of Nusantara',
-                    readingText: 'While Aruna was walking through the misty bamboo forest, she found a glowing crystal key beneath an ancient banyan tree. Suddenly, a golden owl landed beside her and spoke softly, "That key opens the Gate of Wisdom." Aruna took a deep breath and decided to begin her magical journey.',
-                    readingTrans: 'Ketika Aruna sedang berjalan melewati hutan bambu berkabut, ia menemukan sebuah kunci kristal bercahaya di bawah pohon beringin tua. Tiba-tiba, seekor burung hantu emas mendarat di sampingnya dan berbicara lembut, "Kunci itu membuka Gerbang Kebijaksanaan." Aruna menarik napas dalam dan memutuskan memulai perjalanan ajaibnya.',
+                    code: 'TP 9.3', sem: 1, jp: 18,
+                    chapter: 'Chapter 3: Journey to Fantasy Worlds',
+                    tp: 'Menganalisis unsur naratif cerita fantasi serta menyusun cerita rekaan menggunakan Simple Past, Past Continuous, dan Direct/Indirect Speech.',
+                    materi: 'Narrative Text (Fantasy/Folklore), Past Simple & Continuous, Indirect Speech',
+                    teacherNote: 'Perhatikan tanda kutip ("...") pada kalimat langsung (Direct Speech) dalam dialog cerita.',
+                    readingTitle: 'The Golden Compass of Nusantara',
+                    readingText: 'Long ago, in a misty mountain village, a young boy named Andre found an ancient golden compass inside an old library. While he was examining the glowing needle, a mysterious map appeared on the wooden table. "Follow the eastern star," whispered a gentle voice from the compass. Andre packed his bag and began his magical journey.',
+                    readingTrans: 'Dahulu kala, di sebuah desa pegunungan berkabut, seorang anak laki-laki bernama Andre menemukan kompas emas kuno di dalam perpustakaan tua. Ketika ia sedang mengamati jarum yang bersinar, sebuah peta misterius muncul di atas meja kayu. "Ikuti bintang timur," bisik suara lembut dari kompas itu. Andre mengemas tasnya dan memulai perjalanan ajaibnya.',
                     vocab: [
-                        { en: 'Misty', id: 'Berkabut', ex: 'The morning forest was misty.' },
-                        { en: 'Ancient', id: 'Kuno / Sangat tua', ex: 'An ancient tree stood in the forest.' },
-                        { en: 'Wisdom', id: 'Kebijaksanaan', ex: 'Books bring knowledge and wisdom.' },
-                        { en: 'Magical', id: 'Ajaib', ex: 'It was a magical adventure.' }
+                        { en: 'ancient', id: 'kuno / sangat tua', ex: 'He discovered an ancient golden compass.' },
+                        { en: 'glowing', id: 'bersinar / berpijar', ex: 'The glowing needle pointed to the east.' },
+                        { en: 'whisper', id: 'berbisik', ex: 'A gentle voice whispered from the box.' },
+                        { en: 'journey', id: 'perjalanan', ex: 'They began an unforgettable journey.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 9.3: Exploring Fantasy Narrative',
-                        instruction: 'Jawablah pertanyaan unsur cerita fantasi berikut!',
-                        questions: ['1. Where did Aruna find the glowing crystal key?', '2. Identify one Past Continuous clause from the story!', '3. Continue the story in 2-3 sentences!']
+                        title: 'LKPD 9.3: Exploring Fantasy Narratives',
+                        instruction: 'Analisislah struktur dan tata bahasa dari teks fantasi di atas!',
+                        questions: [
+                            '1. Where did Andre find the golden compass?',
+                            '2. Write down one Past Continuous sentence from the text!',
+                            '3. Write a 3-sentence continuation of Andre’s fantasy adventure!'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 9.4', sem: 2, jp: 18, chapter: 'Chapter 4: Upcycling Used Material',
-                    tp: 'Mengungkapkan hubungan sebab-akibat dan menyusun laporan proyek daur ulang kreatif menggunakan Passive Voice.',
-                    materi: 'Report & Procedure Text (Upcycling), Present Passive Voice, Cause & Effect (because, so)',
-                    teacherNote: 'Upcycling mengubah barang bekas menjadi produk bernilai guna lebih tinggi.',
+                    code: 'TP 9.4', sem: 2, jp: 20,
+                    chapter: 'Chapter 4: Upcycling Used Material',
+                    tp: 'Mengungkapkan hubungan sebab-akibat (because, so) dan menyusun laporan/panduan proyek daur ulang barang bekas menggunakan Present Passive Voice.',
+                    materi: 'Report & Procedure Text (Upcycling), Passive Voice, Cause & Effect',
+                    teacherNote: 'Upcycling berarti mengubah barang bekas menjadi produk baru yang bernilai guna lebih tinggi.',
                     readingTitle: 'Turning Plastic Bottles into Vertical Gardens',
-                    readingText: 'Plastic waste takes hundreds of years to decompose, so upcycling is a smart solution. Used plastic bottles are cleaned and cut carefully to make hanging plant pots. Then, they are painted with bright colors and filled with soil. As a result, empty walls are transformed into green vertical gardens.',
-                    readingTrans: 'Sampah plastik membutuhkan ratusan tahun untuk terurai, sehingga daur ulang kreatif adalah solusi cerdas. Botol plastik bekas dibersihkan dan dipotong dengan hati-hati untuk membuat pot tanaman gantung. Kemudian, botol dicat dengan warna cerah dan diisi tanah. Hasilnya, dinding kosong diubah menjadi taman vertikal yang hijau.',
+                    readingText: 'Plastic waste takes hundreds of years to decompose, so upcycling is a smart solution for schools. Used plastic bottles are collected, washed, and cut neatly to hold soil and herbs. Because these hanging planters are lightweight and durable, they are used to decorate school fences while producing fresh vegetables.',
+                    readingTrans: 'Sampah plastik membutuhkan ratusan tahun untuk terurai, sehingga upcycling adalah solusi cerdas bagi sekolah. Botol plastik bekas dikumpulkan, dicuci, dan dipotong rapi untuk menampung tanah serta tanaman herbal. Karena pot gantung ini ringan dan tahan lama, pot ini digunakan untuk menghias pagar sekolah sekaligus menghasilkan sayuran segar.',
                     vocab: [
-                        { en: 'Upcycling', id: 'Daur ulang kreatif bernilai tinggi', ex: 'Upcycling reduces plastic pollution.' },
-                        { en: 'Decompose', id: 'Terurai', ex: 'Plastic cannot decompose quickly.' },
-                        { en: 'Transformed', id: 'Diubah menjadi', ex: 'Old jars are transformed into lamps.' },
-                        { en: 'Valuable', id: 'Bernilai / Bermanfaat', ex: 'Used items can become valuable crafts.' }
+                        { en: 'upcycling', id: 'kreasi ulang barang bekas bernilai tinggi', ex: 'Upcycling reduces plastic pollution.' },
+                        { en: 'decompose', id: 'terurai', ex: 'Plastic does not decompose easily.' },
+                        { en: 'durable', id: 'tahan lama / awet', ex: 'Plastic planters are lightweight and durable.' },
+                        { en: 'soil', id: 'tanah', ex: 'Fill the bottle planter with fertile soil.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 9.4: Upcycling Project Report',
-                        instruction: 'Jawablah pertanyaan tentang proyek upcycling berikut!',
-                        questions: ['1. Why is upcycling plastic bottles important?', '2. Write two Passive Voice sentences from the text!', '3. Mention one used item at home that you can upcycle!']
+                        title: 'LKPD 9.4: Creative Upcycling Project',
+                        instruction: 'Jawablah pertanyaan tentang proyek daur ulang berikut!',
+                        questions: [
+                            '1. Why is upcycling a smart solution for schools?',
+                            '2. Identify 2 Passive Voice verbs in the text!',
+                            '3. Propose one upcycling idea using used cardboard or bottles!'
+                        ]
                     }
                 },
                 {
-                    code: 'TP 9.5', sem: 2, jp: 18, chapter: 'Chapter 5: Digital Life',
-                    tp: 'Menyatakan pendapat, persetujuan, dan ketidaksetujuan terkait literasi digital dan keamanan berinternet.',
-                    materi: 'Information Report, Expressing Opinions (I think, In my opinion), Digital Citizenship',
-                    teacherNote: 'Biasakan siswa berpikir kritis (Think Before You Post) dan memeriksa fakta berita.',
-                    readingTitle: 'Being a Smart Digital Citizen',
-                    readingText: 'Today, teenagers use social media every day to learn and communicate. In my opinion, we must check the source of information before sharing it so we do not spread hoaxes. Furthermore, personal passwords should never be shared with strangers. Responsible digital habits keep us safe online.',
-                    readingTrans: 'Saat ini, remaja menggunakan media sosial setiap hari untuk belajar dan berkomunikasi. Menurut pendapat saya, kita harus memeriksa sumber informasi sebelum membagikannya agar tidak menyebarkan hoaks. Selain itu, kata sandi pribadi tidak boleh dibagikan kepada orang asing. Kebiasaan digital yang bertanggung jawab menjaga kita tetap aman di dunia maya.',
+                    code: 'TP 9.5', sem: 2, jp: 20,
+                    chapter: 'Chapter 5: Digital Life',
+                    tp: 'Menyatakan pendapat, persetujuan, dan ketidaksetujuan terkait literasi digital serta menulis teks paparan/opini singkat tentang etika berinternet.',
+                    materi: 'Information Report, Expressing Opinions, Digital Literacy & Safety',
+                    teacherNote: 'Gunakan ungkapan santun seperti "In my opinion...", "I agree that...", atau "I respectfully disagree because...".',
+                    readingTitle: 'Fact-Checking Before Sharing Online',
+                    readingText: 'In today’s digital era, information spreads within seconds on social media. In my opinion, every student must verify news sources before clicking the share button. Hoaxes can cause misunderstandings and harm others. Therefore, checking facts and protecting personal passwords are essential habits for responsible digital citizens.',
+                    readingTrans: 'Di era digital saat ini, informasi menyebar dalam hitungan detik di media sosial. Menurut pendapat saya, setiap siswa harus memverifikasi sumber berita sebelum menekan tombol bagikan. Hoaks dapat menyebabkan kesalahpahaman dan merugikan orang lain. Oleh karena itu, memeriksa fakta dan melindungi kata sandi pribadi adalah kebiasaan penting bagi warga digital yang bertanggung jawab.',
                     vocab: [
-                        { en: 'Digital citizen', id: 'Warga digital', ex: 'Be a polite digital citizen.' },
-                        { en: 'Verify', id: 'Memverifikasi / Memeriksa kebenaran', ex: 'Always verify news before sharing.' },
-                        { en: 'Privacy', id: 'Privasi / Kerahasiaan pribadi', ex: 'Protect your online privacy.' },
-                        { en: 'Responsible', id: 'Bertanggung jawab', ex: 'Use the internet in a responsible way.' }
+                        { en: 'verify', id: 'memverifikasi / memeriksa kebenaran', ex: 'Always verify news before sharing it.' },
+                        { en: 'spread', id: 'menyebar', ex: 'Information spreads rapidly on social media.' },
+                        { en: 'misunderstanding', id: 'kesalahpahaman', ex: 'False news often leads to misunderstanding.' },
+                        { en: 'responsible', id: 'bertanggung jawab', ex: 'Be a wise and responsible internet user.' }
                     ],
                     lkpd: {
-                        title: 'LKPD 9.5: Digital Literacy & Ethics',
-                        instruction: 'Jawablah pertanyaan literasi digital berikut!',
-                        questions: ['1. Why must we check the source of information before sharing?', '2. What should never be shared with strangers?', '3. Write your opinion about using smartphones for studying!']
+                        title: 'LKPD 9.5: Responsible Digital Citizens',
+                        instruction: 'Diskusikan dan jawablah pertanyaan literasi digital berikut!',
+                        questions: [
+                            '1. What must students do before sharing news on social media?',
+                            '2. Write your opinion (3 sentences) about using smartphones wisely for learning!'
+                        ]
                     }
                 }
             ]
         };
 
         // =========================================================================
-        // 2. INISIALISASI STATE & RUANG GURU TERISOLASI
+        // 2. STATE MANAGEMENT, HELPER & ISOLASI DATA PER GURU
         // =========================================================================
         function buildDefaultRombel(grade, suffix) {
             const id = `${grade}-${suffix}`;
+            const sampleNames = [
+                { name: 'Ahmad Fauzan Pratama', gender: 'L', uh1: 88, uh2: 85, uh3: 90, sts: 87, uas: 89 },
+                { name: 'Aisyah Putri Ramadhani', gender: 'P', uh1: 94, uh2: 92, uh3: 95, sts: 93, uas: 94 },
+                { name: 'Bima Sakti Nugraha', gender: 'L', uh1: 78, uh2: 80, uh3: 82, sts: 79, uas: 81 },
+                { name: 'Citra Dewi Lestari', gender: 'P', uh1: 86, uh2: 88, uh3: 85, sts: 87, uas: 88 },
+                { name: 'Dimas Arya Saputra', gender: 'L', uh1: 82, uh2: 84, uh3: 81, sts: 83, uas: 85 },
+                { name: 'Nabila Khairunnisa', gender: 'P', uh1: 91, uh2: 89, uh3: 92, sts: 90, uas: 92 }
+            ];
+            const students = sampleNames.map((st, idx) => ({
+                id: `${id}_s${idx + 1}`,
+                pin: '1234',
+                name: st.name,
+                gender: st.gender,
+                completedChapters: [],
+                uh1: st.uh1, uh2: st.uh2, uh3: st.uh3, sts: st.sts, uas: st.uas,
+                lkpdScores: {},
+                examResults: {}
+            }));
+            const attendance = {};
+            students.forEach(s => { attendance[s.id] = Array(30).fill('H'); });
+
+            const firstTp = (CURRICULUM_DATA[grade] || CURRICULUM_DATA['IX'])[0];
             return {
                 id,
                 grade,
+                suffix,
                 label: `Kelas ${grade}-${suffix}`,
-                students: [
-                    { id: `${id}_s1`, pin: '1234', name: 'Ahmad Fauzan Pratama', gender: 'L', completedChapters: [], uh1: 88, uh2: 86, uh3: 90, sts: 87, uas: 89, lkpdScores: {}, examResults: {} },
-                    { id: `${id}_s2`, pin: '1234', name: 'Aisyah Putri Ramadhani', gender: 'P', completedChapters: [], uh1: 94, uh2: 92, uh3: 95, sts: 93, uas: 94, lkpdScores: {}, examResults: {} },
-                    { id: `${id}_s3`, pin: '1234', name: 'Bima Sakti Nugraha', gender: 'L', completedChapters: [], uh1: 78, uh2: 80, uh3: 82, sts: 79, uas: 81, lkpdScores: {}, examResults: {} },
-                    { id: `${id}_s4`, pin: '1234', name: 'Citra Dewi Lestari', gender: 'P', completedChapters: [], uh1: 85, uh2: 87, uh3: 86, sts: 86, uas: 88, lkpdScores: {}, examResults: {} },
-                    { id: `${id}_s5`, pin: '1234', name: 'Dimas Arya Saputra', gender: 'L', completedChapters: [], uh1: 82, uh2: 84, uh3: 83, sts: 82, uas: 85, lkpdScores: {}, examResults: {} },
-                    { id: `${id}_s6`, pin: '1234', name: 'Nabila Khairunnisa', gender: 'P', completedChapters: [], uh1: 91, uh2: 90, uh3: 92, sts: 91, uas: 92, lkpdScores: {}, examResults: {} }
-                ],
-                attendance: {
-                    [`${id}_s1`]: Array(30).fill('H'),
-                    [`${id}_s2`]: Array(30).fill('H'),
-                    [`${id}_s3`]: ['H', 'I', ...Array(28).fill('H')],
-                    [`${id}_s4`]: Array(30).fill('H'),
-                    [`${id}_s5`]: ['H', 'H', 'S', ...Array(27).fill('H')],
-                    [`${id}_s6`]: Array(30).fill('H')
-                },
+                students,
+                attendance,
                 journals: [
-                    { id: 101, sem: 1, date: '2026-07-21', jam: '1-2', tp: `TP ${grade === 'VII' ? '7.1' : grade === 'VIII' ? '8.1' : '9.1'}`, activity: 'Listening & Reading Comprehension + Kosakata Inti Chapter 1', absen: 'Hadir semua', reflection: 'Siswa antusias berdiskusi' },
-                    { id: 102, sem: 1, date: '2026-07-24', jam: '3-4', tp: `TP ${grade === 'VII' ? '7.1' : grade === 'VIII' ? '8.1' : '9.1'}`, activity: 'Latihan Tata Bahasa & Pengerjaan LKPD Mandiri', absen: '1 Siswa Izin', reflection: 'Tercapai 92%' }
+                    { id: 1, sem: 1, date: '2026-07-20', tp: firstTp.code, activity: `Listening & Reading: ${firstTp.chapter}`, reflection: 'Terlaksana dengan baik' }
                 ]
             };
         }
 
-        function buildDefaultQuestions(grade) {
-            const tps = CURRICULUM_DATA[grade];
+        function buildDefaultQuestionBanks() {
             const banks = {};
-            tps.forEach(t => {
-                banks[`UH-${t.code}`] = {
-                    title: `Ulangan Harian (${t.code}: ${t.chapter})`,
-                    duration: 30,
-                    published: true,
+            ['VII', 'VIII', 'IX'].forEach(g => {
+                banks[g] = {};
+                const tps = CURRICULUM_DATA[g];
+                tps.forEach(t => {
+                    banks[g][`UH-${t.code}`] = {
+                        title: `Ulangan Harian ${t.code} (${t.chapter})`,
+                        duration: 30,
+                        questions: [
+                            { q: `What is the main topic of ${t.chapter}?`, opts: [t.materi.split(',')[0], 'Mathematics Formula', 'Geography Map', 'Chemistry Lab'], ans: 0 },
+                            { q: `Which word is found in the vocabulary of ${t.chapter}?`, opts: [t.vocab[0].en, 'astronaut', 'submarine', 'volcano'], ans: 0 },
+                            { q: `What is the Indonesian meaning of "${t.vocab[1].en}"?`, opts: ['meja kayu', t.vocab[1].id, 'sepatu olahraga', 'langit biru'], ans: 1 }
+                        ]
+                    };
+                });
+                banks[g]['STS-1'] = {
+                    title: `Sumatif Tengah Semester 1 (Kelas ${g})`,
+                    duration: 45,
                     questions: [
-                        { q: `What is the main topic of ${t.chapter}?`, opts: [t.materi.split(',')[0], 'Mathematics Formula', 'Chemical Reaction', 'Ancient History'], ans: 0 },
-                        { q: `Read the passage "${t.readingTitle}". Which statement is TRUE according to the text?`, opts: [t.readingText.split('.')[0] + '.', 'The text is about outer space.', 'There is no information given.', 'The author dislikes the topic.'], ans: 0 },
-                        { q: `What is the Indonesian meaning of "${t.vocab[0].en}"?`, opts: [t.vocab[0].id, 'Berlari cepat', 'Meja kayu', 'Buku tulis'], ans: 0 }
+                        { q: `Based on ${tps[0].chapter}, what does "${tps[0].vocab[0].en}" mean?`, opts: [tps[0].vocab[0].id, 'berlari cepat', 'makan siang', 'tidur nyenyak'], ans: 0 },
+                        { q: `Which material belongs to ${tps[1].chapter}?`, opts: [tps[1].materi.split(',')[0], 'Algebra', 'Solar System', 'Ancient History'], ans: 0 }
+                    ]
+                };
+                banks[g]['UAS-1'] = {
+                    title: `Sumatif Akhir Semester 1 (Kelas ${g})`,
+                    duration: 60,
+                    questions: [
+                        { q: `What is the main focus of ${tps[2].chapter}?`, opts: [tps[2].materi.split(',')[0], 'Computer Coding', 'Music Theory', 'Physics'], ans: 0 },
+                        { q: `What is the meaning of "${tps[2].vocab[0].en}"?`, opts: ['papan tulis', tps[2].vocab[0].id, 'kursi taman', 'buku gambar'], ans: 1 }
+                    ]
+                };
+                banks[g]['STS-2'] = {
+                    title: `Sumatif Tengah Semester 2 (Kelas ${g})`,
+                    duration: 45,
+                    questions: [
+                        { q: `In ${tps[3].chapter}, what does "${tps[3].vocab[0].en}" mean?`, opts: [tps[3].vocab[0].id, 'sepeda motor', 'awan mendung', 'air terjun'], ans: 0 }
+                    ]
+                };
+                banks[g]['UAS-2'] = {
+                    title: `Sumatif Akhir Tahun / Semester 2 (Kelas ${g})`,
+                    duration: 60,
+                    questions: [
+                        { q: `In ${tps[4].chapter}, what is the meaning of "${tps[4].vocab[0].en}"?`, opts: ['lampu jalan', tps[4].vocab[0].id, 'pintu gerbang', 'jam dinding'], ans: 1 }
                     ]
                 };
             });
-            banks[`STS-${grade}`] = {
-                title: `Sumatif Tengah Semester (STS) Bahasa Inggris Kelas ${grade}`,
-                duration: 60,
-                published: true,
-                questions: [
-                    { q: `Which vocabulary word means "${tps[0].vocab[1].id}"?`, opts: [tps[0].vocab[1].en, tps[0].vocab[2].en, tps[0].vocab[3].en, 'Window'], ans: 0 },
-                    { q: `Based on "${tps[1].readingTitle}", what is the main idea?`, opts: [tps[1].readingText.split('.')[0] + '.', 'How to repair a bicycle', 'Visiting the moon', 'Playing football'], ans: 0 }
-                ]
-            };
-            banks[`UAS-${grade}`] = {
-                title: `Sumatif Akhir Semester (UAS / SAS) Bahasa Inggris Kelas ${grade}`,
-                duration: 90,
-                published: true,
-                questions: [
-                    { q: `Identify the correct meaning of "${tps[2].vocab[0].en}":`, opts: [tps[2].vocab[0].id, 'Bersepeda', 'Menulis surat', 'Berbelanja'], ans: 0 },
-                    { q: `Which sentence matches the lesson in ${tps[0].chapter}?`, opts: [tps[0].vocab[0].ex, 'Two plus two equals four.', 'Water boils at 100 degrees.', 'The sun rises in the west.'], ans: 0 }
-                ]
-            };
             return banks;
         }
 
-        function createTeacherSpace(profile = {}) {
-            const allowedGrades = (Array.isArray(profile.allowedGrades) && profile.allowedGrades.length > 0)
-                ? profile.allowedGrades
-                : ['IX'];
-            const primaryGrade = allowedGrades[0];
+        function createTeacherSpace(info) {
+            const allowedGrades = Array.isArray(info.allowedGrades) && info.allowedGrades.length > 0 ? info.allowedGrades : ['IX'];
+            const firstGrade = allowedGrades[0];
             const rombels = {};
             allowedGrades.forEach(g => {
-                const r = buildDefaultRombel(g, 'A');
-                rombels[r.id] = r;
+                rombels[`${g}-A`] = buildDefaultRombel(g, 'A');
             });
-            const firstRombelId = Object.keys(rombels)[0];
+
+            const resources = [];
+            ['VII', 'VIII', 'IX'].forEach(g => {
+                const tps = CURRICULUM_DATA[g];
+                resources.push({
+                    id: `res_default_${g}_1`,
+                    grade: g,
+                    sem: 1,
+                    chapterCode: tps[0].code,
+                    category: 'Buku Panduan Siswa',
+                    title: `Ringkasan Materi Resmi: English For Nusantara Kelas ${g} (${tps[0].chapter})`,
+                    description: tps[0].tp,
+                    content: `${tps[0].chapter.toUpperCase()}\n\nTujuan Pembelajaran:\n${tps[0].tp}\n\nCatatan Tata Bahasa:\n${tps[0].teacherNote}\n\nTeks Bacaan (${tps[0].readingTitle}):\n${tps[0].readingText}`,
+                    externalUrl: '',
+                    visible: true
+                });
+            });
 
             return {
-                allowedGrades,
-                activeGrade: primaryGrade,
-                activeRombelId: firstRombelId,
-                activeSemester: '1',
                 school: {
-                    name: profile.sekolah || 'SMP Negeri 1 Nusantara',
+                    name: info.sekolah || 'SMP Negeri 1 Nusantara',
                     address: 'Jl. Pendidikan Merdeka No. 45, Indonesia',
                     city: 'Jakarta',
                     date: '14 Juli 2026',
-                    teacherName: profile.nama || 'Guru Bahasa Inggris, S.Pd.',
-                    teacherNip: profile.nip || '19890817 201502 2 003',
-                    teacherEmail: (profile.email || 'guru.demo@belajar.id').toLowerCase(),
+                    academicYear: '2026/2027',
+                    teacherName: info.nama || 'Siti Rahmawati, S.Pd.',
+                    teacherNip: info.nip || '19890817 201502 2 003',
+                    teacherEmail: info.email || 'demo.guru@belajar.id',
                     principalName: 'Drs. H. Ahmad Suryana, M.Pd.',
                     principalNip: '19680512 199403 1 007',
-                    academicYear: '2026/2027',
-                    classCode: profile.kode_kelas || ('EFN-' + Math.random().toString(36).substring(2, 7).toUpperCase())
+                    classCode: info.kode_kelas || 'EFN-IXA26'
                 },
+                allowedGrades,
+                activeGrade: firstGrade,
+                activeRombelId: `${firstGrade}-A`,
+                activeSemester: '1',
+                selectedTpIdx: 0,
+                selectedLkpdIdx: 0,
+                selectedExamKey: `UH-${CURRICULUM_DATA[firstGrade][0].code}`,
+                rombels,
+                questionBanks: buildDefaultQuestionBanks(),
+                resources,
                 driveMeta: {
                     connected: false,
-                    mode: '', // 'personal-oauth' | 'central-gas'
+                    mode: '',
                     googleAccount: '',
                     folderId: '',
                     fileId: '',
                     adminMirrored: false,
                     lastSync: ''
                 },
-                rombels,
-                curriculum: JSON.parse(JSON.stringify(CURRICULUM_DATA)),
-                questionBanks: {
-                    'VII': buildDefaultQuestions('VII'),
-                    'VIII': buildDefaultQuestions('VIII'),
-                    'IX': buildDefaultQuestions('IX')
-                },
-                resources: [
-                    {
-                        id: 'res_default_1',
-                        grade: primaryGrade,
-                        sem: 1,
-                        chapterCode: `TP ${primaryGrade === 'VII' ? '7.1' : primaryGrade === 'VIII' ? '8.1' : '9.1'}`,
-                        category: 'Buku Panduan / E-Book',
-                        title: `Ringkasan Buku Siswa English For Nusantara Kelas ${primaryGrade} (Chapter 1)`,
-                        description: 'Ringkasan materi resmi Kemendikbudristek siap baca untuk siswa.',
-                        content: CURRICULUM_DATA[primaryGrade][0].readingText,
-                        externalUrl: '',
-                        visible: true
-                    },
-                    {
-                        id: 'res_default_2',
-                        grade: primaryGrade,
-                        sem: 1,
-                        chapterCode: 'ALL',
-                        category: 'Referensi Digital Kemendikbud',
-                        title: 'Portal Buku Digital Kurikulum Merdeka (SIBI Kemendikbud)',
-                        description: 'Tautan unduh resmi Buku Siswa & Buku Panduan Guru English For Nusantara.',
-                        content: '',
-                        externalUrl: 'https://buku.kemdikbud.go.id/',
-                        visible: true
-                    }
-                ],
-                selectedTpIdx: 0,
-                selectedLkpdIdx: 0,
-                selectedExamKey: `UH-TP ${primaryGrade === 'VII' ? '7.1' : primaryGrade === 'VIII' ? '8.1' : '9.1'}`,
                 studentUi: {
                     tab: 'materi',
-                    chapterCode: `TP ${primaryGrade === 'VII' ? '7.1' : primaryGrade === 'VIII' ? '8.1' : '9.1'}`,
+                    chapterCode: CURRICULUM_DATA[firstGrade][0].code,
                     showTrans: false,
                     fcIdx: 0,
                     fcFlip: false,
@@ -1034,17 +1144,10 @@
             };
         }
 
-        function createInitialState() {
-            const demoSpace = createTeacherSpace({
-                nama: 'Siti Rahmawati, S.Pd.',
-                nip: '19890817 201502 2 003',
-                sekolah: 'SMP Negeri 1 Nusantara',
-                email: 'demo.guru@belajar.id',
-                kode_kelas: 'EFN-IXA26',
-                allowedGrades: ['IX']
-            });
+        function createInitialMasterState() {
+            const demoEmail = 'demo.guru@belajar.id';
             return {
-                auth: { role: null, teacherKey: 'demo.guru@belajar.id', studentId: null, rombelId: 'IX-A' },
+                auth: { role: null, teacherKey: demoEmail, studentId: null, rombelId: null },
                 systemConfig: {
                     gasUrl: DEFAULT_GAS_URL,
                     oauthClientId: DEFAULT_OAUTH_ID
@@ -1052,39 +1155,52 @@
                 adminRegistry: {
                     activeTab: 'teachers',
                     teachers: [
-                        { nama: 'Siti Rahmawati, S.Pd.', nip: '19890817 201502 2 003', sekolah: 'SMP Negeri 1 Nusantara', email: 'demo.guru@belajar.id', pin: '2026', status: 'ACTIVE', expired_at: '2027-07-01', kode_kelas: 'EFN-IXA26', allowedGrades: ['IX'] }
+                        {
+                            nama: 'Siti Rahmawati, S.Pd.',
+                            nip: '19890817 201502 2 003',
+                            sekolah: 'SMP Negeri 1 Nusantara',
+                            email: demoEmail,
+                            pin: '2026',
+                            status: 'ACTIVE',
+                            expired_at: '2027-12-31',
+                            kode_kelas: 'EFN-IXA26',
+                            allowedGrades: ['IX']
+                        }
                     ],
                     tokens: [
                         { token: 'NUSANTARA-FREE-30', durasi_hari: 30, status: 'AVAILABLE', used_by_email: '' },
-                        { token: 'EFN-PRO-365', durasi_hari: 365, status: 'AVAILABLE', used_by_email: '' }
+                        { token: 'NUSANTARA-PRO-365', durasi_hari: 365, status: 'AVAILABLE', used_by_email: '' }
                     ]
                 },
                 teacherSpaces: {
-                    'demo.guru@belajar.id': demoSpace
+                    [demoEmail]: createTeacherSpace({
+                        nama: 'Siti Rahmawati, S.Pd.',
+                        nip: '19890817 201502 2 003',
+                        sekolah: 'SMP Negeri 1 Nusantara',
+                        email: demoEmail,
+                        kode_kelas: 'EFN-IXA26',
+                        allowedGrades: ['IX']
+                    })
                 }
             };
         }
 
-        let state = (() => {
-            try {
-                const raw = localStorage.getItem(MASTER_STORE_KEY);
-                const parsed = raw ? JSON.parse(raw) : createInitialState();
-                if (!parsed.systemConfig) parsed.systemConfig = { gasUrl: DEFAULT_GAS_URL, oauthClientId: DEFAULT_OAUTH_ID };
-                if (!parsed.systemConfig.gasUrl && DEFAULT_GAS_URL) parsed.systemConfig.gasUrl = DEFAULT_GAS_URL;
-                if (!parsed.systemConfig.oauthClientId && DEFAULT_OAUTH_ID) parsed.systemConfig.oauthClientId = DEFAULT_OAUTH_ID;
-                if (!parsed.teacherSpaces || Object.keys(parsed.teacherSpaces).length === 0) {
-                    parsed.teacherSpaces = createInitialState().teacherSpaces;
-                }
-                return parsed;
-            } catch (e) {
-                return createInitialState();
-            }
-        })();
+        let state = null;
+        try {
+            state = JSON.parse(localStorage.getItem(MASTER_STORE_KEY));
+        } catch (e) {
+            state = null;
+        }
+        if (!state || !state.teacherSpaces || !state.adminRegistry) {
+            state = createInitialMasterState();
+        }
+        if (!state.systemConfig) {
+            state.systemConfig = { gasUrl: DEFAULT_GAS_URL, oauthClientId: DEFAULT_OAUTH_ID };
+        }
 
         let activeModuleId = null;
-        let driveDebounce = null;
+        let personalGoogleAccessToken = null;
         let examTimer = null;
-        let personalGoogleAccessToken = null; // Disimpan di RAM sesi per guru
 
         function getGasUrl() {
             return (state.systemConfig?.gasUrl || DEFAULT_GAS_URL || '').trim();
@@ -1095,49 +1211,61 @@
         }
 
         function ts() {
-            const key = state.auth?.teacherKey || Object.keys(state.teacherSpaces)[0];
-            return state.teacherSpaces[key] || Object.values(state.teacherSpaces)[0];
+            const key = state.auth?.teacherKey || 'demo.guru@belajar.id';
+            if (!state.teacherSpaces[key]) {
+                const firstKey = Object.keys(state.teacherSpaces)[0];
+                if (firstKey) return state.teacherSpaces[firstKey];
+                state.teacherSpaces[key] = createTeacherSpace({ email: key });
+            }
+            return state.teacherSpaces[key];
         }
 
         function getActiveRombel() {
             const space = ts();
-            return space.rombels[space.activeRombelId] || Object.values(space.rombels)[0];
+            if (space.rombels && space.rombels[space.activeRombelId]) {
+                return space.rombels[space.activeRombelId];
+            }
+            const firstId = Object.keys(space.rombels || {})[0];
+            if (firstId) {
+                space.activeRombelId = firstId;
+                return space.rombels[firstId];
+            }
+            const fallback = buildDefaultRombel('IX', 'A');
+            space.rombels = { 'IX-A': fallback };
+            space.activeRombelId = 'IX-A';
+            return fallback;
         }
 
         function getGradeTps() {
-            const space = ts();
-            return space.curriculum[space.activeGrade] || CURRICULUM_DATA['IX'];
+            const g = ts().activeGrade || 'IX';
+            return CURRICULUM_DATA[g] || CURRICULUM_DATA['IX'];
         }
 
         function persist() {
-            try {
-                localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
-            } catch (e) { /* abaikan */ }
-            const space = ts();
-            if (space?.driveMeta?.connected) {
-                clearTimeout(driveDebounce);
-                driveDebounce = setTimeout(() => { syncToGoogleDrive(true); }, 2500);
-            }
+            localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
         }
 
         function showToast(msg) {
             const box = document.getElementById('toast-box');
-            document.getElementById('toast-text').textContent = msg;
+            const text = document.getElementById('toast-text');
+            if (!box || !text) return;
+            text.textContent = msg;
             box.classList.remove('hidden');
             box.classList.add('flex');
-            setTimeout(() => {
+            clearTimeout(window.__toastTimer);
+            window.__toastTimer = setTimeout(() => {
                 box.classList.add('hidden');
                 box.classList.remove('flex');
-            }, 3200);
+            }, 3000);
         }
 
         // =========================================================================
-        // 3. GOOGLE DRIVE PRIBADI TIAP GURU (OAUTH 2.0) + APPS SCRIPT FALLBACK
+        // 3. GOOGLE DRIVE SYNC (OTOMATIS MULTI-GURU VIA APPS SCRIPT + OPSIONAL OAUTH)
         // =========================================================================
         function connectPersonalGoogleDrive() {
             const clientId = getOauthClientId();
             if (!clientId) {
-                showToast('OAuth Client ID belum diatur Admin. Anda dapat memakai sinkronisasi Cloud di bawah atau hubungi Admin.');
+                showToast('OAuth Client ID belum diisi Admin. Gunakan tombol "Sinkronkan ke Google Drive Sekarang" di atas.');
                 return;
             }
             if (!window.google || !google.accounts || !google.accounts.oauth2) {
@@ -1149,7 +1277,7 @@
                 scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email',
                 callback: async (resp) => {
                     if (resp.error) {
-                        showToast('Otorisasi Google Drive dibatalkan.');
+                        showToast('Otorisasi Google Drive dibatalkan atau domain belum didaftarkan di Google Cloud.');
                         return;
                     }
                     personalGoogleAccessToken = resp.access_token;
@@ -1179,7 +1307,6 @@
             const fileName = `DB_${classCode}.json`;
 
             try {
-                // 1. Cari atau buat folder di Google Drive PRIBADI guru yang login
                 const qFolder = encodeURIComponent(`name='${folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
                 const fList = await fetch(`https://www.googleapis.com/drive/v3/files?q=${qFolder}&fields=files(id,name)`, { headers }).then(r => r.json());
                 let folderId = fList.files?.[0]?.id;
@@ -1192,7 +1319,6 @@
                     folderId = createdF.id;
                 }
 
-                // 2. Cari atau buat/perbarui file DB JSON di folder Drive pribadi guru
                 const qFile = encodeURIComponent(`name='${fileName}' and '${folderId}' in parents and trashed=false`);
                 const fileList = await fetch(`https://www.googleapis.com/drive/v3/files?q=${qFile}&fields=files(id,name)`, { headers }).then(r => r.json());
                 let fileId = fileList.files?.[0]?.id;
@@ -1216,7 +1342,6 @@
                     fileId = createdFile.id;
                 }
 
-                // 3. Beri izin baca-saja agar siswa yang memiliki Kode Kelas dapat memuat materi dari Drive guru ini
                 await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
                     method: 'POST',
                     headers: { ...headers, 'Content-Type': 'application/json' },
@@ -1230,7 +1355,6 @@
                 space.driveMeta.fileId = fileId;
                 space.driveMeta.lastSync = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
 
-                // 4. Mirror otomatis ke Google Drive Admin Pusat jika URL Cloud terpasang
                 if (getGasUrl()) {
                     const mirrorRes = await callGasApi({
                         action: 'syncTeacherDriveBackup',
@@ -1246,7 +1370,7 @@
                     space.driveMeta.adminMirrored = !!(mirrorRes && mirrorRes.ok);
                 }
 
-                localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
+                persist();
                 updateTeacherHeader();
                 if (!silent) {
                     const mirrorNote = space.driveMeta.adminMirrored ? ' + Ter-backup ke Drive Admin' : '';
@@ -1303,9 +1427,9 @@
                 if (!personalOk) space.driveMeta.mode = 'central-gas';
                 space.driveMeta.adminMirrored = true;
                 space.driveMeta.lastSync = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-                localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
+                persist();
                 updateTeacherHeader();
-                if (!silent) showToast(`Backup tersimpan di Google Drive Admin (${space.driveMeta.lastSync})!`);
+                if (!silent) showToast(`Backup tersimpan di Google Drive (${space.driveMeta.lastSync})!`);
                 return true;
             } else {
                 if (!silent) showToast(res.message || 'Gagal sinkronisasi Google Drive.');
@@ -1330,7 +1454,7 @@
                             lastSync: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
                         });
                         state.teacherSpaces[key] = remote;
-                        localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
+                        persist();
                         return key;
                     }
                 } catch (e) { /* abaikan */ }
@@ -1617,7 +1741,7 @@
                 const badge = document.getElementById('cloud-status-badge');
                 if (badge) {
                     const ready = getOauthClientId() || getGasUrl();
-                    badge.textContent = ready ? '● Multi-Guru Google Drive Aktif' : 'Mode Lokal Siap';
+                    badge.textContent = ready ? '● Google Drive Cloud Aktif' : 'Mode Lokal Siap';
                     badge.className = ready ? 'text-[11px] font-bold text-mint' : 'text-[11px] font-bold text-slate-400';
                 }
             } else if (role === 'admin') {
@@ -1737,21 +1861,21 @@
             } else {
                 area.innerHTML = `
                     <div class="bg-white border border-cream-border rounded-3xl p-6 shadow-xs space-y-4 max-w-2xl">
-                        <h3 class="font-display font-extrabold text-base text-navy">Konfigurasi Multi-Guru Google Drive &amp; Cloud Sync</h3>
+                        <h3 class="font-display font-extrabold text-base text-navy">Konfigurasi Cloud Google Apps Script &amp; OAuth</h3>
                         <p class="text-xs text-navy-muted leading-relaxed">
-                            1. <strong>Google OAuth Client ID:</strong> Memungkinkan setiap guru login dengan akun Google-nya sendiri dan menyimpan backup otomatis ke <strong>Google Drive pribadi masing-masing guru</strong>.<br>
-                            2. <strong>URL Google Apps Script (/exec):</strong> Menyimpan daftar akun guru, token, dan indeks Kode Kelas lintas perangkat.
+                            1. <strong>URL Google Apps Script (/exec):</strong> Wajib diisi agar setiap guru memiliki folder backup otomatis di Google Drive dan dapat login lintas perangkat.<br>
+                            2. <strong>Google OAuth Client ID (Opsional):</strong> Hanya jika Anda telah membuat Client ID di Google Cloud Console agar guru juga dapat menyimpan ke Drive pribadinya sendiri.
                         </p>
                         <form onsubmit="saveAdminCloudConfig(event)" class="space-y-3">
-                            <div>
-                                <label class="block text-xs font-bold text-navy mb-1">Google OAuth 2.0 Client ID (Untuk Drive Pribadi Tiap Guru)</label>
-                                <input type="text" id="adm-oauth-id" value="${getOauthClientId()}" placeholder="1234567890-abcdefg.apps.googleusercontent.com" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
-                            </div>
                             <div>
                                 <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (/exec)</label>
                                 <input type="url" id="adm-gas-url" value="${getGasUrl()}" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
                             </div>
-                            <button type="submit" class="bg-navy text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">Simpan Konfigurasi Multi-Guru</button>
+                            <div>
+                                <label class="block text-xs font-bold text-navy mb-1">Google OAuth 2.0 Client ID (Opsional)</label>
+                                <input type="text" id="adm-oauth-id" value="${getOauthClientId()}" placeholder="1234567890-abcdefg.apps.googleusercontent.com" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
+                            </div>
+                            <button type="submit" class="bg-navy text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">Simpan Konfigurasi Cloud</button>
                         </form>
                     </div>
                 `;
@@ -1796,10 +1920,10 @@
 
         function saveAdminCloudConfig(e) {
             e.preventDefault();
-            state.systemConfig.oauthClientId = document.getElementById('adm-oauth-id').value.trim();
             state.systemConfig.gasUrl = document.getElementById('adm-gas-url').value.trim();
+            state.systemConfig.oauthClientId = document.getElementById('adm-oauth-id').value.trim();
             persist();
-            showToast('Konfigurasi Multi-Guru Google Drive & Cloud tersimpan!');
+            showToast('Konfigurasi Cloud & Google Drive tersimpan!');
         }
 
         // =========================================================================
@@ -1814,11 +1938,9 @@
             const driveLabel = document.getElementById('tc-drive-label');
             if (driveLabel) {
                 if (space.driveMeta?.connected && space.driveMeta?.mode === 'personal-oauth') {
-                    driveLabel.textContent = space.driveMeta.adminMirrored
-                        ? `Drive Pribadi + Admin (${space.driveMeta.lastSync || 'Aktif'})`
-                        : `Drive Pribadi (${space.driveMeta.lastSync || 'Aktif'})`;
+                    driveLabel.textContent = `Drive Pribadi (${space.driveMeta.lastSync || 'Aktif'})`;
                 } else if (space.driveMeta?.connected) {
-                    driveLabel.textContent = `Drive Admin Tersinkron (${space.driveMeta.lastSync || 'Aktif'})`;
+                    driveLabel.textContent = `Drive Tersinkron (${space.driveMeta.lastSync || 'Aktif'})`;
                 } else {
                     driveLabel.textContent = 'Hubungkan Google Drive Saya';
                 }
@@ -2432,7 +2554,7 @@
             showToast('File Microsoft Word (.doc) berhasil diunduh!');
         }
 
-        // Modal Rombel & Google Drive Multi-Guru
+        // Modal Rombel (A - J) & Google Drive
         function openRombelManager() {
             const space = ts();
             const list = document.getElementById('rombel-checkbox-list');
@@ -2488,44 +2610,46 @@
         function openDriveModal() {
             const space = ts();
             const hasOauth = !!getOauthClientId();
+            const hasGas = !!getGasUrl();
             const body = document.getElementById('drive-modal-body');
 
             body.innerHTML = `
-                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs text-navy leading-relaxed">
-                    <strong>Mode Dual-Backup (Drive Pribadi + Drive Admin):</strong> Data Anda otomatis tersimpan di <strong>Google Drive pribadi Anda</strong> sekaligus ter-backup ke <strong>Google Drive Admin Pusat</strong> sebagai pengaman ganda.
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3.5 text-xs text-navy leading-relaxed">
+                    <strong>Cadangan Cloud Multi-Guru Otomatis:</strong> Data kelas <strong>${space.school.teacherName} (${space.school.classCode})</strong> disimpan dalam folder khusus guru di Google Drive sehingga aman &amp; bisa dibuka di HP/laptop lain.
                 </div>
 
                 ${space.driveMeta?.connected ? `
-                    <div class="bg-mint-bg/70 border border-green-300 rounded-2xl p-3 text-xs text-navy flex items-center justify-between gap-2">
+                    <div class="bg-mint-bg/70 border border-green-300 rounded-2xl p-3.5 text-xs text-navy flex items-center justify-between gap-2">
                         <div>
-                            <strong class="text-mint block">✓ Status Backup Aktif (${space.driveMeta.lastSync})</strong>
-                            <span>Drive Pribadi: <strong>${space.driveMeta.mode === 'personal-oauth' ? (space.driveMeta.googleAccount || 'Terhubung') : 'Belum dipilih'}</strong></span><br>
-                            <span>Drive Admin: <strong>${space.driveMeta.adminMirrored ? '✓ Ter-backup Otomatis' : 'Menunggu URL Cloud Admin'}</strong></span>
+                            <strong class="text-mint block">✓ Google Drive Terhubung (${space.driveMeta.lastSync})</strong>
+                            <span>Folder Guru: <strong>${space.school.teacherName} (${space.school.classCode})</strong></span>
                         </div>
                         <button type="button" onclick="syncToGoogleDrive(false)" class="bg-mint text-white font-extrabold px-3 py-1.5 rounded-xl cursor-pointer shrink-0">Sinkron Sekarang</button>
                     </div>
                 ` : ''}
 
-                <button type="button" onclick="connectPersonalGoogleDrive()" class="w-full bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-xs sm:text-sm py-3 rounded-2xl shadow cursor-pointer flex items-center justify-center gap-2">
-                    <i data-lucide="log-in" class="w-4 h-4"></i>
-                    <span>${space.driveMeta?.mode === 'personal-oauth' ? 'Ganti / Hubungkan Ulang Akun Google Saya' : 'Pilih Akun Google & Hubungkan Drive Saya'}</span>
-                </button>
+                <form onsubmit="saveDriveUrlAndSync(event)" class="space-y-2.5 bg-cream-soft border border-cream-border rounded-2xl p-3.5">
+                    <label class="block text-xs font-extrabold text-navy">1. Sinkronisasi Cloud &amp; Drive (URL Apps Script /exec)</label>
+                    <input type="url" id="inp-drive-gas-url" value="${getGasUrl()}" required placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-mono bg-white">
+                    <button type="submit" id="btn-drive-sync-submit" class="w-full bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-xs sm:text-sm py-3 rounded-xl shadow cursor-pointer flex items-center justify-center gap-2">
+                        <i data-lucide="cloud-upload" class="w-4 h-4"></i>
+                        <span>${hasGas ? 'Sinkronkan ke Google Drive Sekarang' : 'Hubungkan & Simpan ke Google Drive'}</span>
+                    </button>
+                </form>
 
-                ${!hasOauth ? `
-                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[11px] text-amber-900">
-                        Catatan: Admin Pusat belum mengisi OAuth Client ID. Anda tetap dapat menggunakan Cloud Apps Script di bawah atau Unduh File Backup (.json).
-                    </div>
-                ` : ''}
-
-                <details class="border border-slate-200 rounded-2xl p-3 bg-cream-soft/50 text-xs">
-                    <summary class="font-bold text-navy cursor-pointer">Opsi Alternatif: URL Cloud Apps Script (/exec)</summary>
-                    <form onsubmit="saveDriveUrlAndSync(event)" class="space-y-2.5 mt-3">
-                        <input type="url" id="inp-drive-gas-url" value="${getGasUrl()}" required placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-mono bg-white">
-                        <button type="submit" id="btn-drive-sync-submit" class="w-full bg-navy text-white font-extrabold text-xs py-2.5 rounded-xl cursor-pointer">
-                            Sinkronkan via Cloud Apps Script
+                ${hasOauth ? `
+                    <div class="border border-slate-200 rounded-2xl p-3.5 bg-white space-y-2">
+                        <span class="block text-xs font-extrabold text-navy">2. Simpan Juga ke Google Drive Pribadi Guru (OAuth)</span>
+                        <button type="button" onclick="connectPersonalGoogleDrive()" class="w-full bg-navy hover:bg-navy-deep text-white font-display font-extrabold text-xs py-2.5 rounded-xl cursor-pointer flex items-center justify-center gap-2">
+                            <i data-lucide="log-in" class="w-4 h-4 text-gold"></i>
+                            <span>${space.driveMeta?.mode === 'personal-oauth' ? 'Ganti Akun Google Pribadi' : 'Pilih Akun Google Pribadi Saya'}</span>
                         </button>
-                    </form>
-                </details>
+                    </div>
+                ` : `
+                    <p class="text-[11px] text-navy-muted px-1">
+                        <em>Info:</em> Penyimpanan langsung ke Drive pribadi tiap guru memerlukan <strong>Google OAuth Client ID</strong> (konfigurasi terpisah di Google Cloud Console yang dapat diisi Admin pada Panel Admin → Tab 3).
+                    </p>
+                `}
             `;
 
             const m = document.getElementById('modal-drive-sync');
@@ -2548,7 +2672,7 @@
             persist();
             if (btn) { btn.disabled = true; btn.textContent = 'Menghubungkan ke Cloud...'; }
             const ok = await syncToGoogleDrive(false);
-            if (btn) { btn.disabled = false; btn.textContent = 'Sinkronkan via Cloud Apps Script'; }
+            if (btn) { btn.disabled = false; btn.textContent = 'Sinkronkan ke Google Drive Sekarang'; }
             if (ok) closeDriveModal();
         }
 
