@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English For Nusantara — LMS &amp; Administrasi Guru SMP/MTs</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -130,7 +131,6 @@
         </nav>
 
         <div class="w-full max-w-6xl mx-auto px-4 py-8 sm:py-12">
-            <!-- Hero Header -->
             <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
                 <div class="inline-flex items-center gap-2 bg-white border border-cream-border px-4 py-1.5 rounded-full shadow-2xs mb-4">
                     <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
@@ -140,11 +140,10 @@
                     English For <span class="text-royal gold-marker">Nusantara</span>
                 </h1>
                 <p class="text-xs sm:text-base text-navy-muted mt-3 leading-relaxed">
-                    Satu platform terpadu untuk pembelajaran Bahasa Inggris interaktif siswa dan perangkat administrasi guru 2 semester, lengkap dengan sinkronisasi Google Drive lintas perangkat.
+                    Satu platform terpadu untuk pembelajaran Bahasa Inggris interaktif siswa dan perangkat administrasi guru 2 semester, lengkap dengan penyimpanan Google Drive pribadi tiap guru.
                 </p>
             </div>
 
-            <!-- Dua Kartu Login Utama -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
                 <!-- KARTU 1: PORTAL SISWA (HANYA NAMA & PIN) -->
                 <div class="bg-white border-2 border-cream-border hover:border-royal rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between">
@@ -224,7 +223,7 @@
                     </div>
                 </div>
 
-                <!-- KARTU 2: PORTAL GURU (KHUSUS GURU — TANPA TAB ADMIN) -->
+                <!-- KARTU 2: PORTAL GURU -->
                 <div class="bg-white border-2 border-navy/20 hover:border-navy rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-5">
@@ -235,7 +234,7 @@
                         </div>
                         <h2 class="font-display font-extrabold text-2xl text-navy">Masuk sebagai Guru</h2>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
-                            Kelola perangkat ajar, bank soal, presensi, dan rapor khusus untuk jenjang kelas &amp; rombel yang Anda ampu, tersinkronisasi ke Google Drive.
+                            Kelola perangkat ajar, bank soal, presensi, dan rapor khusus untuk jenjang kelas &amp; rombel yang Anda ampu, tersinkronisasi ke Google Drive pribadi Anda.
                         </p>
 
                         <div class="grid grid-cols-2 gap-1.5 bg-cream-soft p-1.5 rounded-2xl mb-5">
@@ -320,13 +319,13 @@
         <footer class="w-full border-t border-cream-border bg-white/80 px-4 py-3.5">
             <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs text-navy-muted">
                 <span>© 2026 English For Nusantara • Kurikulum Merdeka SMP/MTs</span>
-                <span>Siap GitHub Pages • Sinkronisasi Google Drive Lintas Perangkat</span>
+                <span>Multi-Guru • Google Drive Pribadi Tiap Guru &amp; Sinkron Lintas Perangkat</span>
             </div>
         </footer>
     </main>
 
     <!-- ===================================================================== -->
-    <!-- 2. DASHBOARD SUPER ADMIN (TERPISAH & AMAN)                            -->
+    <!-- 2. DASHBOARD SUPER ADMIN                                              -->
     <!-- ===================================================================== -->
     <section id="view-admin" class="hidden flex-1 flex flex-col">
         <header class="bg-navy-deep text-white px-4 py-3 shadow-md">
@@ -338,7 +337,7 @@
                             <span class="font-display font-extrabold text-sm sm:text-base">Admin Pusat — English For Nusantara</span>
                             <span class="text-[10px] font-extrabold bg-gold text-navy px-2 py-0.5 rounded-full">SUPER ADMIN</span>
                         </div>
-                        <p class="text-[11px] text-blue-200">Manajemen Lisensi Guru, Token &amp; URL Cloud Google Apps Script</p>
+                        <p class="text-[11px] text-blue-200">Manajemen Lisensi Guru, Token &amp; Konfigurasi Multi-Guru Google Drive</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -355,14 +354,14 @@
             <div class="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-cream-border shadow-2xs">
                 <button type="button" onclick="setAdminTab('teachers')" id="adm-nav-teachers" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-navy text-white cursor-pointer">1. Akun &amp; Lisensi Guru</button>
                 <button type="button" onclick="setAdminTab('tokens')" id="adm-nav-tokens" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">2. Generator Token</button>
-                <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Konfigurasi Cloud (GitHub / Multi-Device)</button>
+                <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Konfigurasi Cloud &amp; OAuth Multi-Guru</button>
             </div>
             <div id="admin-content-area"></div>
         </div>
     </section>
 
     <!-- ===================================================================== -->
-    <!-- 3. PORTAL GURU (TERBATAS JENJANG & ROMBEL YANG DIAMPU)                 -->
+    <!-- 3. PORTAL GURU                                                        -->
     <!-- ===================================================================== -->
     <section id="view-teacher" class="hidden flex-1 flex flex-col">
         <header class="no-print sticky top-0 z-30 bg-navy text-white px-4 py-3 shadow-md">
@@ -398,7 +397,6 @@
             </div>
         </header>
 
-        <!-- GRID 18 MENU ADMINISTRASI GURU -->
         <div id="tc-grid-section" class="max-w-5xl w-full mx-auto px-4 py-6 sm:py-8">
             <div class="bg-white border border-cream-border rounded-2xl p-3.5 mb-6 shadow-2xs flex flex-wrap items-center justify-between gap-2">
                 <div class="flex flex-wrap items-center gap-2 text-xs">
@@ -431,7 +429,6 @@
             <div id="tc-cards-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4"></div>
         </div>
 
-        <!-- WORKSPACE DETAIL DOKUMEN -->
         <div id="tc-workspace-section" class="hidden max-w-5xl w-full mx-auto px-3 sm:px-4 py-5 print-sheet">
             <div class="no-print flex flex-wrap items-center justify-between gap-2 bg-white border border-cream-border rounded-2xl p-3 mb-4 shadow-2xs">
                 <button type="button" onclick="closeModule()" class="inline-flex items-center gap-1.5 bg-navy text-white text-xs font-extrabold px-3.5 py-2 rounded-xl cursor-pointer">
@@ -459,7 +456,7 @@
     </section>
 
     <!-- ===================================================================== -->
-    <!-- 4. PORTAL SISWA (MATERI, BUKU PANDUAN, FLASHCARD, LKPD, UJIAN, RAPOR) -->
+    <!-- 4. PORTAL SISWA                                                       -->
     <!-- ===================================================================== -->
     <section id="view-student" class="hidden flex-1 flex flex-col">
         <header class="sticky top-0 z-30 bg-royal text-white px-4 py-3 shadow-md">
@@ -490,7 +487,7 @@
     </section>
 
     <!-- ===================================================================== -->
-    <!-- 5. MODAL PENGATURAN JENJANG & ROMBEL GURU                             -->
+    <!-- 5. MODAL PENGATURAN JENJANG & ROMBEL GURU (A - J)                     -->
     <!-- ===================================================================== -->
     <div id="modal-rombel-mgr" class="no-print fixed inset-0 z-[80] hidden items-center justify-center bg-navy/75 backdrop-blur-xs p-4">
         <div class="bg-white border border-cream-border rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
@@ -498,7 +495,7 @@
                 <h3 class="font-display font-extrabold text-base text-navy">Atur Jenjang &amp; Rombel yang Anda Ampu</h3>
                 <button type="button" onclick="closeRombelManager()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
-            <p class="text-xs text-navy-muted">Centang jenjang kelas dan rombel yang Anda ajar. Anda hanya dapat mengakses kelas yang dicentang di sini.</p>
+            <p class="text-xs text-navy-muted">Centang jenjang kelas dan rombel (A – J) yang Anda ajar. Anda hanya dapat mengakses kelas yang dicentang di sini.</p>
             <div id="rombel-checkbox-list" class="space-y-3 max-h-72 overflow-y-auto pr-1"></div>
             <div class="flex gap-2 pt-2">
                 <button type="button" onclick="closeRombelManager()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-navy font-display font-bold text-xs py-3 rounded-2xl cursor-pointer">Batal</button>
@@ -508,7 +505,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- 6. MODAL GOOGLE DRIVE & CLOUD SYNC LINTAS PERANGKAT                   -->
+    <!-- 6. MODAL GOOGLE DRIVE PRIBADI TIAP GURU (MULTI-GURU MANDIRI)          -->
     <!-- ===================================================================== -->
     <div id="modal-drive-sync" class="no-print fixed inset-0 z-[82] hidden items-center justify-center bg-navy/75 backdrop-blur-xs p-4">
         <div class="bg-white border border-cream-border rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
@@ -516,33 +513,30 @@
                 <div class="flex items-center gap-2.5">
                     <div class="w-9 h-9 rounded-xl bg-royal-light text-royal flex items-center justify-center"><i data-lucide="hard-drive" class="w-5 h-5"></i></div>
                     <div>
-                        <h3 class="font-display font-extrabold text-base text-navy">Hubungkan Google Drive Saya</h3>
-                        <p class="text-[11px] text-navy-muted">Auto-Backup &amp; Sinkronisasi Multi-Perangkat (GitHub Ready)</p>
+                        <h3 class="font-display font-extrabold text-base text-navy">Google Drive Pribadi Guru</h3>
+                        <p class="text-[11px] text-navy-muted">Setiap guru menyimpan data di akun Google Drive-nya masing-masing</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeDriveModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
-            <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs text-navy leading-relaxed">
-                Masukkan URL Web App <strong>Google Apps Script (/exec)</strong> agar seluruh data kelas, nilai, dan soal otomatis tersimpan di Google Drive Anda dan dapat diakses dari HP atau laptop mana pun.
-            </div>
-            <form onsubmit="saveDriveUrlAndSync(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (/exec)</label>
-                    <input type="url" id="inp-drive-gas-url" required placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono bg-white focus:outline-royal">
-                </div>
-                <button type="submit" id="btn-drive-sync-submit" class="w-full bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-xs py-3 rounded-2xl shadow cursor-pointer">
-                    Simpan URL &amp; Sinkronkan ke Google Drive
-                </button>
-            </form>
+
+            <div id="drive-modal-body" class="space-y-3.5"></div>
+
             <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                 <span class="text-navy-muted">Cadangan manual offline:</span>
-                <button type="button" onclick="closeDriveModal(); downloadLocalBackup();" class="text-royal font-extrabold hover:underline cursor-pointer">↓ Unduh File Backup (.json)</button>
+                <div class="flex items-center gap-3">
+                    <label class="text-navy font-extrabold hover:underline cursor-pointer">
+                        ↑ Pulihkan (.json)
+                        <input type="file" accept=".json" onchange="restoreLocalBackup(event)" class="hidden">
+                    </label>
+                    <button type="button" onclick="closeDriveModal(); downloadLocalBackup();" class="text-royal font-extrabold hover:underline cursor-pointer">↓ Unduh (.json)</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- ===================================================================== -->
-    <!-- 7. MODAL LOGIN ADMIN PUSAT (KOSONG TANPA AUTO-FILL)                   -->
+    <!-- 7. MODAL LOGIN ADMIN PUSAT                                            -->
     <!-- ===================================================================== -->
     <div id="modal-admin-auth" class="no-print fixed inset-0 z-[90] hidden items-center justify-center bg-navy/75 backdrop-blur-xs p-4">
         <div class="bg-white border border-cream-border rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
@@ -591,9 +585,10 @@
         // =========================================================================
         const SUPER_ADMIN_EMAIL = "taufiqurrohman14@guru.smp.belajar.id";
         const SUPER_ADMIN_PIN   = "admin2026";
-        const MASTER_STORE_KEY  = "efn_nusantara_master_v12";
-        // Opsional: Tempelkan URL Web App Apps Script (/exec) di sini sebelum upload ke GitHub
+        const MASTER_STORE_KEY  = "efn_nusantara_master_v13";
+        // Tempelkan URL Web App Apps Script (/exec) dan OAuth Client ID di sini sebelum upload ke GitHub Pages
         const DEFAULT_GAS_URL   = "";
+        const DEFAULT_OAUTH_ID  = "";
 
         const TEACHER_MODULES = [
             { id: 'data-kelas', title: 'Data Kelas & Siswa', icon: 'users', highlight: true },
@@ -985,6 +980,11 @@
                 },
                 driveMeta: {
                     connected: false,
+                    mode: '', // 'personal-oauth' | 'central-gas'
+                    googleAccount: '',
+                    folderId: '',
+                    fileId: '',
+                    adminMirrored: false,
                     lastSync: ''
                 },
                 rombels,
@@ -1046,7 +1046,8 @@
             return {
                 auth: { role: null, teacherKey: 'demo.guru@belajar.id', studentId: null, rombelId: 'IX-A' },
                 systemConfig: {
-                    gasUrl: DEFAULT_GAS_URL
+                    gasUrl: DEFAULT_GAS_URL,
+                    oauthClientId: DEFAULT_OAUTH_ID
                 },
                 adminRegistry: {
                     activeTab: 'teachers',
@@ -1068,8 +1069,9 @@
             try {
                 const raw = localStorage.getItem(MASTER_STORE_KEY);
                 const parsed = raw ? JSON.parse(raw) : createInitialState();
-                if (!parsed.systemConfig) parsed.systemConfig = { gasUrl: DEFAULT_GAS_URL };
+                if (!parsed.systemConfig) parsed.systemConfig = { gasUrl: DEFAULT_GAS_URL, oauthClientId: DEFAULT_OAUTH_ID };
                 if (!parsed.systemConfig.gasUrl && DEFAULT_GAS_URL) parsed.systemConfig.gasUrl = DEFAULT_GAS_URL;
+                if (!parsed.systemConfig.oauthClientId && DEFAULT_OAUTH_ID) parsed.systemConfig.oauthClientId = DEFAULT_OAUTH_ID;
                 if (!parsed.teacherSpaces || Object.keys(parsed.teacherSpaces).length === 0) {
                     parsed.teacherSpaces = createInitialState().teacherSpaces;
                 }
@@ -1082,9 +1084,14 @@
         let activeModuleId = null;
         let driveDebounce = null;
         let examTimer = null;
+        let personalGoogleAccessToken = null; // Disimpan di RAM sesi per guru
 
         function getGasUrl() {
             return (state.systemConfig?.gasUrl || DEFAULT_GAS_URL || '').trim();
+        }
+
+        function getOauthClientId() {
+            return (state.systemConfig?.oauthClientId || DEFAULT_OAUTH_ID || '').trim();
         }
 
         function ts() {
@@ -1107,7 +1114,7 @@
                 localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
             } catch (e) { /* abaikan */ }
             const space = ts();
-            if (space?.driveMeta?.connected && getGasUrl()) {
+            if (space?.driveMeta?.connected) {
                 clearTimeout(driveDebounce);
                 driveDebounce = setTimeout(() => { syncToGoogleDrive(true); }, 2500);
             }
@@ -1121,12 +1128,137 @@
             setTimeout(() => {
                 box.classList.add('hidden');
                 box.classList.remove('flex');
-            }, 3000);
+            }, 3200);
         }
 
         // =========================================================================
-        // 3. KOMUNIKASI CLOUD GOOGLE APPS SCRIPT (GITHUB & MULTI-DEVICE READY)
+        // 3. GOOGLE DRIVE PRIBADI TIAP GURU (OAUTH 2.0) + APPS SCRIPT FALLBACK
         // =========================================================================
+        function connectPersonalGoogleDrive() {
+            const clientId = getOauthClientId();
+            if (!clientId) {
+                showToast('OAuth Client ID belum diatur Admin. Anda dapat memakai sinkronisasi Cloud di bawah atau hubungi Admin.');
+                return;
+            }
+            if (!window.google || !google.accounts || !google.accounts.oauth2) {
+                showToast('Layanan Google Identity sedang dimuat, silakan coba beberapa detik lagi.');
+                return;
+            }
+            const tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: clientId,
+                scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email',
+                callback: async (resp) => {
+                    if (resp.error) {
+                        showToast('Otorisasi Google Drive dibatalkan.');
+                        return;
+                    }
+                    personalGoogleAccessToken = resp.access_token;
+                    const space = ts();
+                    space.driveMeta.connected = true;
+                    space.driveMeta.mode = 'personal-oauth';
+                    try {
+                        const uInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                            headers: { Authorization: `Bearer ${personalGoogleAccessToken}` }
+                        }).then(r => r.json());
+                        if (uInfo.email) space.driveMeta.googleAccount = uInfo.email;
+                    } catch (e) { /* abaikan */ }
+
+                    await syncToPersonalDrive(false);
+                    closeDriveModal();
+                }
+            });
+            tokenClient.requestAccessToken({ prompt: 'select_account' });
+        }
+
+        async function syncToPersonalDrive(silent = false) {
+            if (!personalGoogleAccessToken) return false;
+            const space = ts();
+            const headers = { Authorization: `Bearer ${personalGoogleAccessToken}` };
+            const classCode = space.school.classCode || 'EFN';
+            const folderName = `English For Nusantara - Backup (${classCode})`;
+            const fileName = `DB_${classCode}.json`;
+
+            try {
+                // 1. Cari atau buat folder di Google Drive PRIBADI guru yang login
+                const qFolder = encodeURIComponent(`name='${folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
+                const fList = await fetch(`https://www.googleapis.com/drive/v3/files?q=${qFolder}&fields=files(id,name)`, { headers }).then(r => r.json());
+                let folderId = fList.files?.[0]?.id;
+                if (!folderId) {
+                    const createdF = await fetch('https://www.googleapis.com/drive/v3/files', {
+                        method: 'POST',
+                        headers: { ...headers, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: folderName, mimeType: 'application/vnd.google-apps.folder' })
+                    }).then(r => r.json());
+                    folderId = createdF.id;
+                }
+
+                // 2. Cari atau buat/perbarui file DB JSON di folder Drive pribadi guru
+                const qFile = encodeURIComponent(`name='${fileName}' and '${folderId}' in parents and trashed=false`);
+                const fileList = await fetch(`https://www.googleapis.com/drive/v3/files?q=${qFile}&fields=files(id,name)`, { headers }).then(r => r.json());
+                let fileId = fileList.files?.[0]?.id;
+                const payloadStr = JSON.stringify(space);
+
+                if (fileId) {
+                    await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                        method: 'PATCH',
+                        headers: { ...headers, 'Content-Type': 'application/json' },
+                        body: payloadStr
+                    });
+                } else {
+                    const boundary = 'efn_boundary_2026';
+                    const meta = JSON.stringify({ name: fileName, parents: [folderId], mimeType: 'application/json' });
+                    const multipartBody = `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${meta}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${payloadStr}\r\n--${boundary}--`;
+                    const createdFile = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', {
+                        method: 'POST',
+                        headers: { ...headers, 'Content-Type': `multipart/related; boundary=${boundary}` },
+                        body: multipartBody
+                    }).then(r => r.json());
+                    fileId = createdFile.id;
+                }
+
+                // 3. Beri izin baca-saja agar siswa yang memiliki Kode Kelas dapat memuat materi dari Drive guru ini
+                await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
+                    method: 'POST',
+                    headers: { ...headers, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ role: 'reader', type: 'anyone' })
+                });
+
+                const publicJsonUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                space.driveMeta.connected = true;
+                space.driveMeta.mode = 'personal-oauth';
+                space.driveMeta.folderId = folderId;
+                space.driveMeta.fileId = fileId;
+                space.driveMeta.lastSync = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+                // 4. Mirror otomatis ke Google Drive Admin Pusat jika URL Cloud terpasang
+                if (getGasUrl()) {
+                    const mirrorRes = await callGasApi({
+                        action: 'syncTeacherDriveBackup',
+                        email: space.school.teacherEmail,
+                        teacherName: space.school.teacherName,
+                        schoolName: space.school.name,
+                        classCode,
+                        personalFolderId: folderId,
+                        personalFileId: fileId,
+                        personalPublicUrl: publicJsonUrl,
+                        dbJsonString: payloadStr
+                    });
+                    space.driveMeta.adminMirrored = !!(mirrorRes && mirrorRes.ok);
+                }
+
+                localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
+                updateTeacherHeader();
+                if (!silent) {
+                    const mirrorNote = space.driveMeta.adminMirrored ? ' + Ter-backup ke Drive Admin' : '';
+                    showToast(`Tersimpan di Google Drive Pribadi${mirrorNote}!`);
+                }
+                return true;
+            } catch (err) {
+                if (!silent) showToast('Gagal mengunggah ke Google Drive pribadi. Coba hubungkan ulang akun Google Anda.');
+                return false;
+            }
+        }
+
         async function callGasApi(payload) {
             const url = getGasUrl();
             if (!url) return { ok: false, offline: true, message: 'URL Cloud Google Apps Script belum diatur.' };
@@ -1147,24 +1279,33 @@
         }
 
         async function syncToGoogleDrive(silent = false) {
+            const space = ts();
+            let personalOk = false;
+            if (space.driveMeta?.mode === 'personal-oauth' && personalGoogleAccessToken) {
+                personalOk = await syncToPersonalDrive(silent);
+                if (personalOk) return true;
+            }
             const url = getGasUrl();
             if (!url) {
                 if (!silent) openDriveModal();
                 return false;
             }
-            const space = ts();
             const res = await callGasApi({
                 action: 'syncTeacherDriveBackup',
                 email: space.school.teacherEmail,
+                teacherName: space.school.teacherName,
+                schoolName: space.school.name,
                 classCode: space.school.classCode,
                 dbJsonString: JSON.stringify(space)
             });
             if (res.ok) {
                 space.driveMeta.connected = true;
+                if (!personalOk) space.driveMeta.mode = 'central-gas';
+                space.driveMeta.adminMirrored = true;
                 space.driveMeta.lastSync = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                 localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
                 updateTeacherHeader();
-                if (!silent) showToast(`Sinkronisasi Google Drive berhasil (${space.driveMeta.lastSync})!`);
+                if (!silent) showToast(`Backup tersimpan di Google Drive Admin (${space.driveMeta.lastSync})!`);
                 return true;
             } else {
                 if (!silent) showToast(res.message || 'Gagal sinkronisasi Google Drive.');
@@ -1184,7 +1325,10 @@
                     const remote = JSON.parse(res.dbJsonString);
                     if (remote && remote.rombels) {
                         const key = (remote.school?.teacherEmail || email || classCode).toLowerCase();
-                        remote.driveMeta = { connected: true, lastSync: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) };
+                        remote.driveMeta = Object.assign({}, remote.driveMeta, {
+                            connected: true,
+                            lastSync: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+                        });
                         state.teacherSpaces[key] = remote;
                         localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
                         return key;
@@ -1450,6 +1594,7 @@
 
         function logout() {
             clearInterval(examTimer);
+            personalGoogleAccessToken = null;
             state.auth = { role: null, teacherKey: state.auth.teacherKey, studentId: null, rombelId: null };
             activeModuleId = null;
             persist();
@@ -1471,8 +1616,9 @@
                 populateStudentRombelOptions();
                 const badge = document.getElementById('cloud-status-badge');
                 if (badge) {
-                    badge.textContent = getGasUrl() ? '● Cloud Google Apps Script Aktif' : 'Mode Lokal Siap';
-                    badge.className = getGasUrl() ? 'text-[11px] font-bold text-mint' : 'text-[11px] font-bold text-slate-400';
+                    const ready = getOauthClientId() || getGasUrl();
+                    badge.textContent = ready ? '● Multi-Guru Google Drive Aktif' : 'Mode Lokal Siap';
+                    badge.className = ready ? 'text-[11px] font-bold text-mint' : 'text-[11px] font-bold text-slate-400';
                 }
             } else if (role === 'admin') {
                 renderAdminDashboard();
@@ -1591,11 +1737,21 @@
             } else {
                 area.innerHTML = `
                     <div class="bg-white border border-cream-border rounded-3xl p-6 shadow-xs space-y-4 max-w-2xl">
-                        <h3 class="font-display font-extrabold text-base text-navy">Konfigurasi URL Google Apps Script (Multi-Perangkat &amp; GitHub Pages)</h3>
-                        <p class="text-xs text-navy-muted leading-relaxed">Tempelkan URL Web App Google Apps Script (<code>/exec</code>) Anda di bawah ini agar pendaftaran guru, token, dan Auto-Backup Google Drive sinkron di seluruh perangkat.</p>
-                        <form onsubmit="saveAdminGasUrl(event)" class="space-y-3">
-                            <input type="url" id="adm-gas-url" value="${getGasUrl()}" required placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
-                            <button type="submit" class="bg-navy text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">Simpan Konfigurasi Cloud</button>
+                        <h3 class="font-display font-extrabold text-base text-navy">Konfigurasi Multi-Guru Google Drive &amp; Cloud Sync</h3>
+                        <p class="text-xs text-navy-muted leading-relaxed">
+                            1. <strong>Google OAuth Client ID:</strong> Memungkinkan setiap guru login dengan akun Google-nya sendiri dan menyimpan backup otomatis ke <strong>Google Drive pribadi masing-masing guru</strong>.<br>
+                            2. <strong>URL Google Apps Script (/exec):</strong> Menyimpan daftar akun guru, token, dan indeks Kode Kelas lintas perangkat.
+                        </p>
+                        <form onsubmit="saveAdminCloudConfig(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-bold text-navy mb-1">Google OAuth 2.0 Client ID (Untuk Drive Pribadi Tiap Guru)</label>
+                                <input type="text" id="adm-oauth-id" value="${getOauthClientId()}" placeholder="1234567890-abcdefg.apps.googleusercontent.com" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (/exec)</label>
+                                <input type="url" id="adm-gas-url" value="${getGasUrl()}" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
+                            </div>
+                            <button type="submit" class="bg-navy text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">Simpan Konfigurasi Multi-Guru</button>
                         </form>
                     </div>
                 `;
@@ -1638,11 +1794,12 @@
             showToast(`Token ${token} berhasil dibuat!`);
         }
 
-        function saveAdminGasUrl(e) {
+        function saveAdminCloudConfig(e) {
             e.preventDefault();
+            state.systemConfig.oauthClientId = document.getElementById('adm-oauth-id').value.trim();
             state.systemConfig.gasUrl = document.getElementById('adm-gas-url').value.trim();
             persist();
-            showToast('URL Google Apps Script tersimpan!');
+            showToast('Konfigurasi Multi-Guru Google Drive & Cloud tersimpan!');
         }
 
         // =========================================================================
@@ -1656,17 +1813,21 @@
 
             const driveLabel = document.getElementById('tc-drive-label');
             if (driveLabel) {
-                driveLabel.textContent = space.driveMeta?.connected
-                    ? `Drive Tersinkron (${space.driveMeta.lastSync || 'Aktif'})`
-                    : 'Hubungkan Google Drive Saya';
+                if (space.driveMeta?.connected && space.driveMeta?.mode === 'personal-oauth') {
+                    driveLabel.textContent = space.driveMeta.adminMirrored
+                        ? `Drive Pribadi + Admin (${space.driveMeta.lastSync || 'Aktif'})`
+                        : `Drive Pribadi (${space.driveMeta.lastSync || 'Aktif'})`;
+                } else if (space.driveMeta?.connected) {
+                    driveLabel.textContent = `Drive Admin Tersinkron (${space.driveMeta.lastSync || 'Aktif'})`;
+                } else {
+                    driveLabel.textContent = 'Hubungkan Google Drive Saya';
+                }
             }
 
-            // Hanya tampilkan jenjang yang diampu oleh guru ini
             const allowedGrades = space.allowedGrades || ['IX'];
             const gradeSel = document.getElementById('sel-grade');
             gradeSel.innerHTML = allowedGrades.map(g => `<option value="${g}" ${g === space.activeGrade ? 'selected' : ''}>Kelas ${g}</option>`).join('');
 
-            // Hanya tampilkan rombel pada jenjang aktif yang diampu guru ini
             const gradeRombels = Object.values(space.rombels || {}).filter(rb => rb.grade === space.activeGrade);
             const rombelSel = document.getElementById('sel-rombel');
             rombelSel.innerHTML = gradeRombels.map(rb => `<option value="${rb.id}" ${rb.id === r.id ? 'selected' : ''}>${rb.label}</option>`).join('');
@@ -1909,7 +2070,6 @@
                         </div>
                     </div>
 
-                    <!-- UPLOAD BUKU PANDUAN / MATERI DIGITAL UNTUK SISWA -->
                     <div class="no-print bg-blue-50/70 border border-blue-200 rounded-2xl p-4 space-y-3">
                         <h4 class="font-display font-extrabold text-sm text-navy">Upload Buku Panduan, Ringkasan Materi, atau Tautan Video ke Ruang Siswa</h4>
                         <form onsubmit="addTeacherResource(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -2272,7 +2432,7 @@
             showToast('File Microsoft Word (.doc) berhasil diunduh!');
         }
 
-        // Modal Rombel & Google Drive
+        // Modal Rombel & Google Drive Multi-Guru
         function openRombelManager() {
             const space = ts();
             const list = document.getElementById('rombel-checkbox-list');
@@ -2326,10 +2486,52 @@
         }
 
         function openDriveModal() {
-            document.getElementById('inp-drive-gas-url').value = getGasUrl();
+            const space = ts();
+            const hasOauth = !!getOauthClientId();
+            const body = document.getElementById('drive-modal-body');
+
+            body.innerHTML = `
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs text-navy leading-relaxed">
+                    <strong>Mode Dual-Backup (Drive Pribadi + Drive Admin):</strong> Data Anda otomatis tersimpan di <strong>Google Drive pribadi Anda</strong> sekaligus ter-backup ke <strong>Google Drive Admin Pusat</strong> sebagai pengaman ganda.
+                </div>
+
+                ${space.driveMeta?.connected ? `
+                    <div class="bg-mint-bg/70 border border-green-300 rounded-2xl p-3 text-xs text-navy flex items-center justify-between gap-2">
+                        <div>
+                            <strong class="text-mint block">✓ Status Backup Aktif (${space.driveMeta.lastSync})</strong>
+                            <span>Drive Pribadi: <strong>${space.driveMeta.mode === 'personal-oauth' ? (space.driveMeta.googleAccount || 'Terhubung') : 'Belum dipilih'}</strong></span><br>
+                            <span>Drive Admin: <strong>${space.driveMeta.adminMirrored ? '✓ Ter-backup Otomatis' : 'Menunggu URL Cloud Admin'}</strong></span>
+                        </div>
+                        <button type="button" onclick="syncToGoogleDrive(false)" class="bg-mint text-white font-extrabold px-3 py-1.5 rounded-xl cursor-pointer shrink-0">Sinkron Sekarang</button>
+                    </div>
+                ` : ''}
+
+                <button type="button" onclick="connectPersonalGoogleDrive()" class="w-full bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-xs sm:text-sm py-3 rounded-2xl shadow cursor-pointer flex items-center justify-center gap-2">
+                    <i data-lucide="log-in" class="w-4 h-4"></i>
+                    <span>${space.driveMeta?.mode === 'personal-oauth' ? 'Ganti / Hubungkan Ulang Akun Google Saya' : 'Pilih Akun Google & Hubungkan Drive Saya'}</span>
+                </button>
+
+                ${!hasOauth ? `
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[11px] text-amber-900">
+                        Catatan: Admin Pusat belum mengisi OAuth Client ID. Anda tetap dapat menggunakan Cloud Apps Script di bawah atau Unduh File Backup (.json).
+                    </div>
+                ` : ''}
+
+                <details class="border border-slate-200 rounded-2xl p-3 bg-cream-soft/50 text-xs">
+                    <summary class="font-bold text-navy cursor-pointer">Opsi Alternatif: URL Cloud Apps Script (/exec)</summary>
+                    <form onsubmit="saveDriveUrlAndSync(event)" class="space-y-2.5 mt-3">
+                        <input type="url" id="inp-drive-gas-url" value="${getGasUrl()}" required placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-mono bg-white">
+                        <button type="submit" id="btn-drive-sync-submit" class="w-full bg-navy text-white font-extrabold text-xs py-2.5 rounded-xl cursor-pointer">
+                            Sinkronkan via Cloud Apps Script
+                        </button>
+                    </form>
+                </details>
+            `;
+
             const m = document.getElementById('modal-drive-sync');
             m.classList.remove('hidden');
             m.classList.add('flex');
+            lucide.createIcons();
         }
 
         function closeDriveModal() {
@@ -2344,9 +2546,9 @@
             const btn = document.getElementById('btn-drive-sync-submit');
             state.systemConfig.gasUrl = url;
             persist();
-            if (btn) { btn.disabled = true; btn.textContent = 'Menghubungkan ke Google Drive...'; }
+            if (btn) { btn.disabled = true; btn.textContent = 'Menghubungkan ke Cloud...'; }
             const ok = await syncToGoogleDrive(false);
-            if (btn) { btn.disabled = false; btn.textContent = 'Simpan URL & Sinkronkan ke Google Drive'; }
+            if (btn) { btn.disabled = false; btn.textContent = 'Sinkronkan via Cloud Apps Script'; }
             if (ok) closeDriveModal();
         }
 
@@ -2359,6 +2561,29 @@
             a.click();
             URL.revokeObjectURL(url);
             showToast('File cadangan JSON berhasil diunduh!');
+        }
+
+        function restoreLocalBackup(e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const parsed = JSON.parse(ev.target.result);
+                    if (parsed && parsed.rombels && parsed.school) {
+                        state.teacherSpaces[state.auth.teacherKey] = parsed;
+                        persist();
+                        closeDriveModal();
+                        renderTeacherPortal();
+                        showToast('Data kelas berhasil dipulihkan dari file backup!');
+                    } else {
+                        showToast('Format file backup tidak valid.');
+                    }
+                } catch (err) {
+                    showToast('Gagal membaca file backup JSON.');
+                }
+            };
+            reader.readAsText(file);
         }
 
         // =========================================================================
