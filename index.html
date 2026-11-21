@@ -310,7 +310,7 @@
                         <button type="button" onclick="quickDemoTeacher()" class="text-xs font-extrabold text-navy hover:underline cursor-pointer">
                             ⚡ Coba Akun Demo Guru
                         </button>
-                        <span id="cloud-status-badge" class="text-[11px] font-bold text-slate-400">Cloud Siap Dihubungkan</span>
+                        <span id="cloud-status-badge" class="text-[11px] font-extrabold text-mint">Cloud &amp; Google Drive Terhubung ✓</span>
                     </div>
                 </div>
             </div>
@@ -380,7 +380,7 @@
                 <div class="flex flex-wrap items-center gap-1.5">
                     <button type="button" onclick="openDriveModal()" class="bg-white text-navy hover:bg-gold text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs">
                         <i data-lucide="hard-drive" class="w-3.5 h-3.5 text-royal"></i>
-                        <span id="tc-drive-label">Hubungkan Google Drive Saya</span>
+                        <span id="tc-drive-label">Google Drive Terhubung ✓</span>
                     </button>
                     <select id="sel-grade" onchange="changeActiveGrade(this.value)" class="bg-white/15 border border-white/25 text-white text-xs font-bold rounded-xl px-2.5 py-1.5 cursor-pointer" title="Jenjang yang Diampu"></select>
                     <select id="sel-rombel" onchange="changeActiveRombel(this.value)" class="bg-white/15 border border-white/25 text-white text-xs font-bold rounded-xl px-2.5 py-1.5 cursor-pointer" title="Rombel yang Diampu"></select>
@@ -586,7 +586,7 @@
         const MASTER_STORE_KEY = 'efn_master_v6';
         const SUPER_ADMIN_EMAIL = 'taufiqurrohman14@guru.smp.belajar.id';
         const SUPER_ADMIN_PIN = 'admin2026';
-        const DEFAULT_GAS_URL = '';
+        const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyFT5KIB6HJqsOm825-WEU5QTQiVte8pV1KNqt8bTPyOiOXmIzYy93cb9e7UUtyiprviA/exec';
         const DEFAULT_OAUTH_ID = '';
         const ALL_SECTIONS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
@@ -720,7 +720,7 @@
                     tp: 'Menceritakan pengalaman pribadi mengikuti lomba perayaan Hari Kemerdekaan menggunakan Simple Past Tense.',
                     materi: 'Recount Text (Personal Experience), Simple Past Tense (Regular & Irregular Verbs), Time Connectives',
                     teacherNote: 'Gunakan Verb-2 (played, won, participated) untuk menceritakan kejadian yang telah berlalu.',
-                    readingTitle: 'Panja Pinang & Sack Race at Our Village',
+                    readingTitle: 'Panjat Pinang & Sack Race at Our Village',
                     readingText: 'Last August 17th, our neighborhood held exciting games to celebrate Indonesian Independence Day. I participated in the sack race in the morning. Even though I fell twice, I got up quickly and finished in second place. Everyone cheered loudly and we felt very proud.',
                     readingIndo: 'Pada 17 Agustus lalu, lingkungan kami mengadakan lomba seru untuk merayakan Hari Kemerdekaan Indonesia. Saya mengikuti lomba balap karung di pagi hari.',
                     vocab: [
@@ -1103,7 +1103,7 @@
                     }
                 ],
                 driveSync: {
-                    connected: false,
+                    connected: true,
                     lastSync: '',
                     fileUrl: '',
                     personalEmail: ''
@@ -1122,7 +1122,7 @@
             };
             return {
                 auth: {
-                    role: null, // 'teacher' | 'student' | 'admin'
+                    role: null,
                     teacherKey: demoEmail,
                     studentId: null,
                     rombelId: null
@@ -1172,6 +1172,8 @@
             state = createInitialMasterState();
         }
         if (!state || !state.teacherSpaces) state = createInitialMasterState();
+        if (!state.cloudConfig) state.cloudConfig = { gasUrl: DEFAULT_GAS_URL, oauthClientId: DEFAULT_OAUTH_ID };
+        if (!state.cloudConfig.gasUrl) state.cloudConfig.gasUrl = DEFAULT_GAS_URL;
 
         let activeModuleId = null;
         let examTimerInterval = null;
@@ -1188,7 +1190,7 @@
                 clearTimeout(autoSyncTimeout);
                 autoSyncTimeout = setTimeout(() => {
                     syncTeacherToCloud(true);
-                }, 1800);
+                }, 1500);
             }
         }
 
@@ -1227,7 +1229,7 @@
             if (!sp.curriculum) sp.curriculum = JSON.parse(JSON.stringify(CURRICULUM_DATA));
             if (!sp.exams) sp.exams = buildDefaultExams();
             if (!Array.isArray(sp.uploadedResources)) sp.uploadedResources = [];
-            if (!sp.driveSync) sp.driveSync = { connected: false, lastSync: '', fileUrl: '', personalEmail: '' };
+            if (!sp.driveSync) sp.driveSync = { connected: true, lastSync: '', fileUrl: '', personalEmail: '' };
             return sp;
         }
 
@@ -1316,6 +1318,7 @@
             const pinInput = document.getElementById('login-st-pin').value.trim();
 
             if (classCode && getGasUrl()) {
+                showToast('Menghubungkan ke kelas...');
                 await pullClassByCodeFromCloud(classCode);
             }
 
@@ -1395,7 +1398,7 @@
             }
 
             if (!targetRombel) {
-                showToast('Rombel tujuan tidak ditemukan.');
+                showToast('Rombel tujuan tidak ditemukan. Pastikan Kode Kelas benar.');
                 return;
             }
 
@@ -1432,7 +1435,7 @@
             state.studentUI.activeChapterCode = getFilteredTps(sp, targetRombel.grade, sp.activeSemester)[0]?.code || '';
             persist(true);
             if (getGasUrl()) {
-                syncTeacherToCloud(true);
+                await syncTeacherToCloud(true);
             }
             renderApp();
             showToast(`Pendaftaran berhasil! Selamat datang, ${fullName}.`);
@@ -1460,6 +1463,7 @@
             const pin = document.getElementById('login-tc-pin').value.trim();
 
             if (getGasUrl()) {
+                showToast('Memeriksa data akun di Cloud...');
                 await pullTeacherFromCloud(email);
             }
 
@@ -1506,8 +1510,8 @@
                 return;
             }
 
-            let status = 'PENDING';
-            let plan = 'MENUNGGU AKTIVASI';
+            let status = 'ACTIVE';
+            let plan = 'TRIAL-30-HARI';
             let expiresAt = '2026-12-31';
 
             if (tokenCode) {
@@ -1520,9 +1524,6 @@
                     exp.setDate(exp.getDate() + (tok.days || 30));
                     expiresAt = exp.toISOString().slice(0, 10);
                 }
-            } else {
-                status = 'ACTIVE';
-                plan = 'TRIAL-30-HARI';
             }
 
             const newTeacher = {
@@ -1611,7 +1612,7 @@
 
             const cloudBadge = document.getElementById('cloud-status-badge');
             if (cloudBadge) {
-                cloudBadge.textContent = getGasUrl() ? 'Cloud Terhubung ✓' : 'Mode Lokal Siap';
+                cloudBadge.textContent = getGasUrl() ? 'Cloud & Google Drive Terhubung ✓' : 'Mode Lokal Siap';
                 cloudBadge.className = getGasUrl() ? 'text-[11px] font-extrabold text-mint' : 'text-[11px] font-bold text-slate-400';
             }
 
@@ -1648,11 +1649,9 @@
                 driveLabel.textContent = 'Hubungkan Google Drive Saya';
             }
 
-            // Dropdown Jenjang (Hanya jenjang yang diampu guru)
             const selGrade = document.getElementById('sel-grade');
             selGrade.innerHTML = allowedGrades.map(g => `<option value="${g}" class="text-navy" ${g === sp.activeGrade ? 'selected' : ''}>Kelas ${g}</option>`).join('');
 
-            // Dropdown Rombel (Hanya rombel dari jenjang yang diampu guru)
             const selRombel = document.getElementById('sel-rombel');
             const gradeRombels = Object.values(sp.rombels).filter(rb => rb.grade === sp.activeGrade);
             selRombel.innerHTML = gradeRombels.map(rb => `<option value="${rb.id}" class="text-navy" ${rb.id === r.id ? 'selected' : ''}>${rb.label}</option>`).join('');
@@ -1858,7 +1857,6 @@
             const filteredTps = getFilteredTps(sp, sp.activeGrade, sp.activeSemester);
             const allGradeTps = getGradeTps(sp, sp.activeGrade);
 
-            // Quick Pills
             document.getElementById('tc-quick-pills').innerHTML = TEACHER_MODULES.map(m => `
                 <button type="button" onclick="openModule('${m.id}')"
                     class="px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap cursor-pointer transition ${m.id === modId ? 'bg-navy text-white' : 'bg-white border border-cream-border text-navy hover:bg-royal-light'}">
@@ -1866,7 +1864,6 @@
                 </button>
             `).join('');
 
-            // Kop & Meta
             document.getElementById('doc-kop-surat').innerHTML = `
                 <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900">${sp.profile.sekolah}</h2>
                 <p class="text-xs text-slate-600">${sp.profile.alamat}</p>
@@ -2987,7 +2984,7 @@
             renderStudentPortal();
         }
 
-        function submitStudentLkpd(tpCode) {
+        async function submitStudentLkpd(tpCode) {
             const { st } = getLoggedStudent();
             const ans = document.getElementById(`st-lkpd-ans-${tpCode}`).value.trim();
             if (!ans) {
@@ -2997,7 +2994,7 @@
             if (!st.lkpdSubmissions) st.lkpdSubmissions = {};
             st.lkpdSubmissions[tpCode] = { answer: ans, score: null, submittedAt: new Date().toLocaleDateString('id-ID') };
             persist(true);
-            if (getGasUrl()) syncTeacherToCloud(true);
+            if (getGasUrl()) await syncTeacherToCloud(true);
             renderStudentPortal();
             showToast('Jawaban LKPD berhasil dikirim ke guru!');
         }
@@ -3009,7 +3006,7 @@
             renderStudentPortal();
         }
 
-        function finishStudentExam() {
+        async function finishStudentExam() {
             const { sp, st } = getLoggedStudent();
             const runner = state.studentUI.examRunner;
             const ex = sp.exams[runner.key];
@@ -3027,7 +3024,7 @@
             }
             state.studentUI.examRunner = null;
             persist(true);
-            if (getGasUrl()) syncTeacherToCloud(true);
+            if (getGasUrl()) await syncTeacherToCloud(true);
             renderStudentPortal();
             showToast(`Ujian selesai! Nilai Anda: ${score}/100`);
         }
@@ -3169,7 +3166,7 @@
                         <div>
                             <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (/exec)</label>
                             <input type="url" id="cfg-gas-url" value="${getGasUrl()}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-cream-soft">
-                            <p class="text-[11px] text-navy-muted mt-1">Digunakan untuk menyimpan data guru &amp; siswa lintas perangkat (GitHub Pages / HP) serta backup otomatis ke Google Drive Admin.</p>
+                            <p class="text-[11px] text-navy-muted mt-1">URL Web App sudah tertanam otomatis di aplikasi untuk seluruh guru &amp; siswa lintas perangkat.</p>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-navy mb-1">Google Cloud OAuth 2.0 Client ID (Opsional untuk Drive Pribadi Tiap Guru)</label>
@@ -3228,13 +3225,10 @@
                     <div class="flex items-center justify-between">
                         <span class="font-extrabold text-navy">1. Sinkronisasi Cloud &amp; Drive Terpusat</span>
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${gasUrl ? 'bg-mint-bg text-mint' : 'bg-amber-100 text-amber-800'}">
-                            ${gasUrl ? 'URL Cloud Siap ✓' : 'Perlu URL Apps Script'}
+                            ${gasUrl ? 'Cloud Terhubung ✓' : 'Perlu URL Apps Script'}
                         </span>
                     </div>
                     <p class="text-navy-muted">Menyimpan cadangan kelas <strong>${sp.profile.nama}</strong> ke Google Drive sehingga siswa &amp; guru dapat membuka data dari perangkat berbeda.</p>
-                    ${!gasUrl ? `
-                        <input type="url" id="tc-quick-gas-url" placeholder="Tempel URL Web App https://script.google.com/macros/s/.../exec" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white mt-1">
-                    ` : ''}
                     <button type="button" onclick="triggerTeacherCloudSync()" class="w-full bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-xs py-2.5 rounded-xl shadow cursor-pointer mt-1">
                         ☁️ Sinkronkan Sekarang ke Cloud &amp; Google Drive
                     </button>
@@ -3265,13 +3259,8 @@
         }
 
         async function triggerTeacherCloudSync() {
-            const quickInp = document.getElementById('tc-quick-gas-url');
-            if (quickInp && quickInp.value.trim()) {
-                state.cloudConfig.gasUrl = quickInp.value.trim();
-                persist(true);
-            }
             if (!getGasUrl()) {
-                showToast('Masukkan URL Google Apps Script (/exec) terlebih dahulu.');
+                showToast('URL Google Apps Script belum tersedia.');
                 return;
             }
             await syncTeacherToCloud(false);
@@ -3303,7 +3292,7 @@
                 persist(true);
                 if (!silent) showToast('Data kelas berhasil disinkronkan ke Google Drive!');
             } catch (err) {
-                if (!silent) showToast('Gagal menghubungi server Apps Script. Periksa URL Web App (/exec).');
+                if (!silent) showToast('Gagal menghubungi server Apps Script. Periksa izin akses Web App (Anyone).');
             }
         }
 
@@ -3318,8 +3307,10 @@
                 const json = await res.json();
                 if (json && json.status === 'ok' && json.teacherSpace) {
                     state.teacherSpaces[email] = json.teacherSpace;
-                    if (json.teacherRecord && !state.teachers.some(t => t.email === email)) {
-                        state.teachers.push(json.teacherRecord);
+                    if (json.teacherRecord) {
+                        const existingIdx = state.teachers.findIndex(t => t.email.toLowerCase() === email.toLowerCase());
+                        if (existingIdx >= 0) state.teachers[existingIdx] = json.teacherRecord;
+                        else state.teachers.push(json.teacherRecord);
                     }
                     persist(true);
                 }
@@ -3356,7 +3347,7 @@
         async function syncAdminCloud(silent = false) {
             const gasUrl = getGasUrl();
             if (!gasUrl) {
-                if (!silent) showToast('Isi URL Google Apps Script di Tab 3 terlebih dahulu.');
+                if (!silent) showToast('URL Google Apps Script belum diatur.');
                 return;
             }
             try {
