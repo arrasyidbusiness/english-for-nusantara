@@ -6,6 +6,7 @@
     <title>English For Nusantara — LMS &amp; Administrasi Guru SMP/MTs</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -83,6 +84,13 @@
             font-weight: 700;
             text-align: center;
         }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.92) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-pop-in {
+            animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
         @media print {
             body { background: #FFFFFF !important; }
             .no-print { display: none !important; }
@@ -110,6 +118,54 @@
     </div>
 
     <!-- ===================================================================== -->
+    <!-- POPUP WELCOME TO ENGLISH EDUCATION PORTAL                             -->
+    <!-- ===================================================================== -->
+    <div id="modal-welcome-portal" class="no-print fixed inset-0 z-[110] hidden items-center justify-center bg-navy-deep/75 backdrop-blur-sm p-4">
+        <div class="animate-pop-in bg-white border-2 border-cream-border rounded-[2rem] max-w-lg w-full overflow-hidden shadow-2xl">
+            <div class="bg-gradient-to-br from-navy via-navy-deep to-royal text-white p-6 sm:p-8 text-center relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-gold/20 blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-36 h-36 rounded-full bg-royal-light/20 blur-2xl"></div>
+                <div class="w-16 h-16 rounded-2xl bg-gold text-navy font-display font-extrabold text-2xl flex items-center justify-center mx-auto shadow-lg mb-4">
+                    EN
+                </div>
+                <span class="inline-block text-[10px] font-extrabold uppercase tracking-widest bg-white/15 border border-white/25 px-3 py-1 rounded-full text-gold mb-2">
+                    Kurikulum Merdeka • SMP/MTs Fase D
+                </span>
+                <h2 class="font-display font-extrabold text-2xl sm:text-3xl leading-tight">
+                    Welcome To English Education Portal
+                </h2>
+                <p class="text-xs sm:text-sm text-blue-100 mt-2 leading-relaxed">
+                    Platform Pembelajaran Bahasa Inggris Interaktif, Ujian CBT (UH, STS, UAS, &amp; TKA), serta Administrasi Guru Terpadu.
+                </p>
+            </div>
+            <div class="p-5 sm:p-6 space-y-4 bg-white">
+                <div class="grid grid-cols-3 gap-2.5 text-center">
+                    <div class="bg-cream-soft border border-cream-border rounded-2xl p-3">
+                        <span class="text-lg block mb-0.5">🎓</span>
+                        <span class="font-display font-extrabold text-xs text-navy block">Ruang Siswa</span>
+                        <span class="text-[10px] text-navy-muted">Materi, Audio &amp; LKPD</span>
+                    </div>
+                    <div class="bg-royal-light border border-blue-200 rounded-2xl p-3">
+                        <span class="text-lg block mb-0.5">📝</span>
+                        <span class="font-display font-extrabold text-xs text-royal block">Ujian CBT &amp; TKA</span>
+                        <span class="text-[10px] text-navy-muted">UH, STS, UAS &amp; TKA</span>
+                    </div>
+                    <div class="bg-cream-soft border border-cream-border rounded-2xl p-3">
+                        <span class="text-lg block mb-0.5">☁️</span>
+                        <span class="font-display font-extrabold text-xs text-navy block">Admin &amp; Drive</span>
+                        <span class="text-[10px] text-navy-muted">19 Modul &amp; Excel</span>
+                    </div>
+                </div>
+                <button type="button" onclick="closeWelcomeModal()"
+                    class="w-full bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition cursor-pointer flex items-center justify-center gap-2">
+                    <span>Mulai Jelajahi Portal</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
     <!-- 1. HALAMAN LOGIN UTAMA                                                -->
     <!-- ===================================================================== -->
     <main id="view-login" class="flex-1 flex flex-col justify-between">
@@ -119,29 +175,60 @@
                     <div class="w-10 h-10 rounded-2xl bg-navy text-gold font-display font-extrabold flex items-center justify-center text-base shadow-sm">EN</div>
                     <div>
                         <span class="font-display font-extrabold text-base sm:text-lg text-navy block leading-none">English For Nusantara</span>
-                        <span class="text-[11px] font-medium text-navy-muted block mt-1">Portal Belajar Siswa &amp; Administrasi Guru SMP/MTs</span>
+                        <span class="text-[11px] font-medium text-navy-muted block mt-1">English Education Portal • LMS &amp; Administrasi Guru SMP/MTs</span>
                     </div>
                 </div>
-                <button type="button" onclick="openAdminAuthModal()"
-                    class="text-[11px] font-bold text-navy-muted hover:text-navy bg-cream-soft hover:bg-cream-border/70 border border-cream-border px-3 py-1.5 rounded-xl transition cursor-pointer inline-flex items-center gap-1.5">
-                    <i data-lucide="shield" class="w-3.5 h-3.5"></i>
-                    <span>Admin</span>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="openWelcomeModal(true)"
+                        class="text-[11px] font-bold text-royal hover:text-royal-hover bg-royal-light/80 border border-blue-200 px-3 py-1.5 rounded-xl transition cursor-pointer inline-flex items-center gap-1">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        <span class="hidden sm:inline">Welcome Info</span>
+                    </button>
+                    <button type="button" onclick="openAdminAuthModal()"
+                        class="text-[11px] font-bold text-navy-muted hover:text-navy bg-cream-soft hover:bg-cream-border/70 border border-cream-border px-3 py-1.5 rounded-xl transition cursor-pointer inline-flex items-center gap-1.5">
+                        <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+                        <span>Admin</span>
+                    </button>
+                </div>
             </div>
         </nav>
 
         <div class="w-full max-w-6xl mx-auto px-4 py-8 sm:py-12">
-            <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
-                <div class="inline-flex items-center gap-2 bg-white border border-cream-border px-4 py-1.5 rounded-full shadow-2xs mb-4">
-                    <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-                    <span class="text-[11px] font-extrabold uppercase tracking-wider text-navy">Kurikulum Merdeka • Fase D (Kelas VII, VIII, IX)</span>
+            <!-- Hero Banner Menarik -->
+            <div class="bg-gradient-to-r from-navy via-navy-deep to-royal text-white rounded-3xl p-6 sm:p-8 mb-8 shadow-xl relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-64 h-64 bg-gold/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-2xl"></div>
+                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                    <div class="max-w-2xl">
+                        <div class="inline-flex items-center gap-2 bg-white/15 border border-white/20 px-3.5 py-1 rounded-full mb-3">
+                            <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-gold">Welcome To English Education Portal • Fase D</span>
+                        </div>
+                        <h1 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tight leading-[1.15]">
+                            English For <span class="text-gold">Nusantara</span>
+                        </h1>
+                        <p class="text-xs sm:text-sm text-blue-100 mt-3 leading-relaxed">
+                            Portal pembelajaran Bahasa Inggris interaktif untuk siswa (Materi Audio, Buku Panduan, Flashcard, LKPD, Ujian UH, STS, UAS, serta <strong>Tes Kemampuan Akademik / TKA</strong>) dan administrasi lengkap guru 2 semester.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0">
+                        <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
+                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Kurikulum</span>
+                            <span class="font-display font-extrabold text-xs sm:text-sm text-white">Kelas VII – IX</span>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
+                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Evaluasi CBT</span>
+                            <span class="font-display font-extrabold text-xs sm:text-sm text-gold">UH • STS • UAS • TKA</span>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
+                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Administrasi</span>
+                            <span class="font-display font-extrabold text-xs sm:text-sm text-white">19 Modul Lengkap</span>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
+                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Sinkronisasi</span>
+                            <span class="font-display font-extrabold text-xs sm:text-sm text-emerald-300">Cloud &amp; Drive ✓</span>
+                        </div>
+                    </div>
                 </div>
-                <h1 class="font-display font-extrabold text-3xl sm:text-5xl text-navy tracking-tight leading-[1.15]">
-                    English For <span class="text-royal gold-marker">Nusantara</span>
-                </h1>
-                <p class="text-xs sm:text-base text-navy-muted mt-3 leading-relaxed">
-                    Platform pembelajaran Bahasa Inggris interaktif siswa dan perangkat administrasi guru 2 semester yang terhubung dengan Cloud &amp; Google Drive.
-                </p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
@@ -156,7 +243,7 @@
                         </div>
                         <h2 class="font-display font-extrabold text-2xl text-navy">Masuk sebagai Siswa</h2>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
-                            Masukkan <strong>Nama Lengkap Siswa</strong> dan <strong>PIN</strong> untuk mengakses materi ajar, buku panduan, LKPD, dan ujian CBT.
+                            Masukkan <strong>Nama Lengkap Siswa</strong> dan <strong>PIN</strong> untuk mengakses materi ajar, buku panduan, LKPD, dan ujian UH / STS / UAS / <strong>TKA</strong>.
                         </p>
 
                         <div class="grid grid-cols-2 gap-1.5 bg-cream-soft p-1.5 rounded-2xl mb-5">
@@ -234,7 +321,7 @@
                         </div>
                         <h2 class="font-display font-extrabold text-2xl text-navy">Masuk sebagai Guru</h2>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
-                            Kelola 18 perangkat administrasi, presensi 30 pertemuan, bank soal, dan rapor khusus untuk jenjang kelas &amp; rombel yang Anda ampu.
+                            Kelola 19 perangkat administrasi, impor Excel data siswa &amp; soal (UH, STS, UAS, &amp; <strong>TKA</strong>), presensi 30 pertemuan, dan rapor khusus jenjang yang Anda ampu.
                         </p>
 
                         <div class="grid grid-cols-2 gap-1.5 bg-cream-soft p-1.5 rounded-2xl mb-5">
@@ -318,8 +405,8 @@
 
         <footer class="w-full border-t border-cream-border bg-white/80 px-4 py-3.5">
             <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs text-navy-muted">
-                <span>© 2026 English For Nusantara • Kurikulum Merdeka SMP/MTs</span>
-                <span>Multi-Guru • Google Drive Sync &amp; Sinkron Lintas Perangkat</span>
+                <span>© 2026 English For Nusantara • Welcome To English Education Portal</span>
+                <span>Multi-Guru • Excel Import/Export • Ujian CBT &amp; TKA</span>
             </div>
         </footer>
     </main>
@@ -401,7 +488,9 @@
             <div class="bg-white border border-cream-border rounded-2xl p-3.5 mb-6 shadow-2xs flex flex-wrap items-center justify-between gap-2">
                 <div class="flex flex-wrap items-center gap-2 text-xs">
                     <span class="bg-royal-light text-royal font-extrabold px-2.5 py-1 rounded-lg">Sinkron ke Siswa:</span>
-                    <button type="button" onclick="openModule('modul-ajar')" class="font-bold text-navy hover:text-royal underline cursor-pointer">+ Upload Buku/Materi</button>
+                    <button type="button" onclick="openModule('data-kelas')" class="font-bold text-navy hover:text-royal underline cursor-pointer">+ Impor Excel Siswa</button>
+                    <span class="text-slate-300">|</span>
+                    <button type="button" onclick="openModule('modul-ajar')" class="font-bold text-navy hover:text-royal underline cursor-pointer">+ Upload Materi / Excel</button>
                     <span class="text-slate-300">|</span>
                     <button type="button" onclick="openModule('lkpd')" class="font-bold text-navy hover:text-royal underline cursor-pointer">+ Tugas LKPD</button>
                     <span class="text-slate-300">|</span>
@@ -410,6 +499,8 @@
                     <button type="button" onclick="openModule('soal-sts')" class="font-bold text-navy hover:text-royal underline cursor-pointer">+ Soal STS</button>
                     <span class="text-slate-300">|</span>
                     <button type="button" onclick="openModule('soal-uas-sas')" class="font-bold text-navy hover:text-royal underline cursor-pointer">+ Soal UAS</button>
+                    <span class="text-slate-300">|</span>
+                    <button type="button" onclick="openModule('soal-tka')" class="font-extrabold text-royal hover:underline cursor-pointer">+ Soal TKA</button>
                 </div>
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="copyClassCode()" class="bg-cream-soft hover:bg-gold/40 text-navy text-[11px] font-extrabold px-2.5 py-1 rounded-lg border border-cream-border cursor-pointer">
@@ -573,7 +664,12 @@
                     <span id="rr-badge" class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-royal-light text-royal">Materi</span>
                     <h3 id="rr-title" class="font-display font-extrabold text-sm sm:text-base text-navy truncate mt-1">Judul Dokumen</h3>
                 </div>
-                <button type="button" onclick="closeResourceReader()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer shrink-0"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <div class="flex items-center gap-2 shrink-0">
+                    <button type="button" id="rr-dl-btn" class="hidden inline-flex items-center gap-1 bg-royal hover:bg-royal-hover text-white text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i><span>Unduh File</span>
+                    </button>
+                    <button type="button" onclick="closeResourceReader()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
             </div>
             <div id="rr-body" class="flex-1 overflow-y-auto p-5 sm:p-6 bg-slate-50 text-xs sm:text-sm text-slate-800"></div>
         </div>
@@ -602,6 +698,7 @@
             { id: 'bank-soal-uh', title: 'Bank Soal UH', featured: false },
             { id: 'soal-sts', title: 'Soal STS (Tengah Sem)', featured: false },
             { id: 'soal-uas-sas', title: 'Soal UAS / SAS', featured: false },
+            { id: 'soal-tka', title: 'Soal TKA (Tes Kemampuan Akademik)', featured: true },
             { id: 'daftar-nilai', title: 'Daftar Nilai', featured: false },
             { id: 'presensi', title: 'Presensi (30 Pertemuan)', featured: false },
             { id: 'jurnal-mengajar', title: 'Jurnal Mengajar', featured: false },
@@ -1041,6 +1138,44 @@
                 ]
             });
 
+            const makeTkaBank = (title, duration) => ({
+                title,
+                duration,
+                published: true,
+                questions: [
+                    {
+                        q: '[TKA Literasi Membaca & Penalaran] Read the notice: "CAUTION: Wet Floor. Please use the side corridor." Where is this notice most likely found, and what is its purpose?',
+                        options: [
+                            'In a newly mopped hallway, to warn pedestrians not to slip.',
+                            'At a swimming pool entrance, to invite people to swim.',
+                            'Inside a library, to ask visitors to keep silent.',
+                            'In a school canteen, to announce the lunch menu.'
+                        ],
+                        ans: 0
+                    },
+                    {
+                        q: '[TKA Analogi & Struktur Bahasa] "Endemic : Local Region" has the closest logical relationship to...',
+                        options: [
+                            'Global : Worldwide',
+                            'Ancient : Modern',
+                            'Fragile : Unbreakable',
+                            'Silent : Noisy'
+                        ],
+                        ans: 0
+                    },
+                    {
+                        q: '[TKA Pemahaman Bacaan Kritis] "Although digital media provides instant access to information, teenagers must verify sources before sharing to prevent misinformation." What can be inferred from the statement?',
+                        options: [
+                            'All information on social media is completely accurate.',
+                            'Teenagers are prohibited from using digital media.',
+                            'Critical fact-checking is necessary despite easy access to online news.',
+                            'Misinformation only spreads through printed newspapers.'
+                        ],
+                        ans: 2
+                    }
+                ]
+            });
+
             const exams = {};
             ['VII', 'VIII', 'IX'].forEach(g => {
                 CURRICULUM_DATA[g].forEach(tp => {
@@ -1050,8 +1185,21 @@
                 exams[`UAS-${g}-1`] = makeSampleBank(`Sumatif Akhir Semester (UAS/SAS) 1 — Kelas ${g}`, 90, true);
                 exams[`STS-${g}-2`] = makeSampleBank(`Sumatif Tengah Semester (STS) 2 — Kelas ${g}`, 60, true);
                 exams[`UAS-${g}-2`] = makeSampleBank(`Sumatif Akhir Semester (UAS/SAS) 2 — Kelas ${g}`, 90, true);
+                exams[`TKA-${g}-1`] = makeTkaBank(`Tes Kemampuan Akademik (TKA) Paket 1 — Kelas ${g}`, 75);
+                exams[`TKA-${g}-2`] = makeTkaBank(`Tes Kemampuan Akademik (TKA) Paket 2 — Kelas ${g}`, 75);
             });
             return exams;
+        }
+
+        function ensureTkaBanksInSpace(sp) {
+            if (!sp.exams) sp.exams = buildDefaultExams();
+            ['VII', 'VIII', 'IX'].forEach(g => {
+                if (!sp.exams[`TKA-${g}-1`]) {
+                    const fresh = buildDefaultExams();
+                    sp.exams[`TKA-${g}-1`] = fresh[`TKA-${g}-1`];
+                    sp.exams[`TKA-${g}-2`] = fresh[`TKA-${g}-2`];
+                }
+            });
         }
 
         function createTeacherSpace(profile) {
@@ -1098,6 +1246,8 @@
                         description: 'Panduan ringkas kosakata, tata bahasa, dan tujuan pembelajaran semester ganjil.',
                         content: `ENGLISH FOR NUSANTARA - KELAS ${firstGrade}\n\n${CURRICULUM_DATA[firstGrade].map(t => `${t.code} (${t.chapter}):\n- Tujuan: ${t.tp}\n- Materi Pokok: ${t.materi}`).join('\n\n')}`,
                         externalUrl: 'https://buku.kemdikbud.go.id/',
+                        fileName: '',
+                        fileDataUrl: '',
                         visibleToStudent: true,
                         uploadedAt: '14 Juli 2026'
                     }
@@ -1205,7 +1355,27 @@
             window._toastTimer = setTimeout(() => {
                 box.classList.add('hidden');
                 box.classList.remove('flex');
-            }, 2800);
+            }, 3000);
+        }
+
+        // =========================================================================
+        // WELCOME POPUP HANDLERS
+        // =========================================================================
+        function openWelcomeModal(force = false) {
+            if (!force && sessionStorage.getItem('efn_welcome_seen') === '1') return;
+            const modal = document.getElementById('modal-welcome-portal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeWelcomeModal() {
+            sessionStorage.setItem('efn_welcome_seen', '1');
+            const modal = document.getElementById('modal-welcome-portal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         // =========================================================================
@@ -1227,7 +1397,7 @@
             }
             const sp = state.teacherSpaces[key];
             if (!sp.curriculum) sp.curriculum = JSON.parse(JSON.stringify(CURRICULUM_DATA));
-            if (!sp.exams) sp.exams = buildDefaultExams();
+            ensureTkaBanksInSpace(sp);
             if (!Array.isArray(sp.uploadedResources)) sp.uploadedResources = [];
             if (!sp.driveSync) sp.driveSync = { connected: true, lastSync: '', fileUrl: '', personalEmail: '' };
             return sp;
@@ -1269,7 +1439,283 @@
         }
 
         // =========================================================================
-        // 4. AUTENTIKASI: SISWA (NAMA + PIN), GURU, DAN ADMIN PUSAT
+        // 4. HELPER IMPOR & UNDUH TEMPLATE EXCEL (.XLSX)
+        // =========================================================================
+        function ensureSheetJsReady() {
+            if (typeof XLSX === 'undefined') {
+                showToast('Pustaka Excel sedang dimuat. Silakan coba beberapa detik lagi.');
+                return false;
+            }
+            return true;
+        }
+
+        function downloadExcelFile(rows, sheetName, fileName) {
+            if (!ensureSheetJsReady()) return;
+            const ws = XLSX.utils.json_to_sheet(rows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, sheetName);
+            XLSX.writeFile(wb, fileName);
+            showToast(`Template "${fileName}" berhasil diunduh!`);
+        }
+
+        function downloadStudentExcelTemplate() {
+            const r = getActiveRombel();
+            const sampleRows = [
+                { 'Nama Lengkap': 'Ananda Rizky Pratama', 'L/P': 'L', 'PIN': '1234' },
+                { 'Nama Lengkap': 'Putri Indah Permata', 'L/P': 'P', 'PIN': '1234' },
+                { 'Nama Lengkap': 'Rizki Ramadhan Saputra', 'L/P': 'L', 'PIN': '1234' }
+            ];
+            downloadExcelFile(sampleRows, 'Data_Siswa', `Template_Siswa_${r.id}.xlsx`);
+        }
+
+        function exportStudentsToExcel() {
+            const r = getActiveRombel();
+            const rows = r.students.map((s, idx) => ({
+                'No': idx + 1,
+                'Nama Lengkap': s.name,
+                'L/P': s.gender,
+                'PIN': s.pin
+            }));
+            downloadExcelFile(rows, r.id, `Daftar_Siswa_${r.id}.xlsx`);
+        }
+
+        function handleImportStudentsExcel(e) {
+            const file = e.target.files?.[0];
+            if (!file || !ensureSheetJsReady()) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const wb = XLSX.read(new Uint8Array(ev.target.result), { type: 'array' });
+                    const sheet = wb.Sheets[wb.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+                    if (!rows.length) {
+                        showToast('File Excel kosong.');
+                        return;
+                    }
+                    const r = getActiveRombel();
+                    let added = 0;
+                    rows.forEach((row, idx) => {
+                        const rawName = String(
+                            row['Nama Lengkap'] || row['Nama'] || row['NAMA'] || row['Nama Siswa'] || row['nama'] || ''
+                        ).trim();
+                        if (!rawName) return;
+                        const exists = r.students.some(s => s.name.trim().toLowerCase() === rawName.toLowerCase());
+                        if (exists) return;
+
+                        const rawGender = String(row['L/P'] || row['Jenis Kelamin'] || row['JK'] || 'L').trim().toUpperCase();
+                        const gender = rawGender.startsWith('P') ? 'P' : 'L';
+                        const pin = String(row['PIN'] || row['Pin'] || '1234').trim() || '1234';
+
+                        r.students.push({
+                            id: ts() + idx,
+                            name: rawName,
+                            gender,
+                            pin,
+                            att: Array(30).fill('H'),
+                            scores: {},
+                            sts1: 85, sas1: 85, sts2: 85, sas2: 85,
+                            completedChapters: [],
+                            lkpdSubmissions: {},
+                            examResults: {}
+                        });
+                        added++;
+                    });
+                    e.target.value = '';
+                    persist();
+                    renderWorkspace('data-kelas');
+                    showToast(`${added} data siswa berhasil diimpor ke ${r.label}!`);
+                } catch (err) {
+                    showToast('Gagal membaca file Excel siswa. Gunakan template yang tersedia.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function downloadExamExcelTemplate() {
+            const sampleRows = [
+                {
+                    'Pertanyaan': 'Bekantan _______ in mangrove forests of Kalimantan.',
+                    'Pilihan A': 'is found',
+                    'Pilihan B': 'are find',
+                    'Pilihan C': 'finding',
+                    'Pilihan D': 'was finds',
+                    'Kunci (A/B/C/D)': 'A'
+                },
+                {
+                    'Pertanyaan': '_______, wash the ripe bananas before peeling them.',
+                    'Pilihan A': 'Finally',
+                    'Pilihan B': 'First',
+                    'Pilihan C': 'However',
+                    'Pilihan D': 'Because',
+                    'Kunci (A/B/C/D)': 'B'
+                }
+            ];
+            downloadExcelFile(sampleRows, 'Bank_Soal', 'Template_Bank_Soal_EFN.xlsx');
+        }
+
+        function exportExamToExcel(examKey) {
+            const sp = getActiveSpace();
+            const ex = sp.exams[examKey];
+            if (!ex) return;
+            const rows = ex.questions.map((item, idx) => ({
+                'No': idx + 1,
+                'Pertanyaan': item.q,
+                'Pilihan A': item.options[0] || '',
+                'Pilihan B': item.options[1] || '',
+                'Pilihan C': item.options[2] || '',
+                'Pilihan D': item.options[3] || '',
+                'Kunci (A/B/C/D)': String.fromCharCode(65 + (item.ans || 0))
+            }));
+            downloadExcelFile(rows, examKey, `Soal_${examKey}.xlsx`);
+        }
+
+        function handleImportExamExcel(e, examKey, modId) {
+            const file = e.target.files?.[0];
+            if (!file || !ensureSheetJsReady()) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const wb = XLSX.read(new Uint8Array(ev.target.result), { type: 'array' });
+                    const sheet = wb.Sheets[wb.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+                    const sp = getActiveSpace();
+                    const ex = sp.exams[examKey];
+                    if (!ex || !rows.length) return;
+
+                    let imported = 0;
+                    rows.forEach(row => {
+                        const qText = String(row['Pertanyaan'] || row['Soal'] || row['Question'] || '').trim();
+                        if (!qText) return;
+                        const optA = String(row['Pilihan A'] || row['A'] || '').trim();
+                        const optB = String(row['Pilihan B'] || row['B'] || '').trim();
+                        const optC = String(row['Pilihan C'] || row['C'] || '').trim();
+                        const optD = String(row['Pilihan D'] || row['D'] || '').trim();
+                        const keyRaw = String(row['Kunci (A/B/C/D)'] || row['Kunci'] || row['Jawaban'] || 'A').trim().toUpperCase();
+                        const ansIdx = keyRaw === 'B' || keyRaw === '1' ? 1
+                            : keyRaw === 'C' || keyRaw === '2' ? 2
+                            : keyRaw === 'D' || keyRaw === '3' ? 3 : 0;
+
+                        ex.questions.push({
+                            q: qText,
+                            options: [optA || '-', optB || '-', optC || '-', optD || '-'],
+                            ans: ansIdx
+                        });
+                        imported++;
+                    });
+                    e.target.value = '';
+                    persist();
+                    renderWorkspace(modId);
+                    showToast(`${imported} butir soal berhasil diimpor ke ${examKey}!`);
+                } catch (err) {
+                    showToast('Gagal membaca file Excel soal.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function downloadMateriExcelTemplate() {
+            const sp = getActiveSpace();
+            const sampleRows = [
+                {
+                    'Kode TP': sp.activeGrade === 'VII' ? 'TP 7.1' : sp.activeGrade === 'VIII' ? 'TP 8.1' : 'TP 9.1',
+                    'Judul Materi': 'Ringkasan Grammar & Vocabulary Chapter 1',
+                    'Ringkasan Materi': 'Passive Voice digunakan untuk menekankan objek yang dikenai tindakan. Pola: Subject + is/am/are + Verb-3.',
+                    'Tautan Digital (Opsional)': 'https://buku.kemdikbud.go.id/'
+                }
+            ];
+            downloadExcelFile(sampleRows, 'Materi_Ajar', `Template_Materi_Kelas_${sp.activeGrade}.xlsx`);
+        }
+
+        function handleImportMateriExcel(e) {
+            const file = e.target.files?.[0];
+            if (!file || !ensureSheetJsReady()) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const wb = XLSX.read(new Uint8Array(ev.target.result), { type: 'array' });
+                    const sheet = wb.Sheets[wb.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+                    const sp = getActiveSpace();
+                    const defaultTp = getGradeTps(sp)[0]?.code || 'TP 9.1';
+                    let count = 0;
+
+                    rows.forEach((row, idx) => {
+                        const title = String(row['Judul Materi'] || row['Judul'] || '').trim();
+                        if (!title) return;
+                        const chapterCode = String(row['Kode TP'] || row['Chapter'] || defaultTp).trim();
+                        const content = String(row['Ringkasan Materi'] || row['Isi Materi'] || row['Materi'] || '').trim();
+                        const externalUrl = String(row['Tautan Digital (Opsional)'] || row['Link'] || row['URL'] || '').trim();
+                        const tpObj = getGradeTps(sp).find(t => t.code.toLowerCase() === chapterCode.toLowerCase());
+
+                        sp.uploadedResources.unshift({
+                            id: `res_${ts()}_${idx}`,
+                            grade: sp.activeGrade,
+                            sem: tpObj ? tpObj.sem : 1,
+                            chapterCode: tpObj ? tpObj.code : defaultTp,
+                            category: 'Materi Impor Excel',
+                            title,
+                            description: 'Materi pembelajaran diimpor guru dari Excel',
+                            content,
+                            externalUrl,
+                            fileName: '',
+                            fileDataUrl: '',
+                            visibleToStudent: true,
+                            uploadedAt: new Date().toLocaleDateString('id-ID')
+                        });
+                        count++;
+                    });
+                    e.target.value = '';
+                    persist();
+                    renderWorkspace('modul-ajar');
+                    showToast(`${count} materi ajar berhasil diimpor & diterbitkan ke siswa!`);
+                } catch (err) {
+                    showToast('Gagal membaca file Excel materi.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function downloadLkpdExcelTemplate() {
+            const sampleRows = [
+                { 'Pertanyaan LKPD': 'Where is the animal originally found?' },
+                { 'Pertanyaan LKPD': 'Describe two physical characteristics mentioned in the text!' },
+                { 'Pertanyaan LKPD': 'Write 2 Passive Voice sentences based on the passage!' }
+            ];
+            downloadExcelFile(sampleRows, 'Pertanyaan_LKPD', 'Template_Pertanyaan_LKPD.xlsx');
+        }
+
+        function handleImportLkpdExcel(e, chIdx) {
+            const file = e.target.files?.[0];
+            if (!file || !ensureSheetJsReady()) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const wb = XLSX.read(new Uint8Array(ev.target.result), { type: 'array' });
+                    const sheet = wb.Sheets[wb.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+                    const questions = rows
+                        .map(r => String(r['Pertanyaan LKPD'] || r['Pertanyaan'] || r['Soal'] || '').trim())
+                        .filter(Boolean);
+                    if (!questions.length) {
+                        showToast('Tidak ada kolom "Pertanyaan LKPD" yang terbaca.');
+                        return;
+                    }
+                    const sp = getActiveSpace();
+                    const ch = getGradeTps(sp)[chIdx];
+                    ch.lkpd.questions = questions;
+                    e.target.value = '';
+                    persist();
+                    renderWorkspace('lkpd');
+                    showToast(`${questions.length} pertanyaan LKPD berhasil diimpor dari Excel!`);
+                } catch (err) {
+                    showToast('Gagal membaca file Excel LKPD.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // =========================================================================
+        // 5. AUTENTIKASI: SISWA (NAMA + PIN), GURU, DAN ADMIN PUSAT
         // =========================================================================
         function switchStudentTab(tab) {
             const isLogin = tab === 'login';
@@ -1348,6 +1794,7 @@
             }
 
             const sp = state.teacherSpaces[foundTeacherKey];
+            ensureTkaBanksInSpace(sp);
             sp.activeGrade = foundRombel.grade;
             sp.activeRombelId = foundRombel.id;
             state.auth = {
@@ -1423,6 +1870,7 @@
             targetRombel.students.push(newSt);
 
             const sp = state.teacherSpaces[targetTeacherKey];
+            ensureTkaBanksInSpace(sp);
             sp.activeGrade = targetRombel.grade;
             sp.activeRombelId = targetRombel.id;
             state.auth = {
@@ -1444,6 +1892,7 @@
         function quickDemoStudent() {
             const demoKey = 'guru.demo@smp.belajar.id';
             const sp = state.teacherSpaces[demoKey] || createTeacherSpace({ email: demoKey });
+            ensureTkaBanksInSpace(sp);
             state.teacherSpaces[demoKey] = sp;
             const r = sp.rombels['IX-A'] || Object.values(sp.rombels)[0];
             const st = r.students[0];
@@ -1481,6 +1930,7 @@
                 state.teacherSpaces[email] = createTeacherSpace(teacher);
             } else {
                 state.teacherSpaces[email].profile.allowedGrades = teacher.allowedGrades || state.teacherSpaces[email].profile.allowedGrades;
+                ensureTkaBanksInSpace(state.teacherSpaces[email]);
             }
 
             state.auth = { role: 'teacher', teacherKey: email, studentId: null, rombelId: null };
@@ -1552,6 +2002,8 @@
             const demoEmail = 'guru.demo@smp.belajar.id';
             if (!state.teacherSpaces[demoEmail]) {
                 state.teacherSpaces[demoEmail] = createTeacherSpace({ email: demoEmail, allowedGrades: ['VII', 'VIII', 'IX'] });
+            } else {
+                ensureTkaBanksInSpace(state.teacherSpaces[demoEmail]);
             }
             state.auth = { role: 'teacher', teacherKey: demoEmail, studentId: null, rombelId: null };
             activeModuleId = null;
@@ -1602,7 +2054,7 @@
         }
 
         // =========================================================================
-        // 5. ROUTER UTAMA & RENDER PORTAL GURU
+        // 6. ROUTER UTAMA & RENDER PORTAL GURU
         // =========================================================================
         function renderApp() {
             document.getElementById('view-login').classList.add('hidden');
@@ -1628,6 +2080,7 @@
             } else {
                 document.getElementById('view-login').classList.remove('hidden');
                 populateStudentRegRombels();
+                openWelcomeModal(false);
             }
             lucide.createIcons();
         }
@@ -1735,7 +2188,7 @@
         }
 
         // =========================================================================
-        // 6. PENGATURAN JENJANG & ROMBEL GURU (A - J)
+        // 7. PENGATURAN JENJANG & ROMBEL GURU (A - J)
         // =========================================================================
         function openRombelManager() {
             const sp = getActiveSpace();
@@ -1832,7 +2285,7 @@
         }
 
         // =========================================================================
-        // 7. WORKSPACE 18 MODUL ADMINISTRASI GURU
+        // 8. WORKSPACE 19 MODUL ADMINISTRASI GURU (TERMASUK BANK SOAL TKA)
         // =========================================================================
         function openModule(modId) {
             activeModuleId = modId;
@@ -1908,7 +2361,7 @@
             switch (modId) {
                 case 'data-kelas': {
                     bodyEl.innerHTML = `
-                        <form onsubmit="saveTeacherIdentity(event)" class="no-print bg-cream-soft border border-cream-border rounded-2xl p-4 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <form onsubmit="saveTeacherIdentity(event)" class="no-print bg-cream-soft border border-cream-border rounded-2xl p-4 mb-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-bold text-navy mb-1">Nama Satuan Pendidikan</label>
                                 <input type="text" id="id-sekolah" value="${sp.profile.sekolah}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
@@ -1940,6 +2393,27 @@
                                 <button type="submit" class="bg-navy text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">Simpan Identitas</button>
                             </div>
                         </form>
+
+                        <!-- PANEL IMPOR & EKSPOR EXCEL DATA SISWA -->
+                        <div class="no-print bg-emerald-50/70 border border-green-300 rounded-2xl p-4 mb-5 flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider bg-mint text-white px-2.5 py-0.5 rounded-full">Impor Massal Excel (.xlsx)</span>
+                                <h4 class="font-display font-extrabold text-sm text-navy mt-1">Upload Data Siswa dari Excel (${r.label})</h4>
+                                <p class="text-[11px] text-navy-muted">Format kolom Excel: <strong>Nama Lengkap</strong>, <strong>L/P</strong>, dan <strong>PIN</strong> (tanpa NIS).</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button type="button" onclick="downloadStudentExcelTemplate()" class="bg-white hover:bg-cream border border-slate-300 text-navy text-xs font-extrabold px-3 py-2 rounded-xl cursor-pointer">
+                                    ↓ Template Excel Siswa
+                                </button>
+                                <label class="bg-mint hover:bg-green-700 text-white text-xs font-extrabold px-3.5 py-2 rounded-xl shadow-2xs cursor-pointer">
+                                    ↑ Upload Excel Siswa
+                                    <input type="file" accept=".xlsx,.xls,.csv" onchange="handleImportStudentsExcel(event)" class="hidden">
+                                </label>
+                                <button type="button" onclick="exportStudentsToExcel()" class="bg-navy hover:bg-navy-deep text-white text-xs font-bold px-3 py-2 rounded-xl cursor-pointer">
+                                    Ekspor Daftar (.xlsx)
+                                </button>
+                            </div>
+                        </div>
 
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
                             <h4 class="font-bold text-sm text-navy">Daftar Peserta Didik ${r.label} (${r.students.length} Siswa)</h4>
@@ -2082,8 +2556,24 @@
                             </div>
                         </div>
 
-                        <div class="no-print bg-blue-50/70 border-2 border-blue-200 rounded-3xl p-4 sm:p-5 space-y-3">
-                            <h4 class="font-display font-extrabold text-sm text-navy">Upload Buku Panduan / Materi Tambahan ke Ruang Siswa (Kelas ${sp.activeGrade})</h4>
+                        <!-- PUSAT UPLOAD MATERI, FILE PERANGKAT & IMPOR EXCEL MATERI -->
+                        <div class="no-print bg-blue-50/70 border-2 border-blue-200 rounded-3xl p-4 sm:p-5 space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <span class="text-[10px] font-extrabold uppercase tracking-wider bg-royal text-white px-2.5 py-0.5 rounded-full">Pusat Sumber Belajar Kelas ${sp.activeGrade}</span>
+                                    <h4 class="font-display font-extrabold text-sm sm:text-base text-navy mt-1">Upload Buku Panduan, File PDF/Audio, atau Impor Excel Materi</h4>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button type="button" onclick="downloadMateriExcelTemplate()" class="bg-white hover:bg-cream border border-slate-300 text-navy text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">
+                                        ↓ Template Excel Materi
+                                    </button>
+                                    <label class="bg-mint hover:bg-green-700 text-white text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">
+                                        ↑ Impor Excel Materi
+                                        <input type="file" accept=".xlsx,.xls,.csv" onchange="handleImportMateriExcel(event)" class="hidden">
+                                    </label>
+                                </div>
+                            </div>
+
                             <form onsubmit="addTeacherResource(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-white p-4 rounded-2xl border border-slate-200">
                                 <div>
                                     <label class="block text-[11px] font-bold text-navy mb-1">Judul Materi / Buku Panduan *</label>
@@ -2095,8 +2585,12 @@
                                         ${allGradeTps.map(t => `<option value="${t.code}" ${t.code === ch.code ? 'selected' : ''}>${t.code} • ${t.chapter}</option>`).join('')}
                                     </select>
                                 </div>
-                                <div class="sm:col-span-2">
-                                    <label class="block text-[11px] font-bold text-navy mb-1">Tautan Google Drive / YouTube / Flipbook (Opsional)</label>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-navy mb-1">Upload File PDF / Gambar / Audio / TXT (Opsional)</label>
+                                    <input type="file" id="res-file" accept=".pdf,.png,.jpg,.jpeg,.webp,.mp3,.wav,.txt,.md,.doc,.docx" class="w-full text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-royal-light file:text-royal cursor-pointer">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-navy mb-1">Atau Tautan Google Drive / YouTube (Opsional)</label>
                                     <input type="url" id="res-url" placeholder="https://drive.google.com/..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                                 </div>
                                 <div class="sm:col-span-2">
@@ -2110,12 +2604,16 @@
 
                             <div class="space-y-2">
                                 ${gradeResources.map(res => `
-                                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center justify-between gap-2 text-xs">
+                                    <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
                                         <div>
                                             <span class="font-extrabold text-royal">[${res.chapterCode}]</span>
                                             <strong class="text-navy">${res.title}</strong>
+                                            ${res.fileName ? `<span class="text-[11px] text-slate-500 ml-1">(${res.fileName})</span>` : ''}
                                         </div>
-                                        <button type="button" onclick="deleteTeacherResource('${res.id}')" class="text-red-600 font-bold hover:underline cursor-pointer">Hapus</button>
+                                        <div class="flex items-center gap-2">
+                                            <button type="button" onclick="openResourceReader('${res.id}')" class="text-royal font-extrabold hover:underline cursor-pointer">Pratinjau</button>
+                                            <button type="button" onclick="deleteTeacherResource('${res.id}')" class="text-red-600 font-bold hover:underline cursor-pointer">Hapus</button>
+                                        </div>
                                     </div>
                                 `).join('')}
                             </div>
@@ -2128,13 +2626,24 @@
                     if (sp.selectedLkpdIdx >= allGradeTps.length) sp.selectedLkpdIdx = 0;
                     const ch = allGradeTps[sp.selectedLkpdIdx];
                     bodyEl.innerHTML = `
-                        <div class="no-print flex flex-wrap gap-1.5 mb-4">
-                            ${allGradeTps.map((t, idx) => `
-                                <button type="button" onclick="getActiveSpace().selectedLkpdIdx=${idx}; renderWorkspace('lkpd');"
-                                    class="px-3 py-1.5 rounded-xl text-xs font-extrabold cursor-pointer ${idx === sp.selectedLkpdIdx ? 'bg-navy text-white' : 'bg-cream-soft text-navy border border-cream-border'}">
-                                    ${t.code}
+                        <div class="no-print flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <div class="flex flex-wrap gap-1.5">
+                                ${allGradeTps.map((t, idx) => `
+                                    <button type="button" onclick="getActiveSpace().selectedLkpdIdx=${idx}; renderWorkspace('lkpd');"
+                                        class="px-3 py-1.5 rounded-xl text-xs font-extrabold cursor-pointer ${idx === sp.selectedLkpdIdx ? 'bg-navy text-white' : 'bg-cream-soft text-navy border border-cream-border'}">
+                                        ${t.code}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button type="button" onclick="downloadLkpdExcelTemplate()" class="bg-white hover:bg-cream border border-slate-300 text-navy text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">
+                                    ↓ Template Excel LKPD
                                 </button>
-                            `).join('')}
+                                <label class="bg-mint hover:bg-green-700 text-white text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">
+                                    ↑ Impor Excel LKPD
+                                    <input type="file" accept=".xlsx,.xls,.csv" onchange="handleImportLkpdExcel(event, ${sp.selectedLkpdIdx})" class="hidden">
+                                </label>
+                            </div>
                         </div>
 
                         <form onsubmit="saveLkpdEdit(event, ${sp.selectedLkpdIdx})" class="no-print bg-cream-soft border border-cream-border rounded-2xl p-4 mb-5 space-y-3">
@@ -2187,10 +2696,12 @@
 
                 case 'bank-soal-uh':
                 case 'soal-sts':
-                case 'soal-uas-sas': {
+                case 'soal-uas-sas':
+                case 'soal-tka': {
                     const availableKeys = Object.keys(sp.exams).filter(k => {
                         if (modId === 'bank-soal-uh') return k.startsWith(`UH-TP ${sp.activeGrade === 'VII' ? '7' : sp.activeGrade === 'VIII' ? '8' : '9'}`);
                         if (modId === 'soal-sts') return k.startsWith(`STS-${sp.activeGrade}`);
+                        if (modId === 'soal-tka') return k.startsWith(`TKA-${sp.activeGrade}`);
                         return k.startsWith(`UAS-${sp.activeGrade}`);
                     });
                     if (!availableKeys.includes(sp.selectedExamKey)) {
@@ -2199,6 +2710,12 @@
                     const examObj = sp.exams[sp.selectedExamKey];
 
                     bodyEl.innerHTML = `
+                        ${modId === 'soal-tka' ? `
+                            <div class="no-print bg-indigo-50 border border-indigo-200 rounded-2xl p-3.5 mb-4 text-xs text-navy">
+                                <strong>Tes Kemampuan Akademik (TKA) Bahasa Inggris — Kelas ${sp.activeGrade}:</strong> Mengukur kemampuan literasi membaca kritis, penalaran logis/analogi bahasa, dan pemecahan masalah berbasis teks otentik. Paket yang diaktifkan otomatis muncul pada tab <strong>Ujian CBT</strong> siswa.
+                            </div>
+                        ` : ''}
+
                         <div class="no-print flex flex-wrap items-center justify-between gap-2 bg-cream-soft border border-cream-border rounded-2xl p-3 mb-4">
                             <div class="flex flex-wrap gap-1.5">
                                 ${availableKeys.map(k => `
@@ -2212,6 +2729,26 @@
                                 <input type="checkbox" ${examObj.published ? 'checked' : ''} onchange="toggleExamPublish('${sp.selectedExamKey}', this.checked, '${modId}')" class="w-4 h-4 accent-blue-600">
                                 <span>Aktifkan Ujian di Ruang Siswa</span>
                             </label>
+                        </div>
+
+                        <!-- BAR IMPOR & EKSPOR EXCEL BANK SOAL -->
+                        <div class="no-print bg-emerald-50/70 border border-green-300 rounded-2xl p-3.5 mb-4 flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider bg-mint text-white px-2.5 py-0.5 rounded-full">Impor Excel Bank Soal (.xlsx)</span>
+                                <p class="text-xs font-bold text-navy mt-1">Upload butir soal massal ke <strong>${sp.selectedExamKey}</strong> (Kolom: Pertanyaan, Pilihan A, Pilihan B, Pilihan C, Pilihan D, Kunci).</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button type="button" onclick="downloadExamExcelTemplate()" class="bg-white hover:bg-cream border border-slate-300 text-navy text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">
+                                    ↓ Template Excel Soal
+                                </button>
+                                <label class="bg-mint hover:bg-green-700 text-white text-xs font-extrabold px-3.5 py-1.5 rounded-xl shadow-2xs cursor-pointer">
+                                    ↑ Upload Excel Soal
+                                    <input type="file" accept=".xlsx,.xls,.csv" onchange="handleImportExamExcel(event, '${sp.selectedExamKey}', '${modId}')" class="hidden">
+                                </label>
+                                <button type="button" onclick="exportExamToExcel('${sp.selectedExamKey}')" class="bg-navy text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer">
+                                    Ekspor (.xlsx)
+                                </button>
+                            </div>
                         </div>
 
                         <div class="space-y-3 mb-5">
@@ -2233,7 +2770,7 @@
                         </div>
 
                         <form onsubmit="addExamQuestion(event, '${sp.selectedExamKey}', '${modId}')" class="no-print bg-blue-50/70 border border-blue-200 rounded-2xl p-4 space-y-2.5">
-                            <h5 class="font-display font-extrabold text-xs uppercase text-navy">+ Tambah Butir Soal Baru ke ${sp.selectedExamKey}</h5>
+                            <h5 class="font-display font-extrabold text-xs uppercase text-navy">+ Tambah Butir Soal Manual ke ${sp.selectedExamKey}</h5>
                             <input type="text" id="new-eq-text" required placeholder="Tulis pertanyaan bahasa Inggris..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <input type="text" id="new-eq-opt0" required placeholder="Pilihan A" class="border border-slate-300 rounded-xl px-3 py-1.5 text-xs bg-white">
@@ -2269,6 +2806,7 @@
                                         ${filteredTps.map(t => `<th class="w-16">${t.code}</th>`).join('')}
                                         <th class="w-16">STS</th>
                                         <th class="w-16">SAS</th>
+                                        <th class="w-16">TKA</th>
                                         <th class="w-20">Nilai Akhir</th>
                                     </tr>
                                 </thead>
@@ -2279,6 +2817,7 @@
                                         const avgTp = tpVals.length ? tpVals.reduce((a, b) => a + b, 0) / tpVals.length : 85;
                                         const sts = Number(s[`sts${semKey}`] || 85);
                                         const sas = Number(s[`sas${semKey}`] || 85);
+                                        const tkaScore = s.examResults?.[`TKA-${r.grade}-${semKey}`] ?? '-';
                                         const finalVal = Math.round((avgTp * 0.5) + (sts * 0.25) + (sas * 0.25));
                                         return `
                                             <tr>
@@ -2301,6 +2840,7 @@
                                                         onchange="updateStudentExamField(${s.id}, 'sas${semKey}', this.value)"
                                                         class="w-12 text-center border border-slate-300 rounded py-0.5">
                                                 </td>
+                                                <td class="text-center font-bold text-royal">${tkaScore}</td>
                                                 <td class="text-center font-extrabold text-navy bg-blue-50/60">${finalVal}</td>
                                             </tr>
                                         `;
@@ -2453,7 +2993,7 @@
                 default: {
                     bodyEl.innerHTML = `
                         <div class="p-4 bg-mint-bg/60 border border-green-300 rounded-2xl mb-4 text-xs sm:text-sm text-navy">
-                            <strong>Bundel Administrasi Supervisi &amp; Kelas (${r.label}):</strong> Seluruh dokumen perencanaan, pelaksanaan, penilaian, dan presensi 30 pertemuan telah terintegrasi dan siap dicetak PDF atau diunduh ke Microsoft Word.
+                            <strong>Bundel Administrasi Supervisi &amp; Kelas (${r.label}):</strong> Seluruh dokumen perencanaan, pelaksanaan, penilaian, TKA, dan presensi 30 pertemuan telah terintegrasi dan siap dicetak PDF atau diunduh ke Microsoft Word.
                         </div>
                         <table class="doc-table">
                             <thead>
@@ -2529,25 +3069,50 @@
             showToast('Siswa dihapus dari rombel.');
         }
 
-        function addTeacherResource(e) {
+        async function addTeacherResource(e) {
             e.preventDefault();
             const sp = getActiveSpace();
             const title = document.getElementById('res-title').value.trim();
             const chapterCode = document.getElementById('res-ch').value;
             const externalUrl = document.getElementById('res-url').value.trim();
             const content = document.getElementById('res-content').value.trim();
+            const fileObj = document.getElementById('res-file')?.files?.[0] || null;
             const tpObj = getGradeTps(sp).find(t => t.code === chapterCode);
+
+            let fileName = '';
+            let fileDataUrl = '';
+            let extractedText = content;
+
+            if (fileObj) {
+                if (fileObj.size > 3.5 * 1024 * 1024) {
+                    showToast('Ukuran file maksimal 3.5 MB agar tersimpan lancar di Cloud.');
+                    return;
+                }
+                fileName = fileObj.name;
+                if (fileObj.type.startsWith('text/') || /\.(txt|md|csv)$/i.test(fileName)) {
+                    const txt = await fileObj.text();
+                    if (!extractedText) extractedText = txt;
+                }
+                fileDataUrl = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result || '');
+                    reader.onerror = () => resolve('');
+                    reader.readAsDataURL(fileObj);
+                });
+            }
 
             sp.uploadedResources.unshift({
                 id: `res_${ts()}`,
                 grade: sp.activeGrade,
                 sem: tpObj ? tpObj.sem : 1,
                 chapterCode,
-                category: 'Buku Panduan / Materi',
+                category: fileName ? 'File Buku / Lampiran' : 'Buku Panduan / Materi',
                 title,
-                description: 'Materi tambahan dari guru mata pelajaran',
-                content,
+                description: fileName ? `Lampiran file: ${fileName}` : 'Materi tambahan dari guru mata pelajaran',
+                content: extractedText,
                 externalUrl,
+                fileName,
+                fileDataUrl,
                 visibleToStudent: true,
                 uploadedAt: new Date().toLocaleDateString('id-ID')
             });
@@ -2691,7 +3256,7 @@
         }
 
         // =========================================================================
-        // 8. PORTAL PEMBELAJARAN INTERAKTIF SISWA
+        // 9. PORTAL PEMBELAJARAN INTERAKTIF SISWA (TERMASUK UJIAN TKA)
         // =========================================================================
         function getLoggedStudent() {
             const sp = getActiveSpace();
@@ -2737,7 +3302,7 @@
                     <button type="button" onclick="setStudentTab('pustaka')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'pustaka' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">📚 Buku Panduan</button>
                     <button type="button" onclick="setStudentTab('flashcard')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'flashcard' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">✨ Flashcard</button>
                     <button type="button" onclick="setStudentTab('lkpd')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'lkpd' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">📝 Tugas LKPD</button>
-                    <button type="button" onclick="setStudentTab('ujian')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'ujian' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">⏱️ Ujian CBT</button>
+                    <button type="button" onclick="setStudentTab('ujian')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'ujian' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">⏱️ Ujian &amp; TKA</button>
                     <button type="button" onclick="setStudentTab('nilai')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'nilai' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">🏆 Rapor Saya</button>
                 </div>
                 <div id="st-tab-content"></div>
@@ -2818,7 +3383,7 @@
                                         <p class="text-xs text-navy-muted mt-1">${res.description || ''}</p>
                                     </div>
                                     <div class="flex items-center gap-2 pt-2 border-t border-slate-200">
-                                        <button type="button" onclick="openResourceReader('${res.id}')" class="bg-royal text-white text-xs font-extrabold px-3.5 py-1.5 rounded-xl cursor-pointer">Baca Ringkasan</button>
+                                        <button type="button" onclick="openResourceReader('${res.id}')" class="bg-royal text-white text-xs font-extrabold px-3.5 py-1.5 rounded-xl cursor-pointer">Baca / Pratinjau</button>
                                         ${res.externalUrl ? `<a href="${res.externalUrl}" target="_blank" class="text-xs font-extrabold text-navy hover:underline">Buka Tautan ↗</a>` : ''}
                                     </div>
                                 </div>
@@ -2908,17 +3473,21 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                             ${pubExams.map(([k, ex]) => {
                                 const doneScore = (st.examResults || {})[k];
+                                const isTka = k.startsWith('TKA-');
                                 return `
-                                    <div class="bg-white border border-cream-border rounded-3xl p-5 flex flex-col justify-between gap-3">
+                                    <div class="bg-white border-2 ${isTka ? 'border-indigo-300 bg-indigo-50/20' : 'border-cream-border'} rounded-3xl p-5 flex flex-col justify-between gap-3">
                                         <div>
-                                            <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-royal-light text-royal">${k} • ${ex.questions.length} Soal</span>
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${isTka ? 'bg-navy text-gold' : 'bg-royal-light text-royal'}">${k} • ${ex.questions.length} Soal</span>
+                                                ${isTka ? '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">TKA</span>' : ''}
+                                            </div>
                                             <h4 class="font-display font-extrabold text-sm text-navy mt-2">${ex.title}</h4>
                                         </div>
                                         <div class="flex items-center justify-between pt-2 border-t border-slate-100">
                                             <span class="text-xs font-extrabold ${doneScore !== undefined ? 'text-mint' : 'text-slate-400'}">
                                                 ${doneScore !== undefined ? `Skor Anda: ${doneScore}/100` : 'Belum Dikerjakan'}
                                             </span>
-                                            <button type="button" onclick="startStudentCbt('${k}')" class="bg-royal text-white text-xs font-extrabold px-3.5 py-1.5 rounded-xl cursor-pointer">
+                                            <button type="button" onclick="startStudentCbt('${k}')" class="${isTka ? 'bg-navy hover:bg-navy-deep' : 'bg-royal hover:bg-royal-hover'} text-white text-xs font-extrabold px-3.5 py-1.5 rounded-xl cursor-pointer">
                                                 ${doneScore !== undefined ? 'Ulangi Ujian' : 'Mulai Ujian →'}
                                             </button>
                                         </div>
@@ -2930,6 +3499,7 @@
                 }
             } else if (ui.tab === 'nilai') {
                 const countH = (st.att || []).filter(v => v === 'H').length;
+                const tkaEntries = Object.entries(st.examResults || {}).filter(([k]) => k.startsWith(`TKA-${r.grade}`));
                 contentEl.innerHTML = `
                     <div class="bg-white border border-cream-border rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
                         <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
@@ -2957,6 +3527,20 @@
                                 `).join('')}
                             </tbody>
                         </table>
+
+                        ${tkaEntries.length > 0 ? `
+                            <div class="pt-2">
+                                <h4 class="font-display font-extrabold text-xs uppercase text-navy mb-2">Hasil Tes Kemampuan Akademik (TKA)</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    ${tkaEntries.map(([k, val]) => `
+                                        <div class="border border-indigo-200 bg-indigo-50/40 rounded-xl p-3 flex items-center justify-between text-xs">
+                                            <span class="font-bold text-navy">${k}</span>
+                                            <span class="font-extrabold text-royal text-sm">${val}/100</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             }
@@ -3035,8 +3619,34 @@
             if (!res) return;
             document.getElementById('rr-badge').textContent = `${res.category} • ${res.chapterCode}`;
             document.getElementById('rr-title').textContent = res.title;
+
+            const dlBtn = document.getElementById('rr-dl-btn');
+            if (res.fileDataUrl) {
+                dlBtn.classList.remove('hidden');
+                dlBtn.onclick = () => {
+                    const a = document.createElement('a');
+                    a.href = res.fileDataUrl;
+                    a.download = res.fileName || `${res.title}.file`;
+                    a.click();
+                };
+            } else {
+                dlBtn.classList.add('hidden');
+            }
+
+            let mediaHtml = '';
+            if (res.fileDataUrl) {
+                if (res.fileDataUrl.startsWith('data:application/pdf')) {
+                    mediaHtml = `<iframe src="${res.fileDataUrl}" class="w-full h-[55vh] rounded-2xl border border-slate-300 mb-3 bg-white"></iframe>`;
+                } else if (res.fileDataUrl.startsWith('data:image/')) {
+                    mediaHtml = `<img src="${res.fileDataUrl}" alt="${res.title}" class="max-h-[55vh] mx-auto rounded-2xl border border-slate-200 mb-3">`;
+                } else if (res.fileDataUrl.startsWith('data:audio/')) {
+                    mediaHtml = `<audio controls src="${res.fileDataUrl}" class="w-full mb-3"></audio>`;
+                }
+            }
+
             document.getElementById('rr-body').innerHTML = `
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 whitespace-pre-wrap leading-relaxed">${res.content || res.description}</div>
+                ${mediaHtml}
+                ${res.content ? `<div class="bg-white border border-slate-200 rounded-2xl p-5 whitespace-pre-wrap leading-relaxed">${res.content}</div>` : ''}
                 ${res.externalUrl ? `<div class="mt-4 text-center"><a href="${res.externalUrl}" target="_blank" class="inline-block bg-royal text-white text-xs font-extrabold px-5 py-2.5 rounded-xl">Buka Tautan Sumber Belajar ↗</a></div>` : ''}
             `;
             const m = document.getElementById('modal-resource-reader');
@@ -3052,7 +3662,7 @@
         }
 
         // =========================================================================
-        // 9. DASHBOARD ADMIN PUSAT & KONFIGURASI CLOUD / DRIVE
+        // 10. DASHBOARD ADMIN PUSAT & KONFIGURASI CLOUD / DRIVE
         // =========================================================================
         function setAdminTab(tab) {
             state.adminTab = tab;
@@ -3213,7 +3823,7 @@
         }
 
         // =========================================================================
-        // 10. KONEKSI GOOGLE DRIVE (PER GURU + MIRROR ADMIN + LINTAS PERANGKAT)
+        // 11. KONEKSI GOOGLE DRIVE (PER GURU + MIRROR ADMIN + LINTAS PERANGKAT)
         // =========================================================================
         function openDriveModal() {
             const sp = getActiveSpace();
@@ -3307,6 +3917,7 @@
                 const json = await res.json();
                 if (json && json.status === 'ok' && json.teacherSpace) {
                     state.teacherSpaces[email] = json.teacherSpace;
+                    ensureTkaBanksInSpace(state.teacherSpaces[email]);
                     if (json.teacherRecord) {
                         const existingIdx = state.teachers.findIndex(t => t.email.toLowerCase() === email.toLowerCase());
                         if (existingIdx >= 0) state.teachers[existingIdx] = json.teacherRecord;
@@ -3328,6 +3939,7 @@
                 const json = await res.json();
                 if (json && json.status === 'ok' && json.teacherKey && json.teacherSpace) {
                     state.teacherSpaces[json.teacherKey] = json.teacherSpace;
+                    ensureTkaBanksInSpace(state.teacherSpaces[json.teacherKey]);
                     persist(true);
                 }
             } catch (e) { /* abaikan jika offline */ }
@@ -3423,6 +4035,7 @@
                 try {
                     const parsed = JSON.parse(ev.target.result);
                     if (parsed && parsed.rombels) {
+                        ensureTkaBanksInSpace(parsed);
                         state.teacherSpaces[state.auth.teacherKey] = parsed;
                         persist(true);
                         closeDriveModal();
@@ -3437,7 +4050,7 @@
         }
 
         // =========================================================================
-        // 11. INISIALISASI SAAT HALAMAN DIMUAT
+        // 12. INISIALISASI SAAT HALAMAN DIMUAT
         // =========================================================================
         window.addEventListener('DOMContentLoaded', () => {
             renderApp();
