@@ -903,12 +903,12 @@
                     { id: `${id}_s6`, pin: '1234', name: 'Nabila Khairunnisa', gender: 'P', completedChapters: [], uh1: 91, uh2: 90, uh3: 92, sts: 91, uas: 92, lkpdScores: {}, examResults: {} }
                 ],
                 attendance: {
-                    [`${id}_s1`]: ['H', 'H', 'H', 'H', 'H', 'H'],
-                    [`${id}_s2`]: ['H', 'H', 'H', 'H', 'H', 'H'],
-                    [`${id}_s3`]: ['H', 'I', 'H', 'H', 'H', 'H'],
-                    [`${id}_s4`]: ['H', 'H', 'H', 'H', 'H', 'H'],
-                    [`${id}_s5`]: ['H', 'H', 'S', 'H', 'H', 'H'],
-                    [`${id}_s6`]: ['H', 'H', 'H', 'H', 'H', 'H']
+                    [`${id}_s1`]: Array(30).fill('H'),
+                    [`${id}_s2`]: Array(30).fill('H'),
+                    [`${id}_s3`]: ['H', 'I', ...Array(28).fill('H')],
+                    [`${id}_s4`]: Array(30).fill('H'),
+                    [`${id}_s5`]: ['H', 'H', 'S', ...Array(27).fill('H')],
+                    [`${id}_s6`]: Array(30).fill('H')
                 },
                 journals: [
                     { id: 101, sem: 1, date: '2026-07-21', jam: '1-2', tp: `TP ${grade === 'VII' ? '7.1' : grade === 'VIII' ? '8.1' : '9.1'}`, activity: 'Listening & Reading Comprehension + Kosakata Inti Chapter 1', absen: 'Hadir semua', reflection: 'Siswa antusias berdiskusi' },
@@ -1290,7 +1290,7 @@
 
             const newSt = { id: 'st_' + Date.now(), pin, name, gender, completedChapters: [], uh1: 80, uh2: 80, uh3: 80, sts: 80, uas: 80, lkpdScores: {}, examResults: {} };
             r.students.push(newSt);
-            r.attendance[newSt.id] = ['H', 'H', 'H', 'H', 'H', 'H'];
+            r.attendance[newSt.id] = Array(30).fill('H');
             state.auth = { role: 'student', teacherKey: tKey, studentId: newSt.id, rombelId: r.id };
             sp.activeRombelId = r.id;
             sp.activeGrade = r.grade;
@@ -2019,24 +2019,45 @@
                     </table>
                 `;
             } else if (modId === 'presensi') {
+                const pHeaders = Array.from({ length: 30 }, (_, i) => `<th class="w-9 px-1">P${i + 1}</th>`).join('');
                 body.innerHTML = `
-                    <table class="doc-table">
-                        <thead><tr><th class="w-10">No</th><th>Nama Siswa</th><th class="w-12">P1</th><th class="w-12">P2</th><th class="w-12">P3</th><th class="w-12">P4</th><th class="w-12">P5</th><th class="w-12">P6</th><th class="w-20">% Hadir</th></tr></thead>
-                        <tbody>
-                            ${r.students.map((s, idx) => {
-                                const att = r.attendance[s.id] || ['H', 'H', 'H', 'H', 'H', 'H'];
-                                const pct = Math.round((att.filter(x => x === 'H').length / 6) * 100);
-                                return `
-                                    <tr>
-                                        <td class="text-center">${idx + 1}</td>
-                                        <td class="font-semibold">${s.name}</td>
-                                        ${att.map((st, pi) => `<td class="text-center"><button type="button" onclick="cycleAttendance('${s.id}', ${pi})" class="px-2 py-0.5 rounded font-bold text-xs cursor-pointer ${st === 'H' ? 'bg-mint-bg text-mint' : 'bg-amber-100 text-amber-800'}">${st}</button></td>`).join('')}
-                                        <td class="text-center font-bold">${pct}%</td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
+                    <div class="overflow-x-auto relative border border-slate-300 rounded-xl">
+                        <table class="doc-table border-collapse">
+                            <thead>
+                                <tr>
+                                    <th class="w-10 sticky left-0 z-20 bg-slate-100 shadow-[1px_0_0_#94A3B8]">No</th>
+                                    <th class="min-w-[180px] sticky left-10 z-20 bg-slate-100 shadow-[2px_0_4px_rgba(16,37,66,0.08)]">Nama Siswa</th>
+                                    ${pHeaders}
+                                    <th class="w-12 px-1">S</th>
+                                    <th class="w-12 px-1">I</th>
+                                    <th class="w-12 px-1">A</th>
+                                    <th class="w-20">% Hadir</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${r.students.map((s, idx) => {
+                                    const rawAtt = r.attendance[s.id] || [];
+                                    const att = Array.from({ length: 30 }, (_, i) => rawAtt[i] || 'H');
+                                    const countH = att.filter(x => x === 'H').length;
+                                    const countS = att.filter(x => x === 'S').length;
+                                    const countI = att.filter(x => x === 'I').length;
+                                    const countA = att.filter(x => x === 'A').length;
+                                    const pct = Math.round((countH / 30) * 100);
+                                    return `
+                                        <tr>
+                                            <td class="text-center sticky left-0 z-10 bg-white shadow-[1px_0_0_#94A3B8]">${idx + 1}</td>
+                                            <td class="font-semibold whitespace-nowrap sticky left-10 z-10 bg-white shadow-[2px_0_4px_rgba(16,37,66,0.08)]">${s.name}</td>
+                                            ${att.map((st, pi) => `<td class="text-center px-1"><button type="button" onclick="cycleAttendance('${s.id}', ${pi})" class="px-1.5 py-0.5 rounded font-bold text-[11px] cursor-pointer ${st === 'H' ? 'bg-mint-bg text-mint' : st === 'S' ? 'bg-blue-100 text-royal' : st === 'I' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-700'}">${st}</button></td>`).join('')}
+                                            <td class="text-center font-bold text-royal">${countS}</td>
+                                            <td class="text-center font-bold text-amber-700">${countI}</td>
+                                            <td class="text-center font-bold text-red-600">${countA}</td>
+                                            <td class="text-center font-bold">${pct}%</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
                 `;
             } else if (modId === 'jurnal-mengajar') {
                 body.innerHTML = `
@@ -2117,7 +2138,7 @@
             const pin = document.getElementById('add-st-pin').value.trim() || '1234';
             const id = `${r.id}_s${Date.now()}`;
             r.students.push({ id, pin, name, gender, completedChapters: [], uh1: 80, uh2: 80, uh3: 80, sts: 80, uas: 80, lkpdScores: {}, examResults: {} });
-            r.attendance[id] = ['H', 'H', 'H', 'H', 'H', 'H'];
+            r.attendance[id] = Array(30).fill('H');
             persist();
             renderTeacherWorkspace('data-kelas');
             showToast(`Siswa "${name}" ditambahkan ke ${r.label}!`);
@@ -2143,7 +2164,8 @@
 
         function cycleAttendance(stId, idx) {
             const r = getActiveRombel();
-            const arr = r.attendance[stId] || ['H', 'H', 'H', 'H', 'H', 'H'];
+            const rawAtt = r.attendance[stId] || [];
+            const arr = Array.from({ length: 30 }, (_, i) => rawAtt[i] || 'H');
             const order = ['H', 'I', 'S', 'A'];
             arr[idx] = order[(order.indexOf(arr[idx]) + 1) % order.length];
             r.attendance[stId] = arr;
@@ -2255,15 +2277,15 @@
             const space = ts();
             const list = document.getElementById('rombel-checkbox-list');
             const grades = ['VII', 'VIII', 'IX'];
-            const suffixes = ['A', 'B', 'C', 'D'];
+            const suffixes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
             list.innerHTML = grades.map(g => `
                 <div class="border border-cream-border rounded-2xl p-3 bg-cream-soft/60">
                     <p class="font-display font-extrabold text-xs text-navy mb-2">Jenjang Kelas ${g}</p>
-                    <div class="grid grid-cols-2 gap-2">
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
                         ${suffixes.map(sf => {
                             const id = `${g}-${sf}`;
                             const checked = !!space.rombels[id];
-                            return `<label class="inline-flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer"><input type="checkbox" name="mgr-rombel" value="${id}" ${checked ? 'checked' : ''} class="accent-blue-600"> Kelas ${id}</label>`;
+                            return `<label class="inline-flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer"><input type="checkbox" name="mgr-rombel" value="${id}" ${checked ? 'checked' : ''} class="accent-blue-600"> ${id}</label>`;
                         }).join('')}
                     </div>
                 </div>
