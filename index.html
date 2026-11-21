@@ -1459,24 +1459,41 @@
         }
 
         function downloadStudentExcelTemplate() {
+            if (!ensureSheetJsReady()) return;
             const r = getActiveRombel();
-            const sampleRows = [
-                { 'Nama Lengkap': 'Ananda Rizky Pratama', 'L/P': 'L', 'PIN': '1234' },
-                { 'Nama Lengkap': 'Putri Indah Permata', 'L/P': 'P', 'PIN': '1234' },
-                { 'Nama Lengkap': 'Rizki Ramadhan Saputra', 'L/P': 'L', 'PIN': '1234' }
+            const sp = getActiveSpace();
+            const aoa = [
+                ['DAFTAR NAMA PESERTA DIDIK'],
+                [`KELAS ${r.id}`],
+                [`TAHUN PELAJARAN ${sp.profile.tahunAjaran}`],
+                ['No.', 'NAMA', 'L/P', 'PIN'],
+                [1, 'Ananda Rizky Pratama', 'L', '1234'],
+                [2, 'Putri Indah Permata', 'P', '1234'],
+                [3, 'Rizki Ramadhan Saputra', 'L', '1234']
             ];
-            downloadExcelFile(sampleRows, 'Data_Siswa', `Template_Siswa_${r.id}.xlsx`);
+            const ws = XLSX.utils.aoa_to_sheet(aoa);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, r.id);
+            XLSX.writeFile(wb, `Data_Siswa_${r.id.replace('-', '_')}.xlsx`);
+            showToast(`Template "Data_Siswa_${r.id.replace('-', '_')}.xlsx" berhasil diunduh!`);
         }
 
         function exportStudentsToExcel() {
+            if (!ensureSheetJsReady()) return;
             const r = getActiveRombel();
-            const rows = r.students.map((s, idx) => ({
-                'No': idx + 1,
-                'Nama Lengkap': s.name,
-                'L/P': s.gender,
-                'PIN': s.pin
-            }));
-            downloadExcelFile(rows, r.id, `Daftar_Siswa_${r.id}.xlsx`);
+            const sp = getActiveSpace();
+            const aoa = [
+                ['DAFTAR NAMA PESERTA DIDIK'],
+                [`KELAS ${r.id}`],
+                [`TAHUN PELAJARAN ${sp.profile.tahunAjaran}`],
+                ['No.', 'NAMA', 'L/P', 'PIN'],
+                ...r.students.map((s, idx) => [idx + 1, s.name, s.gender, s.pin])
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(aoa);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, r.id);
+            XLSX.writeFile(wb, `Data_Siswa_${r.id.replace('-', '_')}.xlsx`);
+            showToast(`Daftar siswa ${r.label} berhasil diekspor!`);
         }
 
         function handleImportStudentsExcel(e) {
@@ -1487,27 +1504,52 @@
                 try {
                     const wb = XLSX.read(new Uint8Array(ev.target.result), { type: 'array' });
                     const sheet = wb.Sheets[wb.SheetNames[0]];
-                    const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
-                    if (!rows.length) {
+                    const aoa = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+                    if (!aoa.length) {
                         showToast('File Excel kosong.');
                         return;
                     }
+
+                    // Cari baris header (No. | NAMA | L/P) secara otomatis
+                    let headerRowIdx = -1;
+                    let nameColIdx = 1;
+                    let genderColIdx = 2;
+                    let pinColIdx = 3;
+
+                    for (let i = 0; i < Math.min(aoa.length, 15); i++) {
+                        const rowCells = aoa[i].map(c => String(c || '').trim().toUpperCase());
+                        const foundNameIdx = rowCells.findIndex(c => c === 'NAMA' || c === 'NAMA LENGKAP' || c === 'NAMA SISWA' || c === 'NAMA PESERTA DIDIK');
+                        if (foundNameIdx !== -1) {
+                            headerRowIdx = i;
+                            nameColIdx = foundNameIdx;
+                            const foundGenderIdx = rowCells.findIndex(c => c === 'L/P' || c === 'JK' || c === 'JENIS KELAMIN');
+                            const foundPinIdx = rowCells.findIndex(c => c === 'PIN' || c === 'PASSWORD');
+                            genderColIdx = foundGenderIdx !== -1 ? foundGenderIdx : foundNameIdx + 1;
+                            pinColIdx = foundPinIdx !== -1 ? foundPinIdx : foundNameIdx + 2;
+                            break;
+                        }
+                    }
+
+                    const startRow = headerRowIdx !== -1 ? headerRowIdx + 1 : 0;
                     const r = getActiveRombel();
                     let added = 0;
-                    rows.forEach((row, idx) => {
-                        const rawName = String(
-                            row['Nama Lengkap'] || row['Nama'] || row['NAMA'] || row['Nama Siswa'] || row['nama'] || ''
-                        ).trim();
-                        if (!rawName) return;
-                        const exists = r.students.some(s => s.name.trim().toLowerCase() === rawName.toLowerCase());
-                        if (exists) return;
 
-                        const rawGender = String(row['L/P'] || row['Jenis Kelamin'] || row['JK'] || 'L').trim().toUpperCase();
+                    for (let i = startRow; i < aoa.length; i++) {
+                        const row = aoa[i] || [];
+                        const rawName = String(row[nameColIdx] || '').trim();
+                        if (!rawName) continue;
+                        if (/^(DAFTAR NAMA|KELAS|TAHUN PELAJARAN|NAMA|NO\.?)$/i.test(rawName)) continue;
+
+                        const exists = r.students.some(s => s.name.trim().toLowerCase() === rawName.toLowerCase());
+                        if (exists) continue;
+
+                        const rawGender = String(row[genderColIdx] || 'L').trim().toUpperCase();
                         const gender = rawGender.startsWith('P') ? 'P' : 'L';
-                        const pin = String(row['PIN'] || row['Pin'] || '1234').trim() || '1234';
+                        const rawPin = String(row[pinColIdx] || '').trim();
+                        const pin = rawPin || '1234';
 
                         r.students.push({
-                            id: ts() + idx,
+                            id: ts() + i,
                             name: rawName,
                             gender,
                             pin,
@@ -1519,13 +1561,14 @@
                             examResults: {}
                         });
                         added++;
-                    });
+                    }
+
                     e.target.value = '';
                     persist();
                     renderWorkspace('data-kelas');
                     showToast(`${added} data siswa berhasil diimpor ke ${r.label}!`);
                 } catch (err) {
-                    showToast('Gagal membaca file Excel siswa. Gunakan template yang tersedia.');
+                    showToast('Gagal membaca file Excel siswa. Pastikan format kolom sesuai.');
                 }
             };
             reader.readAsArrayBuffer(file);
@@ -2399,7 +2442,7 @@
                             <div>
                                 <span class="text-[10px] font-extrabold uppercase tracking-wider bg-mint text-white px-2.5 py-0.5 rounded-full">Impor Massal Excel (.xlsx)</span>
                                 <h4 class="font-display font-extrabold text-sm text-navy mt-1">Upload Data Siswa dari Excel (${r.label})</h4>
-                                <p class="text-[11px] text-navy-muted">Format kolom Excel: <strong>Nama Lengkap</strong>, <strong>L/P</strong>, dan <strong>PIN</strong> (tanpa NIS).</p>
+                                <p class="text-[11px] text-navy-muted">Mendukung langsung format judul sekolah &amp; kolom: <strong>No.</strong> | <strong>NAMA</strong> | <strong>L/P</strong> (PIN otomatis <code>1234</code> jika kolom PIN tidak diisi).</p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
                                 <button type="button" onclick="downloadStudentExcelTemplate()" class="bg-white hover:bg-cream border border-slate-300 text-navy text-xs font-extrabold px-3 py-2 rounded-xl cursor-pointer">
