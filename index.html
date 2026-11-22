@@ -224,8 +224,8 @@
                             <span class="font-display font-extrabold text-xs sm:text-sm text-white">19 Modul Lengkap</span>
                         </div>
                         <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
-                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Sinkronisasi</span>
-                            <span class="font-display font-extrabold text-xs sm:text-sm text-emerald-300">Cloud &amp; Drive ✓</span>
+                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Penyimpanan</span>
+                            <span class="font-display font-extrabold text-xs sm:text-sm text-emerald-300">Cloud &amp; Drive Permanen</span>
                         </div>
                     </div>
                 </div>
@@ -441,7 +441,7 @@
             <div class="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-cream-border shadow-2xs">
                 <button type="button" onclick="setAdminTab('teachers')" id="adm-nav-teachers" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-navy text-white cursor-pointer">1. Akun &amp; Lisensi Guru</button>
                 <button type="button" onclick="setAdminTab('tokens')" id="adm-nav-tokens" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">2. Generator Token</button>
-                <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Konfigurasi Cloud &amp; OAuth</button>
+                <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Konfigurasi Cloud &amp; Apps Script</button>
             </div>
             <div id="admin-content-area"></div>
         </div>
@@ -605,7 +605,7 @@
                     <div class="w-9 h-9 rounded-xl bg-royal-light text-royal flex items-center justify-center"><i data-lucide="hard-drive" class="w-5 h-5"></i></div>
                     <div>
                         <h3 class="font-display font-extrabold text-base text-navy">Sinkronisasi Google Drive</h3>
-                        <p class="text-[11px] text-navy-muted">Backup otomatis per guru ke Google Drive &amp; lintas perangkat</p>
+                        <p class="text-[11px] text-navy-muted">Backup otomatis permanen saat update GitHub &amp; lintas perangkat</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeDriveModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
@@ -641,11 +641,11 @@
             <form onsubmit="handleAdminLogin(event)" autocomplete="off" class="space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-navy mb-1">Email Admin</label>
-                    <input type="email" id="adm-inp-email" autocomplete="off" required placeholder="Masukkan email admin..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-white focus:outline-navy">
+                    <input type="text" id="adm-inp-email" name="adm_user_field" autocomplete="off" autocapitalize="none" spellcheck="false" required placeholder="Masukkan email admin..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-white focus:outline-navy">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-navy mb-1">Password / PIN Admin</label>
-                    <input type="password" id="adm-inp-pin" autocomplete="new-password" required placeholder="Masukkan password admin..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-white focus:outline-navy">
+                    <input type="password" id="adm-inp-pin" name="adm_pass_field" autocomplete="new-password" required placeholder="Masukkan password admin..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-white focus:outline-navy">
                 </div>
                 <button type="submit" class="w-full bg-navy hover:bg-navy-deep text-white font-display font-extrabold text-xs py-3 rounded-2xl shadow cursor-pointer">
                     Masuk Panel Admin
@@ -677,14 +677,30 @@
 
     <script>
         // =========================================================================
-        // 1. KONFIGURASI UTAMA, KREDENSIAL ADMIN & DATA KURIKULUM LENGKAP
+        // 1. KONFIGURASI UTAMA, KREDENSIAL ADMIN & PENYIMPANAN PERMANEN
         // =========================================================================
-        const MASTER_STORE_KEY = 'efn_master_v6';
+        const MASTER_STORE_KEY = 'efn_master_permanent';
+        const LEGACY_STORE_KEYS = ['efn_master_v6', 'efn_master_v5', 'efn_master_v4', 'efn_master_v3'];
         const SUPER_ADMIN_EMAIL = 'taufiqurrohman14@guru.smp.belajar.id';
         const SUPER_ADMIN_PIN = 'admin2026';
         const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyFT5KIB6HJqsOm825-WEU5QTQiVte8pV1KNqt8bTPyOiOXmIzYy93cb9e7UUtyiprviA/exec';
         const DEFAULT_OAUTH_ID = '';
         const ALL_SECTIONS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+
+        function normalizeStr(val) {
+            return String(val || '')
+                .replace(/[\u200B-\u200D\uFEFF\u00A0]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toLowerCase();
+        }
+
+        function cleanInputText(val) {
+            return String(val || '')
+                .replace(/[\u200B-\u200D\uFEFF\u00A0]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
 
         const TEACHER_MODULES = [
             { id: 'data-kelas', title: 'Data Kelas Saya', featured: true },
@@ -1018,7 +1034,7 @@
         };
 
         // =========================================================================
-        // 2. PEMBENTUK STATE AWAL & ISOLASI DATA PER GURU
+        // 2. PEMBENTUK STATE AWAL & MIGRASI DATA PERMANEN
         // =========================================================================
         function ts() {
             return Date.now();
@@ -1314,14 +1330,30 @@
             };
         }
 
-        let state = null;
-        try {
-            const raw = localStorage.getItem(MASTER_STORE_KEY);
-            state = raw ? JSON.parse(raw) : createInitialMasterState();
-        } catch (e) {
-            state = createInitialMasterState();
+        function loadPermanentOrMigratedState() {
+            try {
+                const rawPerm = localStorage.getItem(MASTER_STORE_KEY);
+                if (rawPerm) {
+                    const parsed = JSON.parse(rawPerm);
+                    if (parsed && parsed.teacherSpaces) return parsed;
+                }
+                for (const oldKey of LEGACY_STORE_KEYS) {
+                    const rawOld = localStorage.getItem(oldKey);
+                    if (rawOld) {
+                        const parsedOld = JSON.parse(rawOld);
+                        if (parsedOld && parsedOld.teacherSpaces) {
+                            localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(parsedOld));
+                            return parsedOld;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Gagal membaca storage:', e);
+            }
+            return createInitialMasterState();
         }
-        if (!state || !state.teacherSpaces) state = createInitialMasterState();
+
+        let state = loadPermanentOrMigratedState();
         if (!state.cloudConfig) state.cloudConfig = { gasUrl: DEFAULT_GAS_URL, oauthClientId: DEFAULT_OAUTH_ID };
         if (!state.cloudConfig.gasUrl) state.cloudConfig.gasUrl = DEFAULT_GAS_URL;
 
@@ -1340,7 +1372,7 @@
                 clearTimeout(autoSyncTimeout);
                 autoSyncTimeout = setTimeout(() => {
                     syncTeacherToCloud(true);
-                }, 1500);
+                }, 800);
             }
         }
 
@@ -1392,7 +1424,7 @@
         function getActiveSpace() {
             const key = state.auth.teacherKey || Object.keys(state.teacherSpaces)[0];
             if (!state.teacherSpaces[key]) {
-                const tRec = state.teachers.find(t => t.email === key);
+                const tRec = state.teachers.find(t => normalizeStr(t.email) === normalizeStr(key));
                 state.teacherSpaces[key] = createTeacherSpace(tRec || { email: key });
             }
             const sp = state.teacherSpaces[key];
@@ -1510,14 +1542,13 @@
                         return;
                     }
 
-                    // Cari baris header (No. | NAMA | L/P) secara otomatis
                     let headerRowIdx = -1;
                     let nameColIdx = 1;
                     let genderColIdx = 2;
                     let pinColIdx = 3;
 
                     for (let i = 0; i < Math.min(aoa.length, 15); i++) {
-                        const rowCells = aoa[i].map(c => String(c || '').trim().toUpperCase());
+                        const rowCells = aoa[i].map(c => cleanInputText(c).toUpperCase());
                         const foundNameIdx = rowCells.findIndex(c => c === 'NAMA' || c === 'NAMA LENGKAP' || c === 'NAMA SISWA' || c === 'NAMA PESERTA DIDIK');
                         if (foundNameIdx !== -1) {
                             headerRowIdx = i;
@@ -1536,16 +1567,16 @@
 
                     for (let i = startRow; i < aoa.length; i++) {
                         const row = aoa[i] || [];
-                        const rawName = String(row[nameColIdx] || '').trim();
+                        const rawName = cleanInputText(row[nameColIdx]);
                         if (!rawName) continue;
                         if (/^(DAFTAR NAMA|KELAS|TAHUN PELAJARAN|NAMA|NO\.?)$/i.test(rawName)) continue;
 
-                        const exists = r.students.some(s => s.name.trim().toLowerCase() === rawName.toLowerCase());
+                        const exists = r.students.some(s => normalizeStr(s.name) === normalizeStr(rawName));
                         if (exists) continue;
 
-                        const rawGender = String(row[genderColIdx] || 'L').trim().toUpperCase();
+                        const rawGender = cleanInputText(row[genderColIdx] || 'L').toUpperCase();
                         const gender = rawGender.startsWith('P') ? 'P' : 'L';
-                        const rawPin = String(row[pinColIdx] || '').trim();
+                        const rawPin = cleanInputText(row[pinColIdx]);
                         const pin = rawPin || '1234';
 
                         r.students.push({
@@ -1565,8 +1596,9 @@
 
                     e.target.value = '';
                     persist();
+                    if (getGasUrl()) syncTeacherToCloud(true);
                     renderWorkspace('data-kelas');
-                    showToast(`${added} data siswa berhasil diimpor ke ${r.label}!`);
+                    showToast(`${added} data siswa berhasil diimpor ke ${r.label} (Kode Kelas: ${r.classCode})!`);
                 } catch (err) {
                     showToast('Gagal membaca file Excel siswa. Pastikan format kolom sesuai.');
                 }
@@ -1800,42 +1832,45 @@
                 : 'py-2 rounded-xl text-xs font-bold text-navy-muted cursor-pointer transition';
         }
 
-        async function handleStudentLogin(e) {
-            e.preventDefault();
-            const classCode = document.getElementById('login-st-code').value.trim().toUpperCase();
-            const nameInput = document.getElementById('login-st-name').value.trim().toLowerCase();
-            const pinInput = document.getElementById('login-st-pin').value.trim();
-
-            if (classCode && getGasUrl()) {
-                showToast('Menghubungkan ke kelas...');
-                await pullClassByCodeFromCloud(classCode);
-            }
-
-            let foundTeacherKey = null;
-            let foundRombel = null;
-            let foundStudent = null;
-
+        function findStudentInSpaces(nameNorm, pinInput, classCode) {
             for (const [tKey, sp] of Object.entries(state.teacherSpaces)) {
                 const allowed = getAllowedGrades(sp);
                 for (const r of Object.values(sp.rombels)) {
                     if (!allowed.includes(r.grade)) continue;
-                    if (classCode && r.classCode.toUpperCase() !== classCode) continue;
-                    const match = r.students.find(s => s.name.trim().toLowerCase() === nameInput && String(s.pin) === pinInput);
+                    if (classCode && cleanInputText(r.classCode).toUpperCase() !== classCode) continue;
+                    const match = (r.students || []).find(s => normalizeStr(s.name) === nameNorm && cleanInputText(s.pin) === pinInput);
                     if (match) {
-                        foundTeacherKey = tKey;
-                        foundRombel = r;
-                        foundStudent = match;
-                        break;
+                        return { foundTeacherKey: tKey, foundRombel: r, foundStudent: match };
                     }
                 }
-                if (foundStudent) break;
+            }
+            return null;
+        }
+
+        async function handleStudentLogin(e) {
+            e.preventDefault();
+            const classCode = cleanInputText(document.getElementById('login-st-code').value).toUpperCase();
+            const nameNorm = normalizeStr(document.getElementById('login-st-name').value);
+            const pinInput = cleanInputText(document.getElementById('login-st-pin').value);
+
+            let result = findStudentInSpaces(nameNorm, pinInput, classCode);
+
+            if (!result && classCode && getGasUrl()) {
+                showToast('Mencari data kelas dari Cloud...');
+                await pullClassByCodeFromCloud(classCode);
+                result = findStudentInSpaces(nameNorm, pinInput, classCode);
             }
 
-            if (!foundStudent) {
-                showToast('Nama siswa atau PIN tidak cocok. Periksa kembali ejaan nama lengkap Anda.');
+            if (!result && classCode) {
+                result = findStudentInSpaces(nameNorm, pinInput, '');
+            }
+
+            if (!result) {
+                showToast('Nama siswa atau PIN tidak cocok. Pastikan Kode Kelas & ejaan nama sesuai daftar guru.');
                 return;
             }
 
+            const { foundTeacherKey, foundRombel, foundStudent } = result;
             const sp = state.teacherSpaces[foundTeacherKey];
             ensureTkaBanksInSpace(sp);
             sp.activeGrade = foundRombel.grade;
@@ -1855,11 +1890,11 @@
 
         async function handleStudentRegister(e) {
             e.preventDefault();
-            const codeInput = document.getElementById('reg-st-code').value.trim().toUpperCase();
+            const codeInput = cleanInputText(document.getElementById('reg-st-code').value).toUpperCase();
             const combined = document.getElementById('reg-st-rombel').value;
-            const fullName = document.getElementById('reg-st-name').value.trim();
+            const fullName = cleanInputText(document.getElementById('reg-st-name').value);
             const gender = document.getElementById('reg-st-gender').value;
-            const pin = document.getElementById('reg-st-pin').value.trim() || '1234';
+            const pin = cleanInputText(document.getElementById('reg-st-pin').value) || '1234';
 
             if (!fullName) return;
 
@@ -1872,7 +1907,7 @@
 
             if (codeInput) {
                 for (const [tKey, sp] of Object.entries(state.teacherSpaces)) {
-                    const foundR = Object.values(sp.rombels).find(r => r.classCode.toUpperCase() === codeInput);
+                    const foundR = Object.values(sp.rombels).find(r => cleanInputText(r.classCode).toUpperCase() === codeInput);
                     if (foundR) {
                         targetTeacherKey = tKey;
                         targetRombel = foundR;
@@ -1892,7 +1927,7 @@
                 return;
             }
 
-            const existing = targetRombel.students.find(s => s.name.trim().toLowerCase() === fullName.toLowerCase());
+            const existing = targetRombel.students.find(s => normalizeStr(s.name) === normalizeStr(fullName));
             if (existing) {
                 showToast('Nama siswa sudah terdaftar di kelas ini. Silakan langsung masuk.');
                 return;
@@ -1951,17 +1986,19 @@
 
         async function handleTeacherLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('login-tc-email').value.trim().toLowerCase();
-            const pin = document.getElementById('login-tc-pin').value.trim();
+            const email = normalizeStr(document.getElementById('login-tc-email').value);
+            const pin = cleanInputText(document.getElementById('login-tc-pin').value);
+
+            let teacher = state.teachers.find(t => normalizeStr(t.email) === email && cleanInputText(t.pin) === pin);
 
             if (getGasUrl()) {
-                showToast('Memeriksa data akun di Cloud...');
+                if (!teacher) showToast('Memeriksa data akun di Cloud...');
                 await pullTeacherFromCloud(email);
+                teacher = state.teachers.find(t => normalizeStr(t.email) === email && cleanInputText(t.pin) === pin);
             }
 
-            const teacher = state.teachers.find(t => t.email.toLowerCase() === email && String(t.pin) === pin);
             if (!teacher) {
-                showToast('Email atau PIN guru tidak terdaftar.');
+                showToast('Email atau PIN guru tidak terdaftar. Jika baru, silakan daftar pada tab "Daftar Akun Guru".');
                 return;
             }
             if (teacher.status === 'SUSPENDED') {
@@ -1969,14 +2006,15 @@
                 return;
             }
 
-            if (!state.teacherSpaces[email]) {
-                state.teacherSpaces[email] = createTeacherSpace(teacher);
+            const canonicalEmail = normalizeStr(teacher.email);
+            if (!state.teacherSpaces[canonicalEmail]) {
+                state.teacherSpaces[canonicalEmail] = createTeacherSpace(teacher);
             } else {
-                state.teacherSpaces[email].profile.allowedGrades = teacher.allowedGrades || state.teacherSpaces[email].profile.allowedGrades;
-                ensureTkaBanksInSpace(state.teacherSpaces[email]);
+                state.teacherSpaces[canonicalEmail].profile.allowedGrades = teacher.allowedGrades || state.teacherSpaces[canonicalEmail].profile.allowedGrades;
+                ensureTkaBanksInSpace(state.teacherSpaces[canonicalEmail]);
             }
 
-            state.auth = { role: 'teacher', teacherKey: email, studentId: null, rombelId: null };
+            state.auth = { role: 'teacher', teacherKey: canonicalEmail, studentId: null, rombelId: null };
             activeModuleId = null;
             persist(true);
             renderApp();
@@ -1985,12 +2023,12 @@
 
         async function handleTeacherRegister(e) {
             e.preventDefault();
-            const nama = document.getElementById('reg-tc-nama').value.trim();
-            const nip = document.getElementById('reg-tc-nip').value.trim();
-            const sekolah = document.getElementById('reg-tc-sekolah').value.trim();
-            const email = document.getElementById('reg-tc-email').value.trim().toLowerCase();
-            const pin = document.getElementById('reg-tc-pin').value.trim();
-            const tokenCode = document.getElementById('reg-tc-token').value.trim().toUpperCase();
+            const nama = cleanInputText(document.getElementById('reg-tc-nama').value);
+            const nip = cleanInputText(document.getElementById('reg-tc-nip').value);
+            const sekolah = cleanInputText(document.getElementById('reg-tc-sekolah').value);
+            const email = normalizeStr(document.getElementById('reg-tc-email').value);
+            const pin = cleanInputText(document.getElementById('reg-tc-pin').value);
+            const tokenCode = cleanInputText(document.getElementById('reg-tc-token').value).toUpperCase();
 
             const checkedGrades = Array.from(document.querySelectorAll('input[name="reg-tc-grades"]:checked')).map(cb => cb.value);
             if (checkedGrades.length === 0) {
@@ -1998,7 +2036,7 @@
                 return;
             }
 
-            if (state.teachers.some(t => t.email.toLowerCase() === email)) {
+            if (state.teachers.some(t => normalizeStr(t.email) === email)) {
                 showToast('Email guru sudah terdaftar. Silakan masuk melalui tab Masuk Guru.');
                 return;
             }
@@ -2008,7 +2046,7 @@
             let expiresAt = '2026-12-31';
 
             if (tokenCode) {
-                const tok = state.tokens.find(t => t.code === tokenCode && !t.usedBy);
+                const tok = state.tokens.find(t => cleanInputText(t.code).toUpperCase() === tokenCode && !t.usedBy);
                 if (tok) {
                     tok.usedBy = email;
                     status = 'ACTIVE';
@@ -2036,9 +2074,13 @@
             state.teacherSpaces[email] = createTeacherSpace(newTeacher);
             state.auth = { role: 'teacher', teacherKey: email, studentId: null, rombelId: null };
             activeModuleId = null;
-            persist();
+            persist(true);
+            if (getGasUrl()) {
+                await syncTeacherToCloud(true);
+                await syncAdminCloud(true);
+            }
             renderApp();
-            showToast(`Akun guru berhasil dibuat! Jenjang diampu: Kelas ${checkedGrades.join(', ')}.`);
+            showToast(`Akun guru berhasil dibuat & dicadangkan ke Cloud!`);
         }
 
         function quickDemoTeacher() {
@@ -2056,12 +2098,21 @@
         }
 
         function openAdminAuthModal() {
-            document.getElementById('adm-inp-email').value = '';
-            document.getElementById('adm-inp-pin').value = '';
+            const emailEl = document.getElementById('adm-inp-email');
+            const pinEl = document.getElementById('adm-inp-pin');
+            if (emailEl) emailEl.value = '';
+            if (pinEl) pinEl.value = '';
             const m = document.getElementById('modal-admin-auth');
             m.classList.remove('hidden');
             m.classList.add('flex');
             lucide.createIcons();
+            setTimeout(() => {
+                if (emailEl) {
+                    emailEl.value = '';
+                    emailEl.focus();
+                }
+                if (pinEl) pinEl.value = '';
+            }, 60);
         }
 
         function closeAdminAuthModal() {
@@ -2072,14 +2123,15 @@
 
         function handleAdminLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('adm-inp-email').value.trim().toLowerCase();
-            const pin = document.getElementById('adm-inp-pin').value.trim();
+            const email = normalizeStr(document.getElementById('adm-inp-email').value);
+            const pin = normalizeStr(document.getElementById('adm-inp-pin').value);
 
-            if (email === SUPER_ADMIN_EMAIL.toLowerCase() && pin.toLowerCase() === SUPER_ADMIN_PIN.toLowerCase()) {
+            if (email === normalizeStr(SUPER_ADMIN_EMAIL) && pin === normalizeStr(SUPER_ADMIN_PIN)) {
                 closeAdminAuthModal();
                 state.auth = { role: 'admin', teacherKey: state.auth.teacherKey, studentId: null, rombelId: null };
                 persist(true);
                 renderApp();
+                if (getGasUrl()) syncAdminCloud(true);
                 showToast('Selamat datang di Panel Admin Pusat!');
                 return;
             }
@@ -2293,7 +2345,7 @@
             }
 
             sp.profile.allowedGrades = chosenGrades;
-            const teacherRec = state.teachers.find(t => t.email === state.auth.teacherKey);
+            const teacherRec = state.teachers.find(t => normalizeStr(t.email) === normalizeStr(state.auth.teacherKey));
             if (teacherRec) teacherRec.allowedGrades = chosenGrades;
 
             const chosenRombels = Array.from(document.querySelectorAll('.mgr-rombel-cb:checked'))
@@ -2376,7 +2428,7 @@
                         <td class="w-32 font-semibold py-0.5">Mata Pelajaran</td><td class="w-3">:</td><td>Bahasa Inggris</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold py-0.5">Kelas / Rombel</td><td>:</td><td>${r.label} (Kode: ${r.classCode})</td>
+                        <td class="font-semibold py-0.5">Kelas / Rombel</td><td>:</td><td>${r.label} (Kode: <strong>${r.classCode}</strong>)</td>
                         <td class="font-semibold py-0.5">Semester</td><td>:</td><td>${sp.activeSemester === 'ALL' ? '1 (Ganjil) & 2 (Genap)' : sp.activeSemester === '1' ? '1 (Ganjil)' : '2 (Genap)'}</td>
                     </tr>
                 </table>
@@ -2442,7 +2494,7 @@
                             <div>
                                 <span class="text-[10px] font-extrabold uppercase tracking-wider bg-mint text-white px-2.5 py-0.5 rounded-full">Impor Massal Excel (.xlsx)</span>
                                 <h4 class="font-display font-extrabold text-sm text-navy mt-1">Upload Data Siswa dari Excel (${r.label})</h4>
-                                <p class="text-[11px] text-navy-muted">Mendukung langsung format judul sekolah &amp; kolom: <strong>No.</strong> | <strong>NAMA</strong> | <strong>L/P</strong> (PIN otomatis <code>1234</code> jika kolom PIN tidak diisi).</p>
+                                <p class="text-[11px] text-navy-muted">Mendukung langsung format judul sekolah &amp; kolom: <strong>No.</strong> | <strong>NAMA</strong> | <strong>L/P</strong> (PIN otomatis <code>1234</code> jika kolom PIN tidak diisi). Bagikan Kode Kelas <strong>${r.classCode}</strong> ke siswa.</p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
                                 <button type="button" onclick="downloadStudentExcelTemplate()" class="bg-white hover:bg-cream border border-slate-300 text-navy text-xs font-extrabold px-3 py-2 rounded-xl cursor-pointer">
@@ -3082,11 +3134,15 @@
         }
 
         function addStudentToRombel() {
-            const name = document.getElementById('add-st-name').value.trim();
+            const name = cleanInputText(document.getElementById('add-st-name').value);
             const gender = document.getElementById('add-st-gender').value;
-            const pin = document.getElementById('add-st-pin').value.trim() || '1234';
+            const pin = cleanInputText(document.getElementById('add-st-pin').value) || '1234';
             if (!name) return;
             const r = getActiveRombel();
+            if (r.students.some(s => normalizeStr(s.name) === normalizeStr(name))) {
+                showToast('Nama siswa sudah ada di rombel ini.');
+                return;
+            }
             r.students.push({
                 id: ts(),
                 name,
@@ -3756,6 +3812,7 @@
                                     <th>Nama Guru</th>
                                     <th>Sekolah</th>
                                     <th>Email</th>
+                                    <th>PIN</th>
                                     <th>Jenjang Diampu</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
@@ -3767,6 +3824,7 @@
                                         <td class="font-bold">${t.nama}</td>
                                         <td>${t.sekolah}</td>
                                         <td class="text-xs">${t.email}</td>
+                                        <td class="text-center font-mono text-xs">${t.pin}</td>
                                         <td class="text-center font-extrabold text-royal">Kelas ${(t.allowedGrades || ['IX']).join(', ')}</td>
                                         <td class="text-center">
                                             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${t.status === 'ACTIVE' ? 'bg-mint-bg text-mint' : 'bg-red-100 text-red-700'}">${t.status}</span>
@@ -3775,7 +3833,7 @@
                                             <button type="button" onclick="toggleTeacherStatus(${idx})" class="text-xs font-extrabold text-royal hover:underline cursor-pointer">
                                                 ${t.status === 'ACTIVE' ? 'Nonaktifkan' : 'Aktifkan'}
                                             </button>
-                                            ${t.email !== 'guru.demo@smp.belajar.id' ? `<button type="button" onclick="removeTeacherAccount(${idx})" class="text-xs font-bold text-red-600 hover:underline cursor-pointer">Hapus</button>` : ''}
+                                            ${normalizeStr(t.email) !== 'guru.demo@smp.belajar.id' ? `<button type="button" onclick="removeTeacherAccount(${idx})" class="text-xs font-bold text-red-600 hover:underline cursor-pointer">Hapus</button>` : ''}
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -3819,13 +3877,16 @@
                         <div>
                             <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (/exec)</label>
                             <input type="url" id="cfg-gas-url" value="${getGasUrl()}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-cream-soft">
-                            <p class="text-[11px] text-navy-muted mt-1">URL Web App sudah tertanam otomatis di aplikasi untuk seluruh guru &amp; siswa lintas perangkat.</p>
+                            <p class="text-[11px] text-navy-muted mt-1">URL Web App sudah tertanam otomatis agar data tetap tersimpan permanen di Google Drive meskipun file di GitHub diperbarui.</p>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-navy mb-1">Google Cloud OAuth 2.0 Client ID (Opsional untuk Drive Pribadi Tiap Guru)</label>
                             <input type="text" id="cfg-oauth-id" value="${getOauthClientId()}" placeholder="123456789-xxxx.apps.googleusercontent.com" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-cream-soft">
                         </div>
-                        <button type="submit" class="bg-navy text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">Simpan Konfigurasi Cloud</button>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="submit" class="bg-navy text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">Simpan Konfigurasi Cloud</button>
+                            <button type="button" onclick="syncAdminCloud(false)" class="bg-royal text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">☁️ Tarik &amp; Gabungkan Data Cloud Sekarang</button>
+                        </div>
                     </form>
                 `;
             }
@@ -3835,6 +3896,7 @@
             const t = state.teachers[idx];
             t.status = t.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
             persist();
+            if (getGasUrl()) syncAdminCloud(true);
             renderAdminDashboard();
             showToast(`Status ${t.nama} diubah menjadi ${t.status}.`);
         }
@@ -3844,6 +3906,7 @@
             delete state.teacherSpaces[t.email];
             state.teachers.splice(idx, 1);
             persist();
+            if (getGasUrl()) syncAdminCloud(true);
             renderAdminDashboard();
             showToast('Akun guru dihapus.');
         }
@@ -3852,6 +3915,7 @@
             const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
             state.tokens.unshift({ code: `EFN-PRO-${rand}`, plan: 'PRO-1-TAHUN', days: 365, usedBy: '' });
             persist();
+            if (getGasUrl()) syncAdminCloud(true);
             renderAdminDashboard();
             showToast('Token baru berhasil dibuat!');
         }
@@ -3881,10 +3945,15 @@
                             ${gasUrl ? 'Cloud Terhubung ✓' : 'Perlu URL Apps Script'}
                         </span>
                     </div>
-                    <p class="text-navy-muted">Menyimpan cadangan kelas <strong>${sp.profile.nama}</strong> ke Google Drive sehingga siswa &amp; guru dapat membuka data dari perangkat berbeda.</p>
-                    <button type="button" onclick="triggerTeacherCloudSync()" class="w-full bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-xs py-2.5 rounded-xl shadow cursor-pointer mt-1">
-                        ☁️ Sinkronkan Sekarang ke Cloud &amp; Google Drive
-                    </button>
+                    <p class="text-navy-muted">Menyimpan cadangan kelas <strong>${sp.profile.nama}</strong> ke Google Drive sehingga data tetap aman saat GitHub diperbarui dan dapat dibuka di perangkat lain.</p>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <button type="button" onclick="triggerTeacherCloudSync()" class="bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-xs py-2.5 rounded-xl shadow cursor-pointer">
+                            ☁️ Simpan ke Drive
+                        </button>
+                        <button type="button" onclick="triggerTeacherCloudRestore()" class="bg-navy hover:bg-navy-deep text-white font-display font-extrabold text-xs py-2.5 rounded-xl shadow cursor-pointer">
+                            🔄 Pulihkan dari Drive
+                        </button>
+                    </div>
                     ${sp.driveSync?.lastSync ? `<p class="text-[11px] text-mint font-bold">Terakhir sinkron: ${sp.driveSync.lastSync}</p>` : ''}
                 </div>
 
@@ -3921,11 +3990,22 @@
             renderTeacherPortal();
         }
 
+        async function triggerTeacherCloudRestore() {
+            if (!getGasUrl()) {
+                showToast('URL Google Apps Script belum tersedia.');
+                return;
+            }
+            await pullTeacherFromCloud(state.auth.teacherKey);
+            openDriveModal();
+            renderTeacherPortal();
+            showToast('Data kelas berhasil dipulihkan dari Google Drive!');
+        }
+
         async function syncTeacherToCloud(silent = false) {
             const gasUrl = getGasUrl();
             if (!gasUrl) return;
             const sp = getActiveSpace();
-            const teacherRec = state.teachers.find(t => t.email === state.auth.teacherKey);
+            const teacherRec = state.teachers.find(t => normalizeStr(t.email) === normalizeStr(state.auth.teacherKey));
 
             try {
                 const payload = {
@@ -3945,24 +4025,46 @@
                 persist(true);
                 if (!silent) showToast('Data kelas berhasil disinkronkan ke Google Drive!');
             } catch (err) {
-                if (!silent) showToast('Gagal menghubungi server Apps Script. Periksa izin akses Web App (Anyone).');
+                if (!silent) showToast('Gagal menghubungi server Apps Script. Pastikan kode Code.gs sudah di-deploy (Anyone).');
             }
         }
 
         async function pullTeacherFromCloud(email) {
             const gasUrl = getGasUrl();
-            if (!gasUrl) return;
+            if (!gasUrl || !email) return;
+            const normEmail = normalizeStr(email);
             try {
                 const res = await fetch(gasUrl, {
                     method: 'POST',
-                    body: JSON.stringify({ action: 'loadTeacherDriveBackup', email })
+                    body: JSON.stringify({ action: 'loadTeacherDriveBackup', email: normEmail })
                 });
                 const json = await res.json();
                 if (json && json.status === 'ok' && json.teacherSpace) {
-                    state.teacherSpaces[email] = json.teacherSpace;
-                    ensureTkaBanksInSpace(state.teacherSpaces[email]);
+                    const localSp = state.teacherSpaces[normEmail];
+                    if (!localSp) {
+                        state.teacherSpaces[normEmail] = json.teacherSpace;
+                    } else {
+                        Object.entries(json.teacherSpace.rombels || {}).forEach(([rId, cloudR]) => {
+                            if (!localSp.rombels[rId]) {
+                                localSp.rombels[rId] = cloudR;
+                            } else {
+                                const localList = localSp.rombels[rId].students || [];
+                                (cloudR.students || []).forEach(cs => {
+                                    const existingIdx = localList.findIndex(ls => normalizeStr(ls.name) === normalizeStr(cs.name));
+                                    if (existingIdx === -1) {
+                                        localList.push(cs);
+                                    } else {
+                                        localList[existingIdx] = { ...localList[existingIdx], ...cs };
+                                    }
+                                });
+                            }
+                        });
+                        if (json.teacherSpace.exams) localSp.exams = json.teacherSpace.exams;
+                        if (json.teacherSpace.uploadedResources?.length) localSp.uploadedResources = json.teacherSpace.uploadedResources;
+                    }
+                    ensureTkaBanksInSpace(state.teacherSpaces[normEmail]);
                     if (json.teacherRecord) {
-                        const existingIdx = state.teachers.findIndex(t => t.email.toLowerCase() === email.toLowerCase());
+                        const existingIdx = state.teachers.findIndex(t => normalizeStr(t.email) === normEmail);
                         if (existingIdx >= 0) state.teachers[existingIdx] = json.teacherRecord;
                         else state.teachers.push(json.teacherRecord);
                     }
@@ -3981,8 +4083,30 @@
                 });
                 const json = await res.json();
                 if (json && json.status === 'ok' && json.teacherKey && json.teacherSpace) {
-                    state.teacherSpaces[json.teacherKey] = json.teacherSpace;
-                    ensureTkaBanksInSpace(state.teacherSpaces[json.teacherKey]);
+                    const tKey = normalizeStr(json.teacherKey);
+                    const localSp = state.teacherSpaces[tKey];
+                    if (!localSp) {
+                        state.teacherSpaces[tKey] = json.teacherSpace;
+                    } else {
+                        Object.entries(json.teacherSpace.rombels || {}).forEach(([rId, cloudR]) => {
+                            if (!localSp.rombels[rId]) {
+                                localSp.rombels[rId] = cloudR;
+                            } else {
+                                const localList = localSp.rombels[rId].students || [];
+                                (cloudR.students || []).forEach(cs => {
+                                    const existingIdx = localList.findIndex(ls => normalizeStr(ls.name) === normalizeStr(cs.name));
+                                    if (existingIdx === -1) {
+                                        localList.push(cs);
+                                    } else {
+                                        localList[existingIdx] = { ...localList[existingIdx], ...cs };
+                                    }
+                                });
+                            }
+                        });
+                        if (json.teacherSpace.exams) localSp.exams = json.teacherSpace.exams;
+                        if (json.teacherSpace.uploadedResources) localSp.uploadedResources = json.teacherSpace.uploadedResources;
+                    }
+                    ensureTkaBanksInSpace(state.teacherSpaces[tKey]);
                     persist(true);
                 }
             } catch (e) { /* abaikan jika offline */ }
@@ -4012,9 +4136,23 @@
                 });
                 const json = await res.json();
                 if (json && Array.isArray(json.teachers)) {
-                    state.teachers = json.teachers;
+                    const mergedMap = new Map();
+                    state.teachers.forEach(t => mergedMap.set(normalizeStr(t.email), t));
+                    json.teachers.forEach(ct => {
+                        const key = normalizeStr(ct.email);
+                        if (!mergedMap.has(key)) mergedMap.set(key, ct);
+                    });
+                    state.teachers = Array.from(mergedMap.values());
+                    if (Array.isArray(json.tokens)) {
+                        const tokMap = new Map();
+                        state.tokens.forEach(tk => tokMap.set(tk.code, tk));
+                        json.tokens.forEach(ctk => {
+                            if (!tokMap.has(ctk.code)) tokMap.set(ctk.code, ctk);
+                        });
+                        state.tokens = Array.from(tokMap.values());
+                    }
                     persist(true);
-                    renderAdminDashboard();
+                    if (state.auth.role === 'admin') renderAdminDashboard();
                 }
                 if (!silent) showToast('Data Admin berhasil disinkronkan dengan Cloud!');
             } catch (e) {
@@ -4093,10 +4231,25 @@
         }
 
         // =========================================================================
-        // 12. INISIALISASI SAAT HALAMAN DIMUAT
+        // 12. INISIALISASI SAAT HALAMAN DIMUAT + AUTO SYNC CLOUD SAAT BOOT
         // =========================================================================
+        async function bootCloudHydration() {
+            if (!getGasUrl()) return;
+            try {
+                await syncAdminCloud(true);
+                if (state.auth.role === 'teacher' && state.auth.teacherKey) {
+                    await pullTeacherFromCloud(state.auth.teacherKey);
+                    renderTeacherPortal();
+                } else if (state.auth.role === 'student' && state.auth.teacherKey) {
+                    await pullTeacherFromCloud(state.auth.teacherKey);
+                    renderStudentPortal();
+                }
+            } catch (e) { /* lanjutkan mode offline jika jaringan terputus */ }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             renderApp();
+            bootCloudHydration();
         });
     </script>
 </body>
