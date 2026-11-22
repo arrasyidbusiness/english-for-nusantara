@@ -213,18 +213,12 @@
         </nav>
 
         <div class="w-full max-w-6xl mx-auto px-4 py-6 sm:py-8">
-            <!-- BANNER PANORAMA SEKOLAH CERAH (GAMBAR image_c3fece.jpg) -->
+            <!-- BANNER PANORAMA SEKOLAH CERAH (TERKUNCI - HANYA BISA DIUBAH DARI ADMIN) -->
             <div class="rounded-[2rem] overflow-hidden shadow-xl border-2 border-white mb-7 bg-white">
-                <div class="hero-panorama-frame relative w-full group">
+                <div class="hero-panorama-frame relative w-full">
                     <img id="dashboard-hero-img" src="image_c3fece.jpg" onerror="handleHeroImgFallback(this)"
                         alt="English For Nusantara - Bersama Wujudkan Generasi Hebat"
-                        class="w-full aspect-[16/5.2] sm:aspect-[16/4.8] lg:aspect-[16/4.5] object-cover object-top block">
-
-                    <label class="absolute top-3 right-3 bg-white/90 hover:bg-white text-navy text-[11px] font-extrabold px-3 py-1.5 rounded-xl shadow-md cursor-pointer inline-flex items-center gap-1.5 opacity-85 hover:opacity-100 transition" title="Unggah foto banner sekolah jika file gambar belum berada di folder GitHub">
-                        <i data-lucide="image" class="w-3.5 h-3.5 text-royal"></i>
-                        <span>Ganti Banner</span>
-                        <input type="file" accept="image/*" onchange="handleCustomBannerUpload(event)" class="hidden">
-                    </label>
+                        class="w-full aspect-[16/5.2] sm:aspect-[16/4.8] lg:aspect-[16/4.5] object-cover object-top block select-none pointer-events-none">
                 </div>
 
                 <!-- Bar Judul & Highlight Portal di Bawah Gambar -->
@@ -449,7 +443,7 @@
                             <span class="font-display font-extrabold text-sm sm:text-base">Admin Pusat — English For Nusantara</span>
                             <span class="text-[10px] font-extrabold bg-gold text-navy px-2 py-0.5 rounded-full">SUPER ADMIN</span>
                         </div>
-                        <p class="text-[11px] text-blue-200">Manajemen Lisensi Guru, Token &amp; Konfigurasi Cloud Google Drive</p>
+                        <p class="text-[11px] text-blue-200">Manajemen Lisensi Guru, Token, Banner Portal &amp; Konfigurasi Cloud Google Drive</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -466,7 +460,7 @@
             <div class="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-cream-border shadow-2xs">
                 <button type="button" onclick="setAdminTab('teachers')" id="adm-nav-teachers" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-navy text-white cursor-pointer">1. Akun &amp; Lisensi Guru</button>
                 <button type="button" onclick="setAdminTab('tokens')" id="adm-nav-tokens" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">2. Generator Token</button>
-                <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Konfigurasi Cloud &amp; Apps Script</button>
+                <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Tampilan Banner &amp; Cloud</button>
             </div>
             <div id="admin-content-area"></div>
         </div>
@@ -563,7 +557,7 @@
             <div class="no-print flex items-center gap-1.5 overflow-x-auto pb-2 mb-3" id="tc-quick-pills"></div>
 
             <div id="doc-printable-area" class="bg-white border border-cream-border rounded-3xl p-5 sm:p-9 shadow-sm print-sheet">
-                <div id="doc-kop-surat" class="border-b-2 border-slate-800 pb-3 mb-5 text-center"></div>
+                <div id="doc-kop-surat" class="border-b-2 border-slate-800 pb-3.5 mb-5"></div>
                 <div id="doc-meta-header" class="mb-5"></div>
                 <div id="doc-module-body"></div>
                 <div id="doc-signature-area" class="mt-10 grid grid-cols-2 gap-4 text-xs sm:text-sm break-inside-avoid"></div>
@@ -714,7 +708,7 @@
         const ALL_SECTIONS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
         // =========================================================================
-        // HANDLER GAMBAR HERO (image_c3fece.jpg + FALLBACK + CUSTOM UPLOAD)
+        // HANDLER GAMBAR HERO (TERKUNCI - PENGATURAN HANYA DI ADMIN PUSAT)
         // =========================================================================
         const HERO_CANDIDATES = [
             'image_c3fece.jpg',
@@ -760,14 +754,18 @@
                     <div class="max-w-xl mx-auto space-y-2">
                         <span class="inline-block bg-gold text-navy text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">SMP Negeri 1 • Sekolah Ramah Anak</span>
                         <h3 class="font-display font-extrabold text-xl sm:text-2xl">Bersama Wujudkan Generasi Hebat</h3>
-                        <p class="text-xs text-sky-100">Letakkan file <strong>image_c3fece.jpg</strong> di folder yang sama dengan file HTML ini, atau klik tombol <strong>Ganti Banner</strong> di pojok kanan atas gambar.</p>
+                        <p class="text-xs text-sky-100">Welcome To English Education Portal • Unggul, Berkarakter &amp; Mendunia</p>
                     </div>
                 `;
                 parent.prepend(bannerDiv);
             }
         }
 
-        function handleCustomBannerUpload(e) {
+        function handleAdminBannerUpload(e) {
+            if (state.auth.role !== 'admin') {
+                showToast('Hanya Admin Pusat yang dapat mengubah gambar banner.');
+                return;
+            }
             const file = e.target.files?.[0];
             if (!file) return;
             const reader = new FileReader();
@@ -784,18 +782,43 @@
                     const dataUrl = canvas.toDataURL('image/jpeg', 0.86);
                     try {
                         localStorage.setItem(CUSTOM_BANNER_KEY, dataUrl);
-                    } catch (err) {}
+                    } catch (err) {
+                        showToast('Ukuran gambar terlalu besar untuk disimpan di memori browser.');
+                        return;
+                    }
                     document.querySelectorAll('.hero-fallback-banner').forEach(el => el.remove());
                     const wImg = document.getElementById('welcome-hero-img');
                     const dImg = document.getElementById('dashboard-hero-img');
                     if (wImg) wImg.style.display = 'block';
                     if (dImg) dImg.style.display = 'block';
                     applyHeroImageSource(dataUrl);
-                    showToast('Gambar banner dashboard & popup berhasil diperbarui!');
+                    if (state.auth.role === 'admin') renderAdminDashboard();
+                    showToast('Gambar banner portal berhasil diperbarui & dikunci oleh Admin!');
                 };
                 img.src = ev.target.result;
             };
             reader.readAsDataURL(file);
+        }
+
+        function resetAdminHeroBanner() {
+            if (state.auth.role !== 'admin') return;
+            try {
+                localStorage.removeItem(CUSTOM_BANNER_KEY);
+            } catch (e) {}
+            document.querySelectorAll('.hero-fallback-banner').forEach(el => el.remove());
+            const wImg = document.getElementById('welcome-hero-img');
+            const dImg = document.getElementById('dashboard-hero-img');
+            if (wImg) {
+                wImg.dataset.tryIdx = '0';
+                wImg.style.display = 'block';
+            }
+            if (dImg) {
+                dImg.dataset.tryIdx = '0';
+                dImg.style.display = 'block';
+            }
+            applyHeroImageSource('image_c3fece.jpg');
+            if (state.auth.role === 'admin') renderAdminDashboard();
+            showToast('Gambar banner dikembalikan ke gambar bawaan portal!');
         }
 
         function normalizeStr(val) {
@@ -2525,15 +2548,26 @@
                 </button>
             `).join('');
 
-            document.getElementById('doc-kop-surat').innerHTML = `
-                <div class="flex items-center justify-center gap-4 text-center">
-                    ${sp.profile.logoDataUrl ? `<img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0">` : ''}
-                    <div>
-                        <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900">${sp.profile.sekolah}</h2>
-                        <p class="text-xs text-slate-600">${sp.profile.alamat}</p>
+            // Kop Surat dengan Logo di pinggir kiri & jarak proporsional ke tulisan
+            document.getElementById('doc-kop-surat').innerHTML = sp.profile.logoDataUrl
+                ? `
+                    <div class="grid grid-cols-[64px_1fr] sm:grid-cols-[80px_1fr_80px] items-center gap-4 sm:gap-6 px-1 sm:px-3">
+                        <div class="flex items-center justify-start">
+                            <img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain">
+                        </div>
+                        <div class="text-center">
+                            <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900 leading-snug">${sp.profile.sekolah}</h2>
+                            <p class="text-xs text-slate-600 mt-0.5">${sp.profile.alamat}</p>
+                        </div>
+                        <div class="hidden sm:block" aria-hidden="true"></div>
                     </div>
-                </div>
-            `;
+                `
+                : `
+                    <div class="text-center">
+                        <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900">${sp.profile.sekolah}</h2>
+                        <p class="text-xs text-slate-600 mt-0.5">${sp.profile.alamat}</p>
+                    </div>
+                `;
 
             document.getElementById('doc-meta-header').innerHTML = `
                 <div class="text-center mb-4">
@@ -2607,7 +2641,7 @@
                                     }
                                     <div>
                                         <label class="block text-xs font-bold text-navy">Logo Sekolah (Kop Surat Resmi)</label>
-                                        <p class="text-[11px] text-navy-muted">Format PNG/JPG/WEBP (otomatis tampil di kop surat cetak PDF &amp; Word).</p>
+                                        <p class="text-[11px] text-navy-muted">Format PNG/JPG/WEBP (otomatis tampil di pinggir kiri kop surat PDF &amp; Word).</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2">
@@ -3512,14 +3546,14 @@
             const kopEl = clone.querySelector('#doc-kop-surat');
             if (kopEl) {
                 kopEl.innerHTML = `
-                    <table style="width:100%; border:none; border-bottom:2px solid #000; margin-bottom:10pt;">
+                    <table style="width:100%; border:none; border-bottom:2px solid #000; margin-bottom:10pt; padding-bottom:4pt;">
                         <tr>
-                            ${sp.profile.logoDataUrl ? `<td style="width:65pt; border:none; text-align:center; vertical-align:middle;"><img src="${sp.profile.logoDataUrl}" width="64" height="64" style="object-fit:contain;"></td>` : ''}
+                            ${sp.profile.logoDataUrl ? `<td style="width:76pt; border:none; text-align:left; vertical-align:middle; padding-left:4pt; padding-right:12pt;"><img src="${sp.profile.logoDataUrl}" width="64" height="64" style="object-fit:contain;"></td>` : ''}
                             <td style="border:none; text-align:center; vertical-align:middle;">
                                 <div style="font-size:14pt; font-weight:bold; text-transform:uppercase;">${sp.profile.sekolah}</div>
                                 <div style="font-size:9.5pt; color:#333;">${sp.profile.alamat}</div>
                             </td>
-                            ${sp.profile.logoDataUrl ? `<td style="width:65pt; border:none;"></td>` : ''}
+                            ${sp.profile.logoDataUrl ? `<td style="width:76pt; border:none;"></td>` : ''}
                         </tr>
                     </table>
                 `;
@@ -3947,7 +3981,7 @@
         }
 
         // =========================================================================
-        // 10. DASHBOARD ADMIN PUSAT & KONFIGURASI CLOUD / DRIVE
+        // 10. DASHBOARD ADMIN PUSAT & KONFIGURASI BANNER / CLOUD / DRIVE
         // =========================================================================
         function setAdminTab(tab) {
             state.adminTab = tab;
@@ -4057,23 +4091,54 @@
                     </div>
                 `;
             } else {
+                const currentCustomBanner = localStorage.getItem(CUSTOM_BANNER_KEY) || '';
+                const previewSrc = currentCustomBanner || 'image_c3fece.jpg';
                 area.innerHTML = `
-                    <form onsubmit="saveAdminCloudConfig(event)" class="bg-white border border-cream-border rounded-3xl p-5 sm:p-6 shadow-xs space-y-4">
-                        <h3 class="font-display font-extrabold text-base text-navy">Konfigurasi Sinkronisasi Cloud &amp; Google Drive</h3>
-                        <div>
-                            <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (/exec)</label>
-                            <input type="url" id="cfg-gas-url" value="${getGasUrl()}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-cream-soft">
-                            <p class="text-[11px] text-navy-muted mt-1">URL Web App sudah tertanam otomatis agar data tetap tersimpan permanen di Google Drive meskipun file di GitHub diperbarui.</p>
+                    <div class="space-y-5">
+                        <!-- KONTROL EKSKLUSIF ADMIN: GAMBAR BANNER & POPUP WELCOME -->
+                        <div class="bg-white border border-cream-border rounded-3xl p-5 sm:p-6 shadow-xs space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <span class="text-[10px] font-extrabold uppercase tracking-wider bg-navy text-gold px-2.5 py-0.5 rounded-full">Kontrol Eksklusif Super Admin</span>
+                                    <h3 class="font-display font-extrabold text-base text-navy mt-1">Pengaturan Gambar Banner Utama &amp; Popup Welcome</h3>
+                                    <p class="text-xs text-navy-muted">Gambar ini terkunci dari halaman publik dan hanya dapat diubah oleh Admin Pusat.</p>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <label class="bg-royal hover:bg-royal-hover text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow-2xs cursor-pointer inline-flex items-center gap-1.5">
+                                        <i data-lucide="image" class="w-4 h-4"></i>
+                                        <span>Ganti Gambar Banner</span>
+                                        <input type="file" accept="image/*" onchange="handleAdminBannerUpload(event)" class="hidden">
+                                    </label>
+                                    ${currentCustomBanner ? `
+                                        <button type="button" onclick="resetAdminHeroBanner()" class="bg-slate-100 hover:bg-slate-200 text-navy text-xs font-extrabold px-3.5 py-2 rounded-xl cursor-pointer">
+                                            Reset Bawaan
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="rounded-2xl overflow-hidden border border-slate-200 bg-sky-50">
+                                <img src="${previewSrc}" onerror="this.style.display='none'" alt="Pratinjau Banner Aktif" class="w-full max-h-52 object-cover object-top block">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold text-navy mb-1">Google Cloud OAuth 2.0 Client ID (Opsional untuk Drive Pribadi Tiap Guru)</label>
-                            <input type="text" id="cfg-oauth-id" value="${getOauthClientId()}" placeholder="123456789-xxxx.apps.googleusercontent.com" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-cream-soft">
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <button type="submit" class="bg-navy text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">Simpan Konfigurasi Cloud</button>
-                            <button type="button" onclick="syncAdminCloud(false)" class="bg-royal text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">☁️ Tarik &amp; Gabungkan Data Cloud Sekarang</button>
-                        </div>
-                    </form>
+
+                        <!-- KONFIGURASI CLOUD & GOOGLE APPS SCRIPT -->
+                        <form onsubmit="saveAdminCloudConfig(event)" class="bg-white border border-cream-border rounded-3xl p-5 sm:p-6 shadow-xs space-y-4">
+                            <h3 class="font-display font-extrabold text-base text-navy">Konfigurasi Sinkronisasi Cloud &amp; Google Drive</h3>
+                            <div>
+                                <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (/exec)</label>
+                                <input type="url" id="cfg-gas-url" value="${getGasUrl()}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-cream-soft">
+                                <p class="text-[11px] text-navy-muted mt-1">URL Web App sudah tertanam otomatis agar data tetap tersimpan permanen di Google Drive meskipun file di GitHub diperbarui.</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-navy mb-1">Google Cloud OAuth 2.0 Client ID (Opsional untuk Drive Pribadi Tiap Guru)</label>
+                                <input type="text" id="cfg-oauth-id" value="${getOauthClientId()}" placeholder="123456789-xxxx.apps.googleusercontent.com" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-cream-soft">
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="submit" class="bg-navy text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">Simpan Konfigurasi Cloud</button>
+                                <button type="button" onclick="syncAdminCloud(false)" class="bg-royal text-white text-xs font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">☁️ Tarik &amp; Gabungkan Data Cloud Sekarang</button>
+                            </div>
+                        </form>
+                    </div>
                 `;
             }
         }
