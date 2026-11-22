@@ -68,6 +68,17 @@
             border-color: #93C5FD;
             background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
         }
+        .hero-panorama-frame {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0284C7 0%, #38BDF8 50%, #34D399 100%);
+        }
+        .hero-glass-chip {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+        }
         .doc-table {
             width: 100%;
             border-collapse: collapse;
@@ -118,47 +129,55 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- POPUP WELCOME TO ENGLISH EDUCATION PORTAL                             -->
+    <!-- POPUP WELCOME TO ENGLISH EDUCATION PORTAL (GAMBAR image_c3fece.jpg)   -->
     <!-- ===================================================================== -->
-    <div id="modal-welcome-portal" class="no-print fixed inset-0 z-[110] hidden items-center justify-center bg-navy-deep/75 backdrop-blur-sm p-4">
-        <div class="animate-pop-in bg-white border-2 border-cream-border rounded-[2rem] max-w-lg w-full overflow-hidden shadow-2xl">
-            <div class="bg-gradient-to-br from-navy via-navy-deep to-royal text-white p-6 sm:p-8 text-center relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-gold/20 blur-2xl"></div>
-                <div class="absolute -bottom-10 -left-10 w-36 h-36 rounded-full bg-royal-light/20 blur-2xl"></div>
-                <div class="w-16 h-16 rounded-2xl bg-gold text-navy font-display font-extrabold text-2xl flex items-center justify-center mx-auto shadow-lg mb-4">
-                    EN
+    <div id="modal-welcome-portal" class="no-print fixed inset-0 z-[110] hidden items-center justify-center bg-navy-deep/75 backdrop-blur-sm p-3 sm:p-4">
+        <div class="animate-pop-in bg-white border-2 border-sky-200 rounded-[2rem] max-w-2xl w-full overflow-hidden shadow-2xl">
+            <div class="hero-panorama-frame relative w-full">
+                <img id="welcome-hero-img" src="image_c3fece.jpg" onerror="handleHeroImgFallback(this)"
+                    alt="Welcome To English Education Portal - SMP Negeri 1"
+                    class="w-full aspect-[16/5.6] sm:aspect-[16/5.3] object-cover object-top block">
+
+                <div class="absolute top-3 left-3 flex flex-wrap items-center gap-1.5">
+                    <span class="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider bg-gold text-navy px-2.5 py-1 rounded-full shadow-md">
+                        <span>🏫</span> Sekolah Ramah Anak
+                    </span>
+                    <span class="inline-flex items-center gap-1 text-[10px] font-bold bg-navy/85 backdrop-blur-xs text-white px-2.5 py-1 rounded-full shadow-md">
+                        Kurikulum Merdeka SMP/MTs
+                    </span>
                 </div>
-                <span class="inline-block text-[10px] font-extrabold uppercase tracking-widest bg-white/15 border border-white/25 px-3 py-1 rounded-full text-gold mb-2">
-                    Kurikulum Merdeka • SMP/MTs Fase D
-                </span>
-                <h2 class="font-display font-extrabold text-2xl sm:text-3xl leading-tight">
-                    Welcome To English Education Portal
-                </h2>
-                <p class="text-xs sm:text-sm text-blue-100 mt-2 leading-relaxed">
-                    Platform Pembelajaran Bahasa Inggris Interaktif, Ujian CBT (UH, STS, UAS, &amp; TKA), serta Administrasi Guru Terpadu.
-                </p>
             </div>
-            <div class="p-5 sm:p-6 space-y-4 bg-white">
+
+            <div class="p-4 sm:p-6 space-y-4 bg-gradient-to-b from-white to-sky-50/70">
+                <div class="text-center">
+                    <h2 class="font-display font-extrabold text-xl sm:text-2xl text-navy leading-tight">
+                        Welcome To <span class="text-royal">English Education</span> Portal
+                    </h2>
+                    <p class="text-xs font-semibold text-navy-muted mt-1">
+                        Bersama Wujudkan Generasi Hebat — Unggul • Berkarakter • Mendunia
+                    </p>
+                </div>
+
                 <div class="grid grid-cols-3 gap-2.5 text-center">
-                    <div class="bg-cream-soft border border-cream-border rounded-2xl p-3">
-                        <span class="text-lg block mb-0.5">🎓</span>
-                        <span class="font-display font-extrabold text-xs text-navy block">Ruang Siswa</span>
-                        <span class="text-[10px] text-navy-muted">Materi, Audio &amp; LKPD</span>
+                    <div class="bg-white border border-sky-200 rounded-2xl p-2.5 shadow-2xs hover:border-royal transition">
+                        <span class="text-base block">🎒</span>
+                        <span class="font-display font-extrabold text-xs text-navy block">Portal Siswa</span>
+                        <span class="text-[10px] text-navy-muted">Audio, E-Book &amp; LKPD</span>
                     </div>
-                    <div class="bg-royal-light border border-blue-200 rounded-2xl p-3">
-                        <span class="text-lg block mb-0.5">📝</span>
+                    <div class="bg-white border border-emerald-200 rounded-2xl p-2.5 shadow-2xs hover:border-mint transition">
+                        <span class="text-base block">💻</span>
                         <span class="font-display font-extrabold text-xs text-royal block">Ujian CBT &amp; TKA</span>
                         <span class="text-[10px] text-navy-muted">UH, STS, UAS &amp; TKA</span>
                     </div>
-                    <div class="bg-cream-soft border border-cream-border rounded-2xl p-3">
-                        <span class="text-lg block mb-0.5">☁️</span>
-                        <span class="font-display font-extrabold text-xs text-navy block">Admin &amp; Drive</span>
-                        <span class="text-[10px] text-navy-muted">19 Modul &amp; Excel</span>
+                    <div class="bg-white border border-amber-200 rounded-2xl p-2.5 shadow-2xs hover:border-amber-400 transition">
+                        <span class="text-base block">👨‍🏫</span>
+                        <span class="font-display font-extrabold text-xs text-navy block">Administrasi Guru</span>
+                        <span class="text-[10px] text-navy-muted">19 Modul, Kop &amp; Drive</span>
                     </div>
                 </div>
                 <button type="button" onclick="closeWelcomeModal()"
-                    class="w-full bg-royal hover:bg-royal-hover text-white font-display font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition cursor-pointer flex items-center justify-center gap-2">
-                    <span>Mulai Jelajahi Portal</span>
+                    class="w-full bg-gradient-to-r from-navy via-royal to-emerald-600 hover:opacity-95 text-white font-display font-extrabold text-sm py-3 rounded-2xl shadow-lg transition cursor-pointer flex items-center justify-center gap-2">
+                    <span>Masuk ke Portal Pembelajaran</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -168,20 +187,20 @@
     <!-- ===================================================================== -->
     <!-- 1. HALAMAN LOGIN UTAMA                                                -->
     <!-- ===================================================================== -->
-    <main id="view-login" class="flex-1 flex flex-col justify-between">
-        <nav class="w-full bg-white/90 backdrop-blur-md border-b border-cream-border px-4 py-3 sticky top-0 z-30">
+    <main id="view-login" class="flex-1 flex flex-col justify-between bg-gradient-to-b from-[#E0F2FE] via-[#F8FAFC] to-[#ECFDF5]">
+        <nav class="w-full bg-white/95 backdrop-blur-md border-b border-sky-200/80 px-4 py-3 sticky top-0 z-30 shadow-2xs">
             <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-navy text-gold font-display font-extrabold flex items-center justify-center text-base shadow-sm">EN</div>
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-navy via-royal to-emerald-600 text-gold font-display font-extrabold flex items-center justify-center text-base shadow-sm">EN</div>
                     <div>
                         <span class="font-display font-extrabold text-base sm:text-lg text-navy block leading-none">English For Nusantara</span>
-                        <span class="text-[11px] font-medium text-navy-muted block mt-1">English Education Portal • LMS &amp; Administrasi Guru SMP/MTs</span>
+                        <span class="text-[11px] font-medium text-navy-muted block mt-1">Welcome To English Education Portal • Unggul, Berkarakter &amp; Mendunia</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="openWelcomeModal(true)"
-                        class="text-[11px] font-bold text-royal hover:text-royal-hover bg-royal-light/80 border border-blue-200 px-3 py-1.5 rounded-xl transition cursor-pointer inline-flex items-center gap-1">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        class="text-[11px] font-bold text-sky-900 hover:bg-sky-100 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-xl transition cursor-pointer inline-flex items-center gap-1">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-royal"></i>
                         <span class="hidden sm:inline">Welcome Info</span>
                     </button>
                     <button type="button" onclick="openAdminAuthModal()"
@@ -193,55 +212,57 @@
             </div>
         </nav>
 
-        <div class="w-full max-w-6xl mx-auto px-4 py-8 sm:py-12">
-            <!-- Hero Banner Menarik -->
-            <div class="bg-gradient-to-r from-navy via-navy-deep to-royal text-white rounded-3xl p-6 sm:p-8 mb-8 shadow-xl relative overflow-hidden">
-                <div class="absolute right-0 top-0 w-64 h-64 bg-gold/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-2xl"></div>
-                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-                    <div class="max-w-2xl">
-                        <div class="inline-flex items-center gap-2 bg-white/15 border border-white/20 px-3.5 py-1 rounded-full mb-3">
+        <div class="w-full max-w-6xl mx-auto px-4 py-6 sm:py-8">
+            <!-- BANNER PANORAMA SEKOLAH CERAH (GAMBAR image_c3fece.jpg) -->
+            <div class="rounded-[2rem] overflow-hidden shadow-xl border-2 border-white mb-7 bg-white">
+                <div class="hero-panorama-frame relative w-full group">
+                    <img id="dashboard-hero-img" src="image_c3fece.jpg" onerror="handleHeroImgFallback(this)"
+                        alt="English For Nusantara - Bersama Wujudkan Generasi Hebat"
+                        class="w-full aspect-[16/5.2] sm:aspect-[16/4.8] lg:aspect-[16/4.5] object-cover object-top block">
+
+                    <label class="absolute top-3 right-3 bg-white/90 hover:bg-white text-navy text-[11px] font-extrabold px-3 py-1.5 rounded-xl shadow-md cursor-pointer inline-flex items-center gap-1.5 opacity-85 hover:opacity-100 transition" title="Unggah foto banner sekolah jika file gambar belum berada di folder GitHub">
+                        <i data-lucide="image" class="w-3.5 h-3.5 text-royal"></i>
+                        <span>Ganti Banner</span>
+                        <input type="file" accept="image/*" onchange="handleCustomBannerUpload(event)" class="hidden">
+                    </label>
+                </div>
+
+                <!-- Bar Judul & Highlight Portal di Bawah Gambar -->
+                <div class="bg-gradient-to-r from-navy-deep via-navy to-royal px-5 sm:px-8 py-4 sm:py-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 text-white">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-white/15 border border-white/20 text-gold px-3 py-0.5 rounded-full">
                             <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-gold">Welcome To English Education Portal • Fase D</span>
+                            <span class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider">Welcome To English Education Portal • SMP/MTs Fase D</span>
                         </div>
-                        <h1 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tight leading-[1.15]">
+                        <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight mt-1.5">
                             English For <span class="text-gold">Nusantara</span>
                         </h1>
-                        <p class="text-xs sm:text-sm text-blue-100 mt-3 leading-relaxed">
-                            Portal pembelajaran Bahasa Inggris interaktif untuk siswa (Materi Audio, Buku Panduan, Flashcard, LKPD, Ujian UH, STS, UAS, serta <strong>Tes Kemampuan Akademik / TKA</strong>) dan administrasi lengkap guru 2 semester.
+                        <p class="text-xs sm:text-sm text-sky-100 mt-0.5 max-w-2xl">
+                            Platform Pembelajaran Bahasa Inggris Interaktif, Ujian CBT &amp; <strong>TKA</strong>, serta 19 Administrasi Guru dengan Kop Surat Berlogo &amp; Sinkronisasi Google Drive.
                         </p>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0">
-                        <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
-                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Kurikulum</span>
-                            <span class="font-display font-extrabold text-xs sm:text-sm text-white">Kelas VII – IX</span>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
-                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Evaluasi CBT</span>
-                            <span class="font-display font-extrabold text-xs sm:text-sm text-gold">UH • STS • UAS • TKA</span>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
-                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Administrasi</span>
-                            <span class="font-display font-extrabold text-xs sm:text-sm text-white">19 Modul Lengkap</span>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur-xs border border-white/15 rounded-2xl px-3.5 py-2.5">
-                            <span class="text-[10px] uppercase tracking-wider text-blue-200 block">Penyimpanan</span>
-                            <span class="font-display font-extrabold text-xs sm:text-sm text-emerald-300">Cloud &amp; Drive Permanen</span>
-                        </div>
+                    <div class="flex flex-wrap gap-2 shrink-0">
+                        <span class="hero-glass-chip text-navy text-[11px] font-extrabold px-3 py-1.5 rounded-xl shadow-xs">📚 Kelas VII • VIII • IX</span>
+                        <span class="hero-glass-chip text-mint text-[11px] font-extrabold px-3 py-1.5 rounded-xl shadow-xs">💻 UH • STS • UAS • TKA</span>
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
                 <!-- KARTU 1: PORTAL SISWA (HANYA NAMA & PIN) -->
-                <div class="bg-white border-2 border-cream-border hover:border-royal rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between">
+                <div class="bg-white border-2 border-sky-200 hover:border-royal rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between relative overflow-hidden">
                     <div>
-                        <div class="flex items-center justify-between mb-5">
-                            <div class="w-12 h-12 rounded-2xl bg-royal-light text-royal flex items-center justify-center">
-                                <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                        <div class="flex items-center justify-between mb-5 bg-gradient-to-r from-sky-50 to-emerald-50 border border-sky-100 rounded-2xl p-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-royal-light text-royal flex items-center justify-center shrink-0">
+                                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-royal text-white">Ruang Belajar Siswa</span>
+                                    <h2 class="font-display font-extrabold text-xl text-navy mt-1">Masuk sebagai Siswa</h2>
+                                </div>
                             </div>
-                            <span class="text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-mint-bg text-mint">Ruang Belajar Siswa</span>
                         </div>
-                        <h2 class="font-display font-extrabold text-2xl text-navy">Masuk sebagai Siswa</h2>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
                             Masukkan <strong>Nama Lengkap Siswa</strong> dan <strong>PIN</strong> untuk mengakses materi ajar, buku panduan, LKPD, dan ujian UH / STS / UAS / <strong>TKA</strong>.
                         </p>
@@ -311,15 +332,19 @@
                 </div>
 
                 <!-- KARTU 2: PORTAL GURU -->
-                <div class="bg-white border-2 border-navy/20 hover:border-navy rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between">
+                <div class="bg-white border-2 border-emerald-200 hover:border-navy rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between relative overflow-hidden">
                     <div>
-                        <div class="flex items-center justify-between mb-5">
-                            <div class="w-12 h-12 rounded-2xl bg-navy text-gold flex items-center justify-center">
-                                <i data-lucide="briefcase" class="w-6 h-6"></i>
+                        <div class="flex items-center justify-between mb-5 bg-gradient-to-r from-emerald-50 to-amber-50 border border-emerald-100 rounded-2xl p-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-navy text-gold flex items-center justify-center shrink-0">
+                                    <i data-lucide="briefcase" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-navy text-gold">Ruang Guru Pengampu</span>
+                                    <h2 class="font-display font-extrabold text-xl text-navy mt-1">Masuk sebagai Guru</h2>
+                                </div>
                             </div>
-                            <span class="text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-gold/40 text-navy">Ruang Guru Pengampu</span>
                         </div>
-                        <h2 class="font-display font-extrabold text-2xl text-navy">Masuk sebagai Guru</h2>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
                             Kelola 19 perangkat administrasi, impor Excel data siswa &amp; soal (UH, STS, UAS, &amp; <strong>TKA</strong>), presensi 30 pertemuan, dan rapor khusus jenjang yang Anda ampu.
                         </p>
@@ -680,12 +705,98 @@
         // 1. KONFIGURASI UTAMA, KREDENSIAL ADMIN & PENYIMPANAN PERMANEN
         // =========================================================================
         const MASTER_STORE_KEY = 'efn_master_permanent';
+        const CUSTOM_BANNER_KEY = 'efn_custom_hero_banner';
         const LEGACY_STORE_KEYS = ['efn_master_v6', 'efn_master_v5', 'efn_master_v4', 'efn_master_v3'];
         const SUPER_ADMIN_EMAIL = 'taufiqurrohman14@guru.smp.belajar.id';
         const SUPER_ADMIN_PIN = 'admin2026';
         const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyFT5KIB6HJqsOm825-WEU5QTQiVte8pV1KNqt8bTPyOiOXmIzYy93cb9e7UUtyiprviA/exec';
         const DEFAULT_OAUTH_ID = '';
         const ALL_SECTIONS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+
+        // =========================================================================
+        // HANDLER GAMBAR HERO (image_c3fece.jpg + FALLBACK + CUSTOM UPLOAD)
+        // =========================================================================
+        const HERO_CANDIDATES = [
+            'image_c3fece.jpg',
+            './image_c3fece.jpg',
+            'image_c39248.jpg',
+            'image_c32d8a.jpg',
+            'banner.jpg',
+            'banner.png'
+        ];
+
+        function applyHeroImageSource(srcUrl) {
+            const wImg = document.getElementById('welcome-hero-img');
+            const dImg = document.getElementById('dashboard-hero-img');
+            if (wImg) wImg.src = srcUrl;
+            if (dImg) dImg.src = srcUrl;
+        }
+
+        function initHeroBannerImage() {
+            try {
+                const savedBanner = localStorage.getItem(CUSTOM_BANNER_KEY);
+                if (savedBanner) {
+                    applyHeroImageSource(savedBanner);
+                    return;
+                }
+            } catch (e) {}
+            applyHeroImageSource('image_c3fece.jpg');
+        }
+
+        function handleHeroImgFallback(imgEl) {
+            const idx = Number(imgEl.dataset.tryIdx || '0');
+            if (idx + 1 < HERO_CANDIDATES.length) {
+                imgEl.dataset.tryIdx = String(idx + 1);
+                imgEl.src = HERO_CANDIDATES[idx + 1];
+                return;
+            }
+            imgEl.onerror = null;
+            imgEl.style.display = 'none';
+            const parent = imgEl.parentElement;
+            if (parent && !parent.querySelector('.hero-fallback-banner')) {
+                const bannerDiv = document.createElement('div');
+                bannerDiv.className = 'hero-fallback-banner w-full py-10 px-6 text-center text-white bg-gradient-to-r from-sky-600 via-blue-600 to-emerald-600';
+                bannerDiv.innerHTML = `
+                    <div class="max-w-xl mx-auto space-y-2">
+                        <span class="inline-block bg-gold text-navy text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">SMP Negeri 1 • Sekolah Ramah Anak</span>
+                        <h3 class="font-display font-extrabold text-xl sm:text-2xl">Bersama Wujudkan Generasi Hebat</h3>
+                        <p class="text-xs text-sky-100">Letakkan file <strong>image_c3fece.jpg</strong> di folder yang sama dengan file HTML ini, atau klik tombol <strong>Ganti Banner</strong> di pojok kanan atas gambar.</p>
+                    </div>
+                `;
+                parent.prepend(bannerDiv);
+            }
+        }
+
+        function handleCustomBannerUpload(e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 1400;
+                    const scale = Math.min(1, maxW / img.width);
+                    canvas.width = Math.round(img.width * scale);
+                    canvas.height = Math.round(img.height * scale);
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.86);
+                    try {
+                        localStorage.setItem(CUSTOM_BANNER_KEY, dataUrl);
+                    } catch (err) {}
+                    document.querySelectorAll('.hero-fallback-banner').forEach(el => el.remove());
+                    const wImg = document.getElementById('welcome-hero-img');
+                    const dImg = document.getElementById('dashboard-hero-img');
+                    if (wImg) wImg.style.display = 'block';
+                    if (dImg) dImg.style.display = 'block';
+                    applyHeroImageSource(dataUrl);
+                    showToast('Gambar banner dashboard & popup berhasil diperbarui!');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
 
         function normalizeStr(val) {
             return String(val || '')
@@ -753,7 +864,7 @@
                     teacherNote: 'Perhatikan penggunaan kata sifat rasa seperti sweet, spicy, savory, dan crunchy.',
                     readingTitle: 'Pisang Goreng: Crispy Indonesian Snack',
                     readingText: 'Pisang goreng is one of the most popular snacks in Indonesia. It is made from ripe bananas dipped in flour batter and fried until golden brown. It tastes sweet on the inside and very crunchy on the outside. People usually enjoy it with a cup of warm tea in the afternoon.',
-                    readingIndo: 'Pisang goreng adalah salah satu camilan paling populer di Indonesia. Terbuat dari pisang matang yang dicelupkan ke adonan tepung dan digoreng hingga keemasan.',
+                    readingIndo: 'Pisang goreng adalah satu camilan paling populer di Indonesia. Terbuat dari pisang matang yang dicelupkan ke adonan tepung dan digoreng hingga keemasan.',
                     vocab: [
                         { en: 'Crunchy', id: 'Renyah', ex: 'The fried banana is very crunchy.' },
                         { en: 'Savory', id: 'Gurih', ex: 'I prefer savory food over sweet food.' },
@@ -1240,6 +1351,7 @@
                     nipKepsek: profile.nipKepsek || '19680512 199403 1 007',
                     tahunAjaran: profile.tahunAjaran || '2026/2027',
                     email: profile.email || 'guru@smp.belajar.id',
+                    logoDataUrl: profile.logoDataUrl || '',
                     allowedGrades
                 },
                 activeGrade: firstGrade,
@@ -2174,6 +2286,7 @@
                 renderStudentPortal();
             } else {
                 document.getElementById('view-login').classList.remove('hidden');
+                initHeroBannerImage();
                 populateStudentRegRombels();
                 openWelcomeModal(false);
             }
@@ -2413,8 +2526,13 @@
             `).join('');
 
             document.getElementById('doc-kop-surat').innerHTML = `
-                <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900">${sp.profile.sekolah}</h2>
-                <p class="text-xs text-slate-600">${sp.profile.alamat}</p>
+                <div class="flex items-center justify-center gap-4 text-center">
+                    ${sp.profile.logoDataUrl ? `<img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0">` : ''}
+                    <div>
+                        <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900">${sp.profile.sekolah}</h2>
+                        <p class="text-xs text-slate-600">${sp.profile.alamat}</p>
+                    </div>
+                </div>
             `;
 
             document.getElementById('doc-meta-header').innerHTML = `
@@ -2480,6 +2598,25 @@
                             <div>
                                 <label class="block text-xs font-bold text-navy mb-1">NIP Kepala Sekolah</label>
                                 <input type="text" id="id-nip-kepsek" value="${sp.profile.nipKepsek}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                            </div>
+                            <div class="sm:col-span-2 bg-white border border-slate-200 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex items-center gap-3">
+                                    ${sp.profile.logoDataUrl
+                                        ? `<img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-12 h-12 object-contain rounded-xl border border-slate-200 p-1 bg-cream-soft">`
+                                        : `<div class="w-12 h-12 rounded-xl bg-cream-soft border border-dashed border-slate-300 flex items-center justify-center text-[10px] font-bold text-slate-400 text-center">No Logo</div>`
+                                    }
+                                    <div>
+                                        <label class="block text-xs font-bold text-navy">Logo Sekolah (Kop Surat Resmi)</label>
+                                        <p class="text-[11px] text-navy-muted">Format PNG/JPG/WEBP (otomatis tampil di kop surat cetak PDF &amp; Word).</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <label class="bg-royal-light hover:bg-blue-100 text-royal text-xs font-extrabold px-3 py-2 rounded-xl cursor-pointer">
+                                        ↑ Pilih Logo Sekolah
+                                        <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" onchange="handleSchoolLogoUpload(event)" class="hidden">
+                                    </label>
+                                    ${sp.profile.logoDataUrl ? `<button type="button" onclick="removeSchoolLogo()" class="text-xs font-bold text-red-600 hover:underline px-2 cursor-pointer">Hapus Logo</button>` : ''}
+                                </div>
                             </div>
                             <div class="sm:col-span-2 flex flex-wrap items-center justify-between gap-2 pt-1">
                                 <button type="button" onclick="openRombelManager()" class="text-xs font-extrabold text-royal hover:underline cursor-pointer">
@@ -3119,6 +3256,39 @@
         }
 
         // Aksi CRUD Guru
+        function handleSchoolLogoUpload(e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxDim = 220;
+                    const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+                    canvas.width = Math.round(img.width * scale);
+                    canvas.height = Math.round(img.height * scale);
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const sp = getActiveSpace();
+                    sp.profile.logoDataUrl = canvas.toDataURL('image/png');
+                    persist();
+                    renderWorkspace('data-kelas');
+                    showToast('Logo sekolah berhasil dipasang di Kop Surat!');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeSchoolLogo() {
+            const sp = getActiveSpace();
+            sp.profile.logoDataUrl = '';
+            persist();
+            renderWorkspace('data-kelas');
+            showToast('Logo sekolah dihapus dari Kop Surat.');
+        }
+
         function saveTeacherIdentity(e) {
             e.preventDefault();
             const sp = getActiveSpace();
@@ -3338,6 +3508,22 @@
             const r = getActiveRombel();
             const clone = document.getElementById('doc-printable-area').cloneNode(true);
             clone.querySelectorAll('.no-print').forEach(el => el.remove());
+            const sp = getActiveSpace();
+            const kopEl = clone.querySelector('#doc-kop-surat');
+            if (kopEl) {
+                kopEl.innerHTML = `
+                    <table style="width:100%; border:none; border-bottom:2px solid #000; margin-bottom:10pt;">
+                        <tr>
+                            ${sp.profile.logoDataUrl ? `<td style="width:65pt; border:none; text-align:center; vertical-align:middle;"><img src="${sp.profile.logoDataUrl}" width="64" height="64" style="object-fit:contain;"></td>` : ''}
+                            <td style="border:none; text-align:center; vertical-align:middle;">
+                                <div style="font-size:14pt; font-weight:bold; text-transform:uppercase;">${sp.profile.sekolah}</div>
+                                <div style="font-size:9.5pt; color:#333;">${sp.profile.alamat}</div>
+                            </td>
+                            ${sp.profile.logoDataUrl ? `<td style="width:65pt; border:none;"></td>` : ''}
+                        </tr>
+                    </table>
+                `;
+            }
             clone.querySelectorAll('input').forEach(inp => {
                 const span = document.createElement('span');
                 span.textContent = inp.value;
@@ -4248,6 +4434,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            initHeroBannerImage();
             renderApp();
             bootCloudHydration();
         });
