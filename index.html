@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English For Nusantara — LMS &amp; Administrasi Guru SMP/MTs</title>
-    <meta name="description" content="Portal pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, serta 19 administrasi guru SMP/MTs.">
+    <meta name="description" content="Portal pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, serta 18 administrasi guru SMP/MTs.">
     <meta name="theme-color" content="#102542">
     <!-- Preview saat link dibagikan (WhatsApp, Telegram, Facebook, dll) -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="English For Nusantara">
     <meta property="og:locale" content="id_ID">
     <meta property="og:title" content="English For Nusantara — Portal Pembelajaran &amp; Administrasi Guru">
-    <meta property="og:description" content="Pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, dan 19 administrasi guru SMP/MTs dalam satu portal.">
+    <meta property="og:description" content="Pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, dan 18 administrasi guru SMP/MTs dalam satu portal.">
     <meta property="og:url" content="https://arrasyidbusiness.github.io/english-for-nusantara/">
     <meta property="og:image" content="https://arrasyidbusiness.github.io/english-for-nusantara/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
     <meta property="og:image:alt" content="English For Nusantara — Portal Pembelajaran &amp; Administrasi Guru">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="English For Nusantara — Portal Pembelajaran &amp; Administrasi Guru">
-    <meta name="twitter:description" content="Pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, dan 19 administrasi guru SMP/MTs.">
+    <meta name="twitter:description" content="Pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, dan 18 administrasi guru SMP/MTs.">
     <meta name="twitter:image" content="https://arrasyidbusiness.github.io/english-for-nusantara/og-image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -194,7 +194,7 @@
                     <div class="bg-white border border-amber-200 rounded-2xl p-2.5 shadow-2xs hover:border-amber-400 transition">
                         <span class="text-base block">👨‍🏫</span>
                         <span class="font-display font-extrabold text-xs text-navy block">Administrasi Guru</span>
-                        <span class="text-[10px] text-navy-muted">19 Modul, Kop &amp; Drive</span>
+                        <span class="text-[10px] text-navy-muted">18 Modul, Kop &amp; Drive</span>
                     </div>
                 </div>
                 <button type="button" onclick="closeWelcomeModal()"
@@ -249,7 +249,7 @@
                             English For <span class="text-gold">Nusantara</span>
                         </h1>
                         <p class="text-xs sm:text-sm text-sky-100 mt-0.5 max-w-2xl">
-                            Platform Pembelajaran Bahasa Inggris Interaktif, Ujian CBT &amp; <strong>TKA</strong>, serta 19 Administrasi Guru dengan Kop Surat Berlogo &amp; Sinkronisasi Google Drive.
+                            Platform Pembelajaran Bahasa Inggris Interaktif, Ujian CBT &amp; <strong>TKA</strong>, serta 18 Administrasi Guru dengan Kop Surat Berlogo &amp; Sinkronisasi Google Drive.
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-2 shrink-0">
@@ -357,7 +357,7 @@
                             </div>
                         </div>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
-                            Kelola 19 perangkat administrasi, impor Excel data siswa &amp; soal (UH, STS, UAS, &amp; <strong>TKA</strong>), presensi 30 pertemuan, dan rapor khusus jenjang yang Anda ampu.
+                            Kelola 18 perangkat administrasi, impor Excel data siswa &amp; soal (UH, STS, UAS, &amp; <strong>TKA</strong>), presensi 30 pertemuan, dan rapor khusus jenjang yang Anda ampu.
                         </p>
 
                         <div class="grid grid-cols-2 gap-1.5 bg-cream-soft p-1.5 rounded-2xl mb-5">
@@ -603,14 +603,14 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button type="button" onclick="syncStudentCloud()" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer inline-flex items-center gap-1">
+                    <button type="button" data-st-lock onclick="syncStudentCloud()" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer inline-flex items-center gap-1">
                         <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i><span>Sinkron Kelas</span>
                     </button>
-                    <select id="st-sem-filter" onchange="changeStudentSem(this.value)" class="bg-white text-navy text-xs font-extrabold rounded-xl px-2.5 py-1.5 cursor-pointer">
+                    <select id="st-sem-filter" data-st-lock onchange="changeStudentSem(this.value)" class="bg-white text-navy text-xs font-extrabold rounded-xl px-2.5 py-1.5 cursor-pointer">
                         <option value="1">Semester 1</option>
                         <option value="2">Semester 2</option>
                     </select>
-                    <button type="button" onclick="logout()" class="bg-navy hover:bg-navy-deep text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer inline-flex items-center gap-1">
+                    <button type="button" data-st-lock onclick="logout()" class="bg-navy hover:bg-navy-deep text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer inline-flex items-center gap-1">
                         <i data-lucide="log-out" class="w-3.5 h-3.5"></i><span>Keluar</span>
                     </button>
                 </div>
@@ -878,8 +878,7 @@
             { id: 'jurnal-mengajar', title: 'Jurnal Mengajar', featured: false },
             { id: 'deskripsi-rapor', title: 'Deskripsi Rapor', featured: true },
             { id: 'rekap-rapor', title: 'Rekap Nilai Rapor', featured: true },
-            { id: 'paket-supervisi', title: 'Paket Siap Supervisi', featured: true },
-            { id: 'template-kelas', title: 'Template Administrasi Kelas', featured: true }
+            { id: 'paket-supervisi', title: 'Paket Supervisi + Template', featured: true }
         ];
 
         const CURRICULUM_DATA = {
@@ -1359,10 +1358,15 @@
                 exams[`UAS-${g}-1`] = makeSampleBank(`Sumatif Akhir Semester (UAS/SAS) 1 — Kelas ${g}`, 90, true);
                 exams[`STS-${g}-2`] = makeSampleBank(`Sumatif Tengah Semester (STS) 2 — Kelas ${g}`, 60, true);
                 exams[`UAS-${g}-2`] = makeSampleBank(`Sumatif Akhir Semester (UAS/SAS) 2 — Kelas ${g}`, 90, true);
+                exams[`TKA-${g}-R`] = { ...makeTkaBank(`Remedial Tes Kemampuan Akademik (TKA) — Kelas ${g}`, 60), published: false };
                 exams[`TKA-${g}-1`] = makeTkaBank(`Tes Kemampuan Akademik (TKA) Paket 1 — Kelas ${g}`, 75);
                 exams[`TKA-${g}-2`] = makeTkaBank(`Tes Kemampuan Akademik (TKA) Paket 2 — Kelas ${g}`, 75);
             });
             return exams;
+        }
+
+        function examKeyLabel(k) {
+            return /^TKA-.+-R$/.test(k) ? 'Remedial' : k;
         }
 
         function ensureTkaBanksInSpace(sp) {
@@ -1372,6 +1376,10 @@
                     const fresh = buildDefaultExams();
                     sp.exams[`TKA-${g}-1`] = fresh[`TKA-${g}-1`];
                     sp.exams[`TKA-${g}-2`] = fresh[`TKA-${g}-2`];
+                }
+                if (!sp.exams[`TKA-${g}-R`]) {
+                    const fresh = buildDefaultExams();
+                    sp.exams[`TKA-${g}-R`] = fresh[`TKA-${g}-R`];
                 }
             });
         }
@@ -1572,6 +1580,20 @@
         // =========================================================================
         // 3. HELPER RUANG GURU TERISOLASI & AKSES KELAS
         // =========================================================================
+        // Nilai akhir = 50% rerata TP + 25% STS + 25% SAS. Nilai TKA TIDAK dihitung.
+        // Jika Remedial terisi (otomatis dari skor ujian Remedial, atau manual), Nilai Akhir mengikuti hasil remedial.
+        // Kolom Katrol (manual oleh guru) menambah nilai tersebut; maksimal 100.
+        function computeFinalGrade(s, semKey, avgTp, kktp) {
+            const sts = Number(s[`sts${semKey}`] || 0);
+            const sas = Number(s[`sas${semKey}`] || 0);
+            const base = Math.round((avgTp * 0.5) + (sts * 0.25) + (sas * 0.25));
+            const remedial = Number(s[`remedial${semKey}`] || 0);
+            const katrol = Number(s[`katrol${semKey}`] || 0);
+            const start = remedial > 0 ? remedial : base;
+            const applied = remedial > 0 || katrol > 0;
+            return { base, remedial, katrol, applied, final: Math.min(100, start + katrol) };
+        }
+
         function ensureXlsx() {
             if (window.XLSX) return true;
             showToast('Pustaka Excel belum termuat. Periksa koneksi internet lalu muat ulang halaman.');
@@ -2311,6 +2333,7 @@
         }
 
         function logout() {
+            if (blockIfExamRunning()) return;
             clearInterval(examTimerInterval);
             state.auth.role = null;
             state.auth.studentId = null;
@@ -2553,7 +2576,7 @@
         }
 
         // =========================================================================
-        // 8. WORKSPACE 19 MODUL ADMINISTRASI GURU (TERMASUK BANK SOAL TKA)
+        // 8. WORKSPACE 18 MODUL ADMINISTRASI GURU (TERMASUK BANK SOAL TKA)
         // =========================================================================
         function openModule(modId) {
             activeModuleId = modId;
@@ -2574,7 +2597,7 @@
         function renderWorkspace(modId) {
             const sp = getActiveSpace();
             const r = getActiveRombel(sp);
-            const modObj = TEACHER_MODULES.find(m => m.id === modId) || TEACHER_MODULES[0];
+            const modObj = TEACHER_MODULES.find(m => m.id === (modId === 'template-kelas' ? 'paket-supervisi' : modId)) || TEACHER_MODULES[0];
             const filteredTps = getFilteredTps(sp, sp.activeGrade, sp.activeSemester);
             const allGradeTps = getGradeTps(sp, sp.activeGrade);
 
@@ -3007,6 +3030,9 @@
                         if (modId === 'soal-tka') return k.startsWith(`TKA-${sp.activeGrade}`);
                         return k.startsWith(`UAS-${sp.activeGrade}`);
                     });
+                    if (modId === 'soal-tka') {
+                        availableKeys.sort((a, b) => (b.endsWith('-R') ? 1 : 0) - (a.endsWith('-R') ? 1 : 0) || a.localeCompare(b));
+                    }
                     if (!availableKeys.includes(sp.selectedExamKey)) {
                         sp.selectedExamKey = availableKeys[0];
                     }
@@ -3024,7 +3050,7 @@
                                 ${availableKeys.map(k => `
                                     <button type="button" onclick="getActiveSpace().selectedExamKey='${k}'; renderWorkspace('${modId}');"
                                         class="px-3 py-1.5 rounded-xl text-xs font-extrabold cursor-pointer ${k === sp.selectedExamKey ? 'bg-navy text-white' : 'bg-white text-navy border border-slate-200'}">
-                                        ${k}
+                                        ${examKeyLabel(k)}
                                     </button>
                                 `).join('')}
                             </div>
@@ -3107,7 +3133,7 @@
                                 <input type="number" min="0" max="100" value="${kktp}" onchange="updateKktp(this.value)"
                                     class="w-16 text-center border border-amber-300 rounded py-0.5 bg-white font-bold">
                             </label>
-                            <span>Nilai di bawah batas ditandai <strong class="text-red-600">merah</strong> dan berstatus <strong>Belum Tuntas</strong>. Kolom <strong>Pengurangan</strong> diisi manual (poin) dan mengurangi Nilai Akhir.</span>
+                            <span>Nilai di bawah batas ditandai <strong class="text-red-600">merah</strong> dan berstatus <strong>Belum Tuntas</strong>. Kolom <strong>Remedial</strong> terisi otomatis dari skor ujian Remedial siswa (bisa diubah manual); Nilai Akhir mengikuti hasil remedial. Kolom <strong>Katrol (+)</strong> diisi manual oleh guru dan ditambahkan ke nilai tersebut (maks. 100). <strong>Nilai TKA tidak dihitung</strong> ke Nilai Akhir.</span>
                             <button type="button" onclick="resetStsSasToZero()" class="bg-white hover:bg-red-50 border border-red-300 text-red-600 text-[11px] font-extrabold px-3 py-1 rounded-lg cursor-pointer">Reset STS &amp; SAS ke 0 (kelas ini)</button>
                         </div>
                         <div class="overflow-x-auto">
@@ -3119,8 +3145,9 @@
                                         ${filteredTps.map(t => `<th class="w-16">${t.code}</th>`).join('')}
                                         <th class="w-16">STS</th>
                                         <th class="w-16">SAS</th>
-                                        <th class="w-16">TKA</th>
-                                        <th class="w-20" title="Pengurangan nilai manual oleh guru (poin)">Pengurangan</th>
+                                        <th class="w-16" title="Nilai TKA tidak dihitung ke Nilai Akhir">TKA*</th>
+                                        <th class="w-20" title="Skor ujian Remedial (terisi otomatis dari ujian siswa, dapat diubah manual). Jika terisi, Nilai Akhir mengikuti hasil remedial.">Remedial</th>
+                                        <th class="w-20" title="Tambahan nilai (katrol) yang diisi manual oleh guru, ditambahkan ke hasil remedial.">Katrol (+)</th>
                                         <th class="w-20">Nilai Akhir</th>
                                         <th class="w-28">Ket. KKTP (${kktp})</th>
                                     </tr>
@@ -3133,8 +3160,9 @@
                                         const sts = Number(s[`sts${semKey}`] || 0);
                                         const sas = Number(s[`sas${semKey}`] || 0);
                                         const tkaScore = s.examResults?.[`TKA-${r.grade}-${semKey}`] ?? '-';
-                                        const penalty = Number(s[`penalty${semKey}`] || 0);
-                                        const finalVal = Math.max(0, Math.round((avgTp * 0.5) + (sts * 0.25) + (sas * 0.25)) - penalty);
+                                        const fg = computeFinalGrade(s, semKey, avgTp, kktp);
+                                        const remedial = fg.remedial;
+                                        const finalVal = fg.final;
                                         const vio = examViolationTotal(s);
                                         return `
                                             <tr>
@@ -3159,17 +3187,23 @@
                                                 </td>
                                                 <td class="text-center font-bold text-royal">${tkaScore}</td>
                                                 <td class="text-center">
-                                                    <input type="number" min="0" max="100" value="${penalty}"
-                                                        onchange="updateStudentExamField(${s.id}, 'penalty${semKey}', this.value)"
-                                                        class="w-12 text-center border rounded py-0.5 ${penalty > 0 ? 'border-amber-400 bg-amber-50 text-amber-800 font-bold' : 'border-slate-300'}">
+                                                    <input type="number" min="0" max="100" value="${remedial}"
+                                                        onchange="updateStudentExamField(${s.id}, 'remedial${semKey}', this.value)"
+                                                        class="w-12 text-center border rounded py-0.5 ${remedial > 0 ? 'border-amber-400 bg-amber-50 text-amber-800 font-bold' : 'border-slate-300'}">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="number" min="0" max="100" value="${fg.katrol}"
+                                                        onchange="updateStudentExamField(${s.id}, 'katrol${semKey}', this.value)"
+                                                        class="w-12 text-center border rounded py-0.5 ${fg.katrol > 0 ? 'border-emerald-400 bg-emerald-50 text-emerald-700 font-bold' : 'border-slate-300'}">
                                                 </td>
                                                 <td class="text-center font-extrabold bg-blue-50/60 ${finalVal < kktp ? 'text-red-600' : 'text-navy'}">${finalVal}</td>
-                                                <td class="text-center text-xs font-extrabold ${finalVal < kktp ? 'text-red-600' : 'text-mint'}">${finalVal < kktp ? 'Belum Tuntas' : 'Tuntas'}${vio.total ? `<span class="block text-[10px] text-amber-700 font-bold mt-0.5 cursor-help" title="${vio.detail}">⚠ Pelanggaran ujian: ${vio.total}x</span>` : ''}</td>
+                                                <td class="text-center text-xs font-extrabold ${finalVal < kktp ? 'text-red-600' : 'text-mint'}">${finalVal < kktp ? 'Belum Tuntas' : (fg.applied ? 'Tuntas (Remedial)' : 'Tuntas')}${fg.applied ? `<span class="block text-[10px] ${finalVal >= kktp ? 'text-emerald-700' : 'text-amber-700'} font-bold mt-0.5">Nilai awal ${fg.base}${remedial > 0 ? ` • Remedial ${remedial}` : ''}${fg.katrol > 0 ? ` • Katrol +${fg.katrol}` : ''}</span>` : ''}${vio.total ? `<span class="block text-[10px] text-amber-700 font-bold mt-0.5 cursor-help" title="${vio.detail}">⚠ Pelanggaran ujian: ${vio.total}x</span>` : ''}</td>
                                             </tr>
                                         `;
                                     }).join('')}
                                 </tbody>
                             </table>
+                            <p class="text-[11px] text-navy-muted mt-2">*Nilai TKA hanya ditampilkan sebagai informasi dan tidak dihitung ke Nilai Akhir.</p>
                         </div>
                     `;
                     break;
@@ -3288,7 +3322,7 @@
                                     })).sort((a, b) => b.val - a.val);
 
                                     const avgTp = ranked.length ? ranked.reduce((a, b) => a + b.val, 0) / ranked.length : 0;
-                                    const finalVal = Math.max(0, Math.round((avgTp * 0.5) + (Number(s[`sts${semKey}`] || 0) * 0.25) + (Number(s[`sas${semKey}`] || 0) * 0.25)) - Number(s[`penalty${semKey}`] || 0));
+                                    const finalVal = computeFinalGrade(s, semKey, avgTp, getKktp(sp)).final;
                                     const pred = finalVal >= 90 ? 'A' : finalVal >= 80 ? 'B' : 'C';
                                     const best = ranked[0]?.tp || 'memahami teks berbahasa Inggris';
                                     const low = ranked[ranked.length - 1]?.tp || 'menyusun paragraf terstruktur';
@@ -3314,7 +3348,49 @@
                 case 'paket-supervisi':
                 case 'template-kelas':
                 default: {
+                    const semLabel = sp.activeSemester === 'ALL' ? '1 (Ganjil) & 2 (Genap)' : sp.activeSemester === '1' ? '1 (Ganjil)' : '2 (Genap)';
                     bodyEl.innerHTML = `
+                        <!-- COVER / SAMPUL ADMINISTRASI -->
+                        <div class="border-4 border-double border-slate-800 rounded-sm p-8 sm:p-12 mb-6 text-center flex flex-col items-center justify-between gap-8" style="min-height: 24cm; page-break-after: always; break-after: page;">
+                            <div class="space-y-3">
+                                ${sp.profile.logoDataUrl ? `<img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-24 h-24 object-contain mx-auto">` : ''}
+                                <p class="text-xs font-bold tracking-[0.25em] text-slate-600">KURIKULUM MERDEKA</p>
+                            </div>
+                            <div class="space-y-3">
+                                <h1 class="font-display font-extrabold text-2xl sm:text-3xl uppercase text-slate-900 leading-tight">Administrasi Pembelajaran</h1>
+                                <h2 class="font-display font-extrabold text-xl sm:text-2xl uppercase text-royal">Bahasa Inggris</h2>
+                                <div class="w-24 h-1 bg-slate-800 mx-auto my-4"></div>
+                                <p class="text-sm font-bold text-slate-800">Kelas ${r.label}</p>
+                                <p class="text-sm font-semibold text-slate-700">Semester ${semLabel}</p>
+                                <p class="text-sm font-semibold text-slate-700">Tahun Pelajaran ${sp.profile.tahunAjaran}</p>
+                            </div>
+                            <div class="space-y-1 text-sm text-slate-800">
+                                <p class="text-xs font-semibold text-slate-500">Disusun oleh:</p>
+                                <p class="font-extrabold text-base">${sp.profile.nama}</p>
+                                <p class="text-xs">NIP. ${sp.profile.nip}</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-6 w-full max-w-xl text-xs text-slate-800">
+                                <div>
+                                    <p>Mengetahui,</p>
+                                    <p class="font-semibold">Kepala Sekolah</p>
+                                    <div class="h-14"></div>
+                                    <p class="font-extrabold underline">${sp.profile.kepsek}</p>
+                                    <p>NIP. ${sp.profile.nipKepsek}</p>
+                                </div>
+                                <div>
+                                    <p>${sp.profile.kota}, ........................</p>
+                                    <p class="font-semibold">Guru Mata Pelajaran</p>
+                                    <div class="h-14"></div>
+                                    <p class="font-extrabold underline">${sp.profile.nama}</p>
+                                    <p>NIP. ${sp.profile.nip}</p>
+                                </div>
+                            </div>
+                            <div class="space-y-0.5">
+                                <p class="font-extrabold uppercase text-sm text-slate-900">${sp.profile.sekolah}</p>
+                                <p class="text-xs text-slate-600">${sp.profile.alamat}</p>
+                            </div>
+                        </div>
+
                         <div class="p-4 bg-mint-bg/60 border border-green-300 rounded-2xl mb-4 text-xs sm:text-sm text-navy">
                             <strong>Bundel Administrasi Supervisi &amp; Kelas (${r.label}):</strong> Seluruh dokumen perencanaan, pelaksanaan, penilaian, TKA, dan presensi 30 pertemuan telah terintegrasi dan siap dicetak PDF atau diunduh ke Microsoft Word.
                         </div>
@@ -3662,13 +3738,44 @@
             return { sp, r, st };
         }
 
+        function blockIfExamRunning() {
+            if (examIsRunning()) {
+                showToast('Menu dikunci selama ujian berlangsung. Selesaikan dan kumpulkan ujian terlebih dahulu.');
+                return true;
+            }
+            return false;
+        }
+
+        function applyStudentExamLock(on) {
+            const nav = document.querySelector('[data-st-nav]');
+            if (nav) {
+                nav.classList.toggle('hidden', on);
+                const prev = document.getElementById('st-exam-lock-banner');
+                if (prev) prev.remove();
+                if (on) {
+                    const b = document.createElement('div');
+                    b.id = 'st-exam-lock-banner';
+                    b.className = 'bg-navy text-white rounded-2xl px-4 py-3 mb-5 text-xs font-extrabold flex items-center gap-2';
+                    b.innerHTML = '🔒 Mode ujian aktif — semua menu dikunci sampai ujian dikumpulkan.';
+                    nav.parentNode.insertBefore(b, nav);
+                }
+            }
+            document.querySelectorAll('[data-st-lock]').forEach(el => {
+                el.disabled = on;
+                el.classList.toggle('opacity-40', on);
+                el.classList.toggle('pointer-events-none', on);
+            });
+        }
+
         function setStudentTab(tab) {
+            if (blockIfExamRunning()) return;
             state.studentUI.tab = tab;
             renderStudentPortal();
             safeIcons();
         }
 
         function changeStudentSem(sem) {
+            if (blockIfExamRunning()) { renderStudentPortal(); return; }
             const { sp } = getLoggedStudent();
             sp.activeSemester = sem;
             const list = getFilteredTps(sp, sp.activeGrade, sem);
@@ -3694,7 +3801,7 @@
 
             const body = document.getElementById('student-portal-body');
             body.innerHTML = `
-                <div class="grid grid-cols-2 sm:grid-cols-6 gap-1.5 bg-white p-1.5 rounded-2xl border border-cream-border mb-5 shadow-2xs">
+                <div data-st-nav class="grid grid-cols-2 sm:grid-cols-6 gap-1.5 bg-white p-1.5 rounded-2xl border border-cream-border mb-5 shadow-2xs">
                     <button type="button" onclick="setStudentTab('materi')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'materi' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">📖 Materi Ajar</button>
                     <button type="button" onclick="setStudentTab('pustaka')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'pustaka' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">📚 Buku Panduan</button>
                     <button type="button" onclick="setStudentTab('flashcard')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'flashcard' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">✨ Flashcard</button>
@@ -3704,6 +3811,7 @@
                 </div>
                 <div id="st-tab-content"></div>
             `;
+            applyStudentExamLock(!!ui.examRunner);
 
             const contentEl = document.getElementById('st-tab-content');
 
@@ -3878,7 +3986,7 @@
                                     <div class="bg-white border-2 ${isTka ? 'border-indigo-300 bg-indigo-50/20' : 'border-cream-border'} rounded-3xl p-5 flex flex-col justify-between gap-3">
                                         <div>
                                             <div class="flex items-center gap-1.5">
-                                                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${isTka ? 'bg-navy text-gold' : 'bg-royal-light text-royal'}">${k} • ${ex.questions.length} Soal</span>
+                                                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${isTka ? 'bg-navy text-gold' : 'bg-royal-light text-royal'}">${examKeyLabel(k)} • ${ex.questions.length} Soal</span>
                                                 ${isTka ? '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">TKA</span>' : ''}
                                             </div>
                                             <h4 class="font-display font-extrabold text-sm text-navy mt-2">${ex.title}</h4>
@@ -3910,9 +4018,12 @@
                             </div>
                             <span class="bg-mint-bg text-mint text-xs font-extrabold px-3 py-1.5 rounded-xl">Kehadiran: ${countH}/30 Pertemuan</span>
                         </div>
-                        ${Number(st[`penalty${sp.activeSemester === '2' ? '2' : '1'}`] || 0) > 0 ? `
+                        ${(Number(st[`remedial${sp.activeSemester === '2' ? '2' : '1'}`] || 0) > 0 || Number(st[`katrol${sp.activeSemester === '2' ? '2' : '1'}`] || 0) > 0) ? `
                             <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs font-bold text-amber-800">
-                                Pengurangan nilai dari guru (Semester ${sp.activeSemester === '2' ? '2' : '1'}): -${Number(st[`penalty${sp.activeSemester === '2' ? '2' : '1'}`])} poin pada Nilai Akhir.
+                                Semester ${sp.activeSemester === '2' ? '2' : '1'}:
+                                ${Number(st[`remedial${sp.activeSemester === '2' ? '2' : '1'}`] || 0) > 0 ? `Nilai Remedial ${Number(st[`remedial${sp.activeSemester === '2' ? '2' : '1'}`])}.` : ''}
+                                ${Number(st[`katrol${sp.activeSemester === '2' ? '2' : '1'}`] || 0) > 0 ? `Katrol +${Number(st[`katrol${sp.activeSemester === '2' ? '2' : '1'}`])} dari guru.` : ''}
+                                Nilai Akhir mengikuti hasil tersebut.
                             </div>` : ''}
                         <table class="doc-table">
                             <thead>
@@ -3941,7 +4052,7 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                     ${tkaEntries.map(([k, val]) => `
                                         <div class="border border-indigo-200 bg-indigo-50/40 rounded-xl p-3 flex items-center justify-between text-xs">
-                                            <span class="font-bold text-navy">${k}</span>
+                                            <span class="font-bold text-navy">${examKeyLabel(k)}</span>
                                             <span class="font-extrabold text-royal text-sm">${val}/100${examViolationNote(st, k) ? `<span class="block text-[10px] text-amber-700 font-bold text-right">⚠ ${examViolationNote(st, k)}</span>` : ''}</span>
                                         </div>
                                     `).join('')}
@@ -4150,6 +4261,10 @@
             const score = Math.round((correct / ex.questions.length) * 100);
             if (!st.examResults) st.examResults = {};
             st.examResults[runner.key] = score;
+            if (/^TKA-.+-R$/.test(runner.key)) {
+                // Skor ujian Remedial otomatis masuk ke kolom Remedial semester aktif
+                st[`remedial${sp.activeSemester === '2' ? '2' : '1'}`] = score;
+            }
             recordExamViolations(st, runner);
             if (runner.key.startsWith('UH-')) {
                 const tpCode = runner.key.replace('UH-', '');
@@ -4657,6 +4772,7 @@
         }
 
         async function syncStudentCloud() {
+            if (blockIfExamRunning()) return;
             const { r } = getLoggedStudent();
             if (!getGasUrl()) {
                 showToast('Sinkron lokal selesai.');
