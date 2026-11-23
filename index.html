@@ -7,21 +7,20 @@
     <meta name="description" content="Portal pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, serta 19 administrasi guru SMP/MTs.">
     <meta name="theme-color" content="#102542">
     <!-- Preview saat link dibagikan (WhatsApp, Telegram, Facebook, dll) -->
-    <!-- PENTING: ganti GANTI-DOMAIN-ANDA.com dengan alamat web Anda; og-image.png diunggah sejajar dengan file ini -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="English For Nusantara">
     <meta property="og:locale" content="id_ID">
     <meta property="og:title" content="English For Nusantara — Portal Pembelajaran &amp; Administrasi Guru">
     <meta property="og:description" content="Pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, dan 19 administrasi guru SMP/MTs dalam satu portal.">
-    <meta property="og:url" content="https://GANTI-DOMAIN-ANDA.com/">
-    <meta property="og:image" content="https://GANTI-DOMAIN-ANDA.com/og-image.png">
+    <meta property="og:url" content="https://arrasyidbusiness.github.io/english-for-nusantara/">
+    <meta property="og:image" content="https://arrasyidbusiness.github.io/english-for-nusantara/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="English For Nusantara — Portal Pembelajaran &amp; Administrasi Guru">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="English For Nusantara — Portal Pembelajaran &amp; Administrasi Guru">
     <meta name="twitter:description" content="Pembelajaran Bahasa Inggris interaktif, Ujian CBT &amp; TKA, dan 19 administrasi guru SMP/MTs.">
-    <meta name="twitter:image" content="https://GANTI-DOMAIN-ANDA.com/og-image.png">
+    <meta name="twitter:image" content="https://arrasyidbusiness.github.io/english-for-nusantara/og-image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
@@ -1741,7 +1740,7 @@
                             pin,
                             att: Array(30).fill('H'),
                             scores: {},
-                            sts1: 85, sas1: 85, sts2: 85, sas2: 85,
+                            sts1: 0, sas1: 0, sts2: 0, sas2: 0,
                             completedChapters: [],
                             lkpdSubmissions: {},
                             examResults: {}
@@ -3082,7 +3081,16 @@
                 }
 
                 case 'daftar-nilai': {
+                    const kktp = getKktp(sp);
                     bodyEl.innerHTML = `
+                        <div class="no-print bg-amber-50 border border-amber-200 rounded-xl p-3 mb-3 text-xs text-navy flex flex-wrap items-center justify-between gap-2">
+                            <label class="font-extrabold flex items-center gap-2">
+                                Batas KKTP / KKM:
+                                <input type="number" min="0" max="100" value="${kktp}" onchange="updateKktp(this.value)"
+                                    class="w-16 text-center border border-amber-300 rounded py-0.5 bg-white font-bold">
+                            </label>
+                            <span>Nilai di bawah batas ditandai <strong class="text-red-600">merah</strong> dan berstatus <strong>Belum Tuntas</strong>.</span>
+                        </div>
                         <div class="overflow-x-auto">
                             <table class="doc-table">
                                 <thead>
@@ -3094,15 +3102,16 @@
                                         <th class="w-16">SAS</th>
                                         <th class="w-16">TKA</th>
                                         <th class="w-20">Nilai Akhir</th>
+                                        <th class="w-28">Ket. KKTP (${kktp})</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     ${r.students.map((s, idx) => {
                                         const semKey = sp.activeSemester === '2' ? '2' : '1';
-                                        const tpVals = filteredTps.map(t => Number(s.scores?.[t.code] ?? 85));
-                                        const avgTp = tpVals.length ? tpVals.reduce((a, b) => a + b, 0) / tpVals.length : 85;
-                                        const sts = Number(s[`sts${semKey}`] || 85);
-                                        const sas = Number(s[`sas${semKey}`] || 85);
+                                        const tpVals = filteredTps.map(t => Number(s.scores?.[t.code] ?? 0));
+                                        const avgTp = tpVals.length ? tpVals.reduce((a, b) => a + b, 0) / tpVals.length : 0;
+                                        const sts = Number(s[`sts${semKey}`] || 0);
+                                        const sas = Number(s[`sas${semKey}`] || 0);
                                         const tkaScore = s.examResults?.[`TKA-${r.grade}-${semKey}`] ?? '-';
                                         const finalVal = Math.round((avgTp * 0.5) + (sts * 0.25) + (sas * 0.25));
                                         return `
@@ -3111,23 +3120,24 @@
                                                 <td class="font-semibold">${s.name}</td>
                                                 ${filteredTps.map(t => `
                                                     <td class="text-center">
-                                                        <input type="number" min="0" max="100" value="${s.scores?.[t.code] ?? 85}"
+                                                        <input type="number" min="0" max="100" value="${s.scores?.[t.code] ?? 0}"
                                                             onchange="updateStudentTpScore(${s.id}, '${t.code}', this.value)"
-                                                            class="w-12 text-center border border-slate-300 rounded py-0.5">
+                                                            class="w-12 text-center border rounded py-0.5 ${Number(s.scores?.[t.code] ?? 0) < kktp ? 'border-red-400 bg-red-50 text-red-600 font-bold' : 'border-slate-300'}">
                                                     </td>
                                                 `).join('')}
                                                 <td class="text-center">
                                                     <input type="number" min="0" max="100" value="${sts}"
                                                         onchange="updateStudentExamField(${s.id}, 'sts${semKey}', this.value)"
-                                                        class="w-12 text-center border border-slate-300 rounded py-0.5">
+                                                        class="w-12 text-center border rounded py-0.5 ${sts < kktp ? 'border-red-400 bg-red-50 text-red-600 font-bold' : 'border-slate-300'}">
                                                 </td>
                                                 <td class="text-center">
                                                     <input type="number" min="0" max="100" value="${sas}"
                                                         onchange="updateStudentExamField(${s.id}, 'sas${semKey}', this.value)"
-                                                        class="w-12 text-center border border-slate-300 rounded py-0.5">
+                                                        class="w-12 text-center border rounded py-0.5 ${sas < kktp ? 'border-red-400 bg-red-50 text-red-600 font-bold' : 'border-slate-300'}">
                                                 </td>
                                                 <td class="text-center font-bold text-royal">${tkaScore}</td>
-                                                <td class="text-center font-extrabold text-navy bg-blue-50/60">${finalVal}</td>
+                                                <td class="text-center font-extrabold bg-blue-50/60 ${finalVal < kktp ? 'text-red-600' : 'text-navy'}">${finalVal}</td>
+                                                <td class="text-center text-xs font-extrabold ${finalVal < kktp ? 'text-red-600' : 'text-mint'}">${finalVal < kktp ? 'Belum Tuntas' : 'Tuntas'}</td>
                                             </tr>
                                         `;
                                     }).join('')}
@@ -3247,11 +3257,11 @@
                                     const semKey = sp.activeSemester === '2' ? '2' : '1';
                                     const ranked = filteredTps.map(t => ({
                                         tp: t.tp,
-                                        val: Number(s.scores?.[t.code] ?? 85)
+                                        val: Number(s.scores?.[t.code] ?? 0)
                                     })).sort((a, b) => b.val - a.val);
 
-                                    const avgTp = ranked.length ? ranked.reduce((a, b) => a + b.val, 0) / ranked.length : 85;
-                                    const finalVal = Math.round((avgTp * 0.5) + (Number(s[`sts${semKey}`] || 85) * 0.25) + (Number(s[`sas${semKey}`] || 85) * 0.25));
+                                    const avgTp = ranked.length ? ranked.reduce((a, b) => a + b.val, 0) / ranked.length : 0;
+                                    const finalVal = Math.round((avgTp * 0.5) + (Number(s[`sts${semKey}`] || 0) * 0.25) + (Number(s[`sas${semKey}`] || 0) * 0.25));
                                     const pred = finalVal >= 90 ? 'A' : finalVal >= 80 ? 'B' : 'C';
                                     const best = ranked[0]?.tp || 'memahami teks berbahasa Inggris';
                                     const low = ranked[ranked.length - 1]?.tp || 'menyusun paragraf terstruktur';
@@ -3374,7 +3384,7 @@
                 pin,
                 att: Array(30).fill('H'),
                 scores: {},
-                sts1: 85, sas1: 85, sts2: 85, sas2: 85,
+                sts1: 0, sas1: 0, sts2: 0, sas2: 0,
                 completedChapters: [],
                 lkpdSubmissions: {},
                 examResults: {}
@@ -3507,6 +3517,18 @@
             persist();
             renderWorkspace(modId);
             showToast('Soal dihapus.');
+        }
+
+        function getKktp(sp = getActiveSpace()) {
+            const v = Number(sp.kktp);
+            return Number.isFinite(v) && sp.kktp !== undefined && sp.kktp !== '' ? Math.max(0, Math.min(100, v)) : 75;
+        }
+
+        function updateKktp(val) {
+            const sp = getActiveSpace();
+            sp.kktp = Math.max(0, Math.min(100, Number(val) || 0));
+            persist();
+            renderWorkspace('daftar-nilai');
         }
 
         function updateStudentTpScore(studentId, tpCode, val) {
