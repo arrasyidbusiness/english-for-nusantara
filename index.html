@@ -347,20 +347,26 @@
                             </div>
                             <div class="grid grid-cols-2 gap-2.5">
                                 <div>
+                                    <label class="block text-xs font-bold text-navy mb-1">NIS Siswa</label>
+                                    <input type="text" id="reg-st-nis" placeholder="Contoh: 242507001" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                                </div>
+                                <div>
                                     <label class="block text-xs font-bold text-navy mb-1">Jenis Kelamin</label>
                                     <select id="reg-st-gender" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
                                         <option value="L">Laki-laki (L)</option>
                                         <option value="P">Perempuan (P)</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2.5">
                                 <div>
                                     <label class="block text-xs font-bold text-navy mb-1">Buat PIN *</label>
                                     <input type="text" id="reg-st-pin" required value="1234" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs">
                                 </div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-navy mb-1">Nomor WhatsApp Siswa <span class="text-slate-400 font-normal">(Untuk notifikasi materi, ujian &amp; laporan ke guru)</span></label>
-                                <input type="tel" id="reg-st-wa" placeholder="Contoh: 081234567890" class="w-full border border-slate-300 rounded-xl px-3.5 py-2 text-xs bg-white">
+                                <div>
+                                    <label class="block text-xs font-bold text-navy mb-1">Nomor WhatsApp Siswa</label>
+                                    <input type="tel" id="reg-st-wa" placeholder="081234567890" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                                </div>
                             </div>
                             <button type="submit" class="w-full bg-mint hover:bg-green-700 text-white font-display font-extrabold text-sm py-3 rounded-2xl shadow-md cursor-pointer">
                                 Daftar &amp; Langsung Belajar
@@ -1218,7 +1224,7 @@
                 waGroupLink: '',
                 students: [
                     {
-                        id: 101, name: 'Ahmad Fauzan Pratama', gender: 'L', pin: '1234', waPhone: '',
+                        id: 101, nis: '242507001', name: 'Ahmad Fauzan Pratama', gender: 'L', pin: '1234', waPhone: '',
                         att: Array(30).fill('H'),
                         scores: { 'TP 7.1': 88, 'TP 7.2': 86, 'TP 7.3': 90, 'TP 7.4': 87, 'TP 7.5': 89, 'TP 8.1': 88, 'TP 8.2': 86, 'TP 8.3': 90, 'TP 8.4': 87, 'TP 8.5': 89, 'TP 9.1': 88, 'TP 9.2': 86, 'TP 9.3': 90, 'TP 9.4': 87, 'TP 9.5': 89 },
                         sts1: 86, sas1: 89, sts2: 88, sas2: 90,
@@ -1227,7 +1233,7 @@
                         examResults: {}
                     },
                     {
-                        id: 102, name: 'Aisyah Putri Ramadhani', gender: 'P', pin: '1234', waPhone: '',
+                        id: 102, nis: '242507002', name: 'Aisyah Putri Ramadhani', gender: 'P', pin: '1234', waPhone: '',
                         att: Array(30).fill('H'),
                         scores: { 'TP 7.1': 94, 'TP 7.2': 92, 'TP 7.3': 95, 'TP 7.4': 93, 'TP 7.5': 94, 'TP 8.1': 94, 'TP 8.2': 92, 'TP 8.3': 95, 'TP 8.4': 93, 'TP 8.5': 94, 'TP 9.1': 94, 'TP 9.2': 92, 'TP 9.3': 95, 'TP 9.4': 93, 'TP 9.5': 94 },
                         sts1: 93, sas1: 95, sts2: 94, sas2: 96,
@@ -1236,7 +1242,7 @@
                         examResults: {}
                     },
                     {
-                        id: 103, name: 'Bima Sakti Nugraha', gender: 'L', pin: '1234', waPhone: '',
+                        id: 103, nis: '242507003', name: 'Bima Sakti Nugraha', gender: 'L', pin: '1234', waPhone: '',
                         att: Array.from({ length: 30 }, (_, idx) => (idx === 3 ? 'I' : idx === 11 ? 'S' : 'H')),
                         scores: { 'TP 7.1': 78, 'TP 7.2': 76, 'TP 7.3': 80, 'TP 7.4': 79, 'TP 7.5': 81, 'TP 8.1': 78, 'TP 8.2': 76, 'TP 8.3': 80, 'TP 8.4': 79, 'TP 8.5': 81, 'TP 9.1': 78, 'TP 9.2': 76, 'TP 9.3': 80, 'TP 9.4': 79, 'TP 9.5': 81 },
                         sts1: 77, sas1: 79, sts2: 80, sas2: 82,
@@ -1245,7 +1251,7 @@
                         examResults: {}
                     },
                     {
-                        id: 104, name: 'Citra Dewi Lestari', gender: 'P', pin: '1234', waPhone: '',
+                        id: 104, nis: '242507004', name: 'Citra Dewi Lestari', gender: 'P', pin: '1234', waPhone: '',
                         att: Array(30).fill('H'),
                         scores: { 'TP 7.1': 85, 'TP 7.2': 87, 'TP 7.3': 84, 'TP 7.4': 86, 'TP 7.5': 88, 'TP 8.1': 85, 'TP 8.2': 87, 'TP 8.3': 84, 'TP 8.4': 86, 'TP 8.5': 88, 'TP 9.1': 85, 'TP 9.2': 87, 'TP 9.3': 84, 'TP 9.4': 86, 'TP 9.5': 88 },
                         sts1: 85, sas1: 86, sts2: 87, sas2: 88,
@@ -1254,7 +1260,7 @@
                         examResults: {}
                     },
                     {
-                        id: 105, name: 'Dimas Arya Saputra', gender: 'L', pin: '1234', waPhone: '',
+                        id: 105, nis: '242507005', name: 'Dimas Arya Saputra', gender: 'L', pin: '1234', waPhone: '',
                         att: Array.from({ length: 30 }, (_, idx) => (idx === 6 ? 'A' : 'H')),
                         scores: { 'TP 7.1': 81, 'TP 7.2': 80, 'TP 7.3': 82, 'TP 7.4': 81, 'TP 7.5': 83, 'TP 8.1': 81, 'TP 8.2': 80, 'TP 8.3': 82, 'TP 8.4': 81, 'TP 8.5': 83, 'TP 9.1': 81, 'TP 9.2': 80, 'TP 9.3': 82, 'TP 9.4': 81, 'TP 9.5': 83 },
                         sts1: 80, sas1: 82, sts2: 81, sas2: 83,
@@ -1263,7 +1269,7 @@
                         examResults: {}
                     },
                     {
-                        id: 106, name: 'Nabila Khairunnisa', gender: 'P', pin: '1234', waPhone: '',
+                        id: 106, nis: '242507006', name: 'Nabila Khairunnisa', gender: 'P', pin: '1234', waPhone: '',
                         att: Array(30).fill('H'),
                         scores: { 'TP 7.1': 91, 'TP 7.2': 90, 'TP 7.3': 92, 'TP 7.4': 91, 'TP 7.5': 93, 'TP 8.1': 91, 'TP 8.2': 90, 'TP 8.3': 92, 'TP 8.4': 91, 'TP 8.5': 93, 'TP 9.1': 91, 'TP 9.2': 90, 'TP 9.3': 92, 'TP 9.4': 91, 'TP 9.5': 93 },
                         sts1: 90, sas1: 92, sts2: 91, sas2: 93,
@@ -1632,6 +1638,14 @@
             m.classList.remove('hidden');
             m.classList.add('flex');
             lucide.createIcons();
+            dispatchBackgroundWaQueue({
+                direction: 'STUDENT_TO_TEACHER',
+                targetPhone: teacherWa,
+                message: msg,
+                activity: activityTitle,
+                studentName: st.name,
+                classCode: r.classCode
+            });
         }
 
         function openWaBroadcastModal(type, customSubject = '', customDetail = '') {
@@ -1718,6 +1732,15 @@
             m.classList.remove('hidden');
             m.classList.add('flex');
             lucide.createIcons();
+            dispatchBackgroundWaQueue({
+                direction: 'TEACHER_TO_CLASS',
+                targetPhone: studentsWithWa.map(s => formatWaPhone(s.waPhone)).filter(Boolean).join(','),
+                groupTarget: r.waGroupId || r.waGroupName || '',
+                message: defaultMsg,
+                activity: headerLabel,
+                teacherName: sp.profile.nama,
+                classCode: r.classCode
+            });
         }
 
         function launchWaFromModal(targetPhone) {
@@ -1725,6 +1748,38 @@
             const message = txtEl ? txtEl.value : '';
             const url = buildWaLink(targetPhone, message);
             window.open(url, '_blank');
+        }
+
+        async function dispatchBackgroundWaQueue(payload) {
+            const url = getGasUrl();
+            if (!url) return;
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'QUEUE_WA_BACKGROUND',
+                        waGatewayToken: state.cloudConfig?.waGatewayToken || '',
+                        waGatewayUrl: state.cloudConfig?.waGatewayUrl || 'https://api.fonnte.com/send',
+                        ...payload,
+                        sentAt: new Date().toISOString()
+                    })
+                });
+            } catch (e) {}
+        }
+
+        function requestDevicePushPermission() {
+            if (!('Notification' in window)) return;
+            if (Notification.permission === 'default') {
+                Notification.requestPermission().catch(() => {});
+            }
+        }
+
+        function fireDeviceNotification(title, bodyText) {
+            if (!('Notification' in window) || Notification.permission !== 'granted') return;
+            try {
+                new Notification(title, { body: bodyText, icon: 'og-image.jpg' });
+            } catch (e) {}
         }
 
         function sendStudentScoreToWa(studentId) {
@@ -1863,10 +1918,10 @@
                 ['DAFTAR NAMA PESERTA DIDIK'],
                 [`KELAS ${r.id}`],
                 [`TAHUN PELAJARAN ${sp.profile.tahunAjaran}`],
-                ['No.', 'NAMA', 'L/P', 'PIN', 'NO WA'],
-                [1, 'Ananda Rizky Pratama', 'L', '1234', '081234567891'],
-                [2, 'Putri Indah Permata', 'P', '1234', '081234567892'],
-                [3, 'Rizki Ramadhan Saputra', 'L', '1234', '081234567893']
+                ['No.', 'NIS', 'NAMA', 'L/P', 'PIN', 'NO WA'],
+                [1, '242507001', 'Ananda Rizky Pratama', 'L', '1234', '081234567891'],
+                [2, '242507002', 'Putri Indah Permata', 'P', '1234', '081234567892'],
+                [3, '242507003', 'Rizki Ramadhan Saputra', 'L', '1234', '081234567893']
             ];
             const ws = XLSX.utils.aoa_to_sheet(aoa);
             const wb = XLSX.utils.book_new();
@@ -1883,8 +1938,8 @@
                 ['DAFTAR NAMA PESERTA DIDIK'],
                 [`KELAS ${r.id}`],
                 [`TAHUN PELAJARAN ${sp.profile.tahunAjaran}`],
-                ['No.', 'NAMA', 'L/P', 'PIN', 'NO WA'],
-                ...r.students.map((s, idx) => [idx + 1, s.name, s.gender, s.pin, s.waPhone || ''])
+                ['No.', 'NIS', 'NAMA', 'L/P', 'PIN', 'NO WA'],
+                ...r.students.map((s, idx) => [idx + 1, s.nis || '', s.name, s.gender, s.pin, s.waPhone || ''])
             ];
             const ws = XLSX.utils.aoa_to_sheet(aoa);
             const wb = XLSX.utils.book_new();
@@ -1908,6 +1963,7 @@
                     }
 
                     let headerRowIdx = -1;
+                    let nisColIdx = -1;
                     let nameColIdx = 1;
                     let genderColIdx = 2;
                     let pinColIdx = 3;
@@ -1919,6 +1975,7 @@
                         if (foundNameIdx !== -1) {
                             headerRowIdx = i;
                             nameColIdx = foundNameIdx;
+                            nisColIdx = rowCells.findIndex(c => c === 'NIS' || c === 'NISN' || c === 'NO INDUK' || c === 'NIS / NISN');
                             const foundGenderIdx = rowCells.findIndex(c => c === 'L/P' || c === 'JK' || c === 'JENIS KELAMIN');
                             const foundPinIdx = rowCells.findIndex(c => c === 'PIN' || c === 'PASSWORD');
                             const foundWaIdx = rowCells.findIndex(c => c === 'NO WA' || c === 'WA' || c === 'WHATSAPP' || c === 'NO HP' || c === 'HP');
@@ -1942,6 +1999,7 @@
                         const exists = r.students.some(s => normalizeStr(s.name) === normalizeStr(rawName));
                         if (exists) continue;
 
+                        const rawNis = nisColIdx !== -1 ? cleanInputText(row[nisColIdx]) : '';
                         const rawGender = cleanInputText(row[genderColIdx] || 'L').toUpperCase();
                         const gender = rawGender.startsWith('P') ? 'P' : 'L';
                         const rawPin = cleanInputText(row[pinColIdx]);
@@ -1950,6 +2008,7 @@
 
                         r.students.push({
                             id: ts() + i,
+                            nis: rawNis,
                             name: rawName,
                             gender,
                             pin,
@@ -2263,6 +2322,7 @@
             const codeInput = cleanInputText(document.getElementById('reg-st-code').value).toUpperCase();
             const combined = document.getElementById('reg-st-rombel').value;
             const fullName = cleanInputText(document.getElementById('reg-st-name').value);
+            const nis = cleanInputText(document.getElementById('reg-st-nis')?.value || '');
             const gender = document.getElementById('reg-st-gender').value;
             const pin = cleanInputText(document.getElementById('reg-st-pin').value) || '1234';
             const waPhone = cleanInputText(document.getElementById('reg-st-wa')?.value || '');
@@ -2306,6 +2366,7 @@
 
             const newSt = {
                 id: ts(),
+                nis,
                 name: fullName,
                 gender,
                 pin,
@@ -2834,7 +2895,7 @@
                     <p class="text-xs text-slate-600">NIP. ${sp.profile.nipKepsek}</p>
                 </div>
                 <div class="text-center">
-                    <p>${sp.profile.kota}, Juli 2026</p>
+                    <p>${sp.profile.titimangsa || `${sp.profile.kota || 'Jakarta'}, Juli 2026`}</p>
                     <p>Guru Mata Pelajaran</p>
                     <div class="h-16"></div>
                     <p class="font-bold underline">${sp.profile.nama}</p>
@@ -2870,9 +2931,17 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-navy mb-1">NIP Kepala Sekolah</label>
-                                <input type="text" id="id-nip-kepsek" value="${sp.profile.nipKepsek}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                                <input type="text" id="id-nip-kepsek" value="${sp.profile.nipKepsek || ''}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
                             </div>
-                            <div class="sm:col-span-2 bg-emerald-50/70 border border-green-300 rounded-2xl p-3 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div>
+                                <label class="block text-xs font-bold text-navy mb-1">Kota / Titimangsa Surat</label>
+                                <input type="text" id="id-titimangsa" value="${sp.profile.titimangsa || `${sp.profile.kota || 'Jakarta'}, Juli 2026`}" placeholder="Tasikmalaya, 20 Juli 2026" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-navy mb-1">Tahun Ajaran</label>
+                                <input type="text" id="id-tahun-ajaran" value="${sp.profile.tahunAjaran || '2026/2027'}" placeholder="2026/2027" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                            </div>
+                            <div class="sm:col-span-2 bg-emerald-50/70 border border-green-300 rounded-2xl p-3 grid grid-cols-1 sm:grid-cols-4 gap-2.5">
                                 <div>
                                     <label class="block text-xs font-bold text-navy mb-1">📲 Nomor WhatsApp Guru</label>
                                     <input type="tel" id="id-tc-wa" value="${sp.profile.waPhone || ''}" placeholder="081234567890" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
@@ -2882,8 +2951,12 @@
                                     <input type="text" id="id-wa-grp-name" value="${r.waGroupName || `Grup WA ${r.label}`}" placeholder="Grup Bahasa Inggris IX-A" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-navy mb-1">Tautan Undangan Grup WA (Opsional)</label>
+                                    <label class="block text-xs font-bold text-navy mb-1">Tautan Undangan Grup WA</label>
                                     <input type="url" id="id-wa-grp-link" value="${r.waGroupLink || ''}" placeholder="https://chat.whatsapp.com/..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-navy mb-1">ID Grup WA Gateway (Opsional)</label>
+                                    <input type="text" id="id-wa-grp-id" value="${r.waGroupId || ''}" placeholder="120363xxxx@g.us" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
                                 </div>
                             </div>
                             <div class="sm:col-span-2 bg-white border border-slate-200 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3">
@@ -2918,7 +2991,7 @@
                             <div>
                                 <span class="text-[10px] font-extrabold uppercase tracking-wider bg-mint text-white px-2.5 py-0.5 rounded-full">Impor Massal Excel (.xlsx)</span>
                                 <h4 class="font-display font-extrabold text-sm text-navy mt-1">Upload Data Siswa dari Excel (${r.label})</h4>
-                                <p class="text-[11px] text-navy-muted">Mendukung kolom: <strong>No.</strong> | <strong>NAMA</strong> | <strong>L/P</strong> | <strong>PIN</strong> | <strong>NO WA</strong>. Bagikan Kode Kelas <strong>${r.classCode}</strong> ke siswa.</p>
+                                <p class="text-[11px] text-navy-muted">Mendukung kolom: <strong>No.</strong> | <strong>NIS</strong> | <strong>NAMA</strong> | <strong>L/P</strong> | <strong>PIN</strong> | <strong>NO WA</strong>. Bagikan Kode Kelas <strong>${r.classCode}</strong> ke siswa.</p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
                                 <button type="button" onclick="downloadStudentExcelTemplate()" class="bg-white hover:bg-cream border border-slate-300 text-navy text-xs font-extrabold px-3 py-2 rounded-xl cursor-pointer">
@@ -2937,6 +3010,7 @@
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
                             <h4 class="font-bold text-sm text-navy">Daftar Peserta Didik ${r.label} (${r.students.length} Siswa)</h4>
                             <div class="no-print flex flex-wrap gap-1.5">
+                                <input type="text" id="add-st-nis" placeholder="NIS" class="w-24 border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs">
                                 <input type="text" id="add-st-name" placeholder="Nama Lengkap Siswa..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-xs">
                                 <select id="add-st-gender" class="border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs">
                                     <option value="L">L</option>
@@ -2952,6 +3026,7 @@
                             <thead>
                                 <tr>
                                     <th class="w-10">No</th>
+                                    <th class="w-28">NIS</th>
                                     <th>Nama Lengkap Siswa</th>
                                     <th class="w-14">L/P</th>
                                     <th class="w-24">PIN Login</th>
@@ -2963,6 +3038,9 @@
                                 ${r.students.map((s, idx) => `
                                     <tr>
                                         <td class="text-center">${idx + 1}</td>
+                                        <td class="text-center font-mono text-xs">
+                                            <input type="text" value="${s.nis || ''}" placeholder="-" onchange="updateStudentNis(${s.id}, this.value)" class="w-full border border-transparent hover:border-slate-300 focus:border-royal rounded px-1.5 py-0.5 text-center font-mono text-xs bg-transparent">
+                                        </td>
                                         <td class="font-semibold">${s.name}</td>
                                         <td class="text-center">${s.gender}</td>
                                         <td class="text-center font-mono text-xs">${s.pin}</td>
@@ -3595,23 +3673,37 @@
             sp.profile.nama = document.getElementById('id-nama').value.trim();
             sp.profile.nip = document.getElementById('id-nip').value.trim();
             sp.profile.kepsek = document.getElementById('id-kepsek').value.trim();
-            sp.profile.nipKepsek = document.getElementById('id-nip-kepsek').value.trim();
+            const nipKepsekInp = document.getElementById('id-nip-kepsek');
+            if (nipKepsekInp) sp.profile.nipKepsek = nipKepsekInp.value.trim();
+            const titimangsaInp = document.getElementById('id-titimangsa');
+            if (titimangsaInp) {
+                sp.profile.titimangsa = titimangsaInp.value.trim();
+                const kotaPart = sp.profile.titimangsa.split(',')[0]?.trim();
+                if (kotaPart) sp.profile.kota = kotaPart;
+            }
+            const taInp = document.getElementById('id-tahun-ajaran');
+            if (taInp && taInp.value.trim()) sp.profile.tahunAjaran = taInp.value.trim();
             const waInp = document.getElementById('id-tc-wa');
             if (waInp) sp.profile.waPhone = cleanInputText(waInp.value);
             const grpNameInp = document.getElementById('id-wa-grp-name');
             if (grpNameInp) r.waGroupName = cleanInputText(grpNameInp.value);
             const grpLinkInp = document.getElementById('id-wa-grp-link');
             if (grpLinkInp) r.waGroupLink = cleanInputText(grpLinkInp.value);
+            const grpIdInp = document.getElementById('id-wa-grp-id');
+            if (grpIdInp) r.waGroupId = cleanInputText(grpIdInp.value);
 
-            const tRec = state.teachers.find(t => normalizeStr(t.email) === normalizeStr(state.auth.teacherKey));
-            if (tRec) {
-                tRec.nama = sp.profile.nama;
-                tRec.sekolah = sp.profile.sekolah;
-                tRec.waPhone = sp.profile.waPhone;
-            }
             persist();
-            renderTeacherPortal();
-            showToast('Identitas sekolah, guru & pengaturan WhatsApp diperbarui!');
+            renderWorkspace('data-kelas');
+            showToast('Identitas guru, titimangsa & kontak WA berhasil disimpan!');
+        }
+
+        function updateStudentNis(studentId, newNis) {
+            const r = getActiveRombel();
+            const st = r.students.find(s => s.id === studentId);
+            if (!st) return;
+            st.nis = cleanInputText(newNis);
+            persist();
+            showToast(`NIS ${st.name} diperbarui.`);
         }
 
         function updateStudentWaPhone(studentId, newWa) {
@@ -3624,6 +3716,7 @@
         }
 
         function addStudentToRombel() {
+            const nis = cleanInputText(document.getElementById('add-st-nis')?.value || '');
             const name = cleanInputText(document.getElementById('add-st-name').value);
             const gender = document.getElementById('add-st-gender').value;
             const pin = cleanInputText(document.getElementById('add-st-pin').value) || '1234';
@@ -3636,6 +3729,7 @@
             }
             r.students.push({
                 id: ts(),
+                nis,
                 name,
                 gender,
                 pin,
@@ -3897,7 +3991,7 @@
         function renderStudentPortal() {
             const { sp, r, st } = getLoggedStudent();
             document.getElementById('st-header-name').textContent = `Halo, ${st.name}`;
-            document.getElementById('st-header-sub').textContent = `${r.label} (${r.classCode}) • ${sp.profile.sekolah}`;
+            document.getElementById('st-header-sub').textContent = `${st.nis ? `NIS: ${st.nis} • ` : ''}${r.label} (${r.classCode}) • ${sp.profile.sekolah}`;
             document.getElementById('st-sem-filter').value = sp.activeSemester === 'ALL' ? '1' : sp.activeSemester;
 
             const sem = sp.activeSemester === 'ALL' ? '1' : sp.activeSemester;
@@ -4451,10 +4545,20 @@
 
                         <!-- KONFIGURASI GOOGLE APPS SCRIPT & OAUTH -->
                         <form onsubmit="saveAdminCloudConfig(event)" class="bg-white border border-cream-border rounded-3xl p-5 shadow-2xs space-y-3">
-                            <h3 class="font-display font-extrabold text-base text-navy">Konfigurasi Server Google Apps Script &amp; OAuth Client ID</h3>
+                            <h3 class="font-display font-extrabold text-base text-navy">Konfigurasi Server Google Apps Script, OAuth &amp; WA Gateway Latar Belakang</h3>
                             <div>
                                 <label class="block text-xs font-bold text-navy mb-1">URL Web App Google Apps Script (Pusat)</label>
                                 <input type="url" id="adm-cfg-gas" value="${getGasUrl()}" required class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-navy mb-1">Endpoint WA Gateway (Otomatis Kirim Saat Tab Tertutup)</label>
+                                    <input type="url" id="adm-cfg-wagw-url" value="${state.cloudConfig?.waGatewayUrl || 'https://api.fonnte.com/send'}" placeholder="https://api.fonnte.com/send" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-navy mb-1">Token API WA Gateway (Fonnte / Wablas / Twilio)</label>
+                                    <input type="password" id="adm-cfg-wagw-tok" value="${state.cloudConfig?.waGatewayToken || ''}" placeholder="Masukkan token WA Gateway..." class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-mono">
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-navy mb-1">Google OAuth 2.0 Client ID (Opsional untuk Login Drive Pribadi Guru)</label>
@@ -4488,9 +4592,11 @@
         function saveAdminCloudConfig(e) {
             e.preventDefault();
             state.cloudConfig.gasUrl = document.getElementById('adm-cfg-gas').value.trim();
+            state.cloudConfig.waGatewayUrl = document.getElementById('adm-cfg-wagw-url')?.value.trim() || 'https://api.fonnte.com/send';
+            state.cloudConfig.waGatewayToken = document.getElementById('adm-cfg-wagw-tok')?.value.trim() || '';
             state.cloudConfig.oauthClientId = document.getElementById('adm-cfg-oauth').value.trim();
             persist(true);
-            showToast('Konfigurasi Cloud & OAuth disimpan!');
+            showToast('Konfigurasi Cloud, WA Gateway & OAuth disimpan!');
         }
 
         // =========================================================================
@@ -4762,8 +4868,48 @@
         // =========================================================================
         // INISIALISASI SAAT HALAMAN DIMUAT
         // =========================================================================
+        // INISIALISASI SAAT HALAMAN DIMUAT & NOTIFIKASI TAB AKTIF / TERSEMBUNYI
+        // =========================================================================
+        async function checkLiveUpdatesAndNotify(announceOnFocus = false) {
+            if (!getGasUrl() || !state.auth.role) return;
+            if (state.auth.role === 'student' && state.auth.rombelId) {
+                const { sp, r } = getLoggedStudent();
+                const prevResCount = (sp.uploadedResources || []).length;
+                const prevPubExams = Object.values(sp.exams || {}).filter(e => e.published).length;
+                await pullClassByCodeFromCloud(r.classCode);
+                const updated = getLoggedStudent();
+                const newResCount = (updated.sp.uploadedResources || []).length;
+                const newPubExams = Object.values(updated.sp.exams || {}).filter(e => e.published).length;
+                if (newResCount > prevResCount || newPubExams > prevPubExams) {
+                    renderStudentPortal();
+                    const infoMsg = 'Ada materi baru atau ujian CBT/TKA yang baru diaktifkan oleh guru.';
+                    showToast(`🔔 ${infoMsg}`);
+                    fireDeviceNotification('English For Nusantara — Update Guru', infoMsg);
+                } else if (announceOnFocus) {
+                    showToast(`✓ Ruang belajar ${r.label} tersinkron (${newResCount} materi, ${newPubExams} ujian aktif).`);
+                }
+            } else if (state.auth.role === 'teacher' && state.auth.teacherKey) {
+                const prevSp = getActiveSpace();
+                const prevR = getActiveRombel(prevSp);
+                const prevSubmissions = prevR.students.reduce((acc, s) => acc + Object.keys(s.lkpdSubmissions || {}).length + Object.keys(s.examResults || {}).length, 0);
+                await pullTeacherFromCloud(state.auth.teacherKey);
+                const curSp = getActiveSpace();
+                const curR = getActiveRombel(curSp);
+                const curSubmissions = curR.students.reduce((acc, s) => acc + Object.keys(s.lkpdSubmissions || {}).length + Object.keys(s.examResults || {}).length, 0);
+                if (curSubmissions > prevSubmissions) {
+                    renderTeacherPortal();
+                    const tcMsg = `Ada kiriman tugas LKPD atau hasil ujian baru dari siswa ${curR.label}!`;
+                    showToast(`🔔 ${tcMsg}`);
+                    fireDeviceNotification('English For Nusantara — Aktivitas Siswa', tcMsg);
+                } else if (announceOnFocus) {
+                    showToast(`✓ Portal Guru ${curR.label} aktif & tersinkron.`);
+                }
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             renderApp();
+            requestDevicePushPermission();
             if (!state.auth.role && getGasUrl()) {
                 fetch(`${getGasUrl()}?action=GET_PUBLIC_REGISTRY`)
                     .then(r => r.json())
@@ -4775,7 +4921,26 @@
                         }
                     })
                     .catch(() => {});
+            } else if (state.auth.role) {
+                checkLiveUpdatesAndNotify(true);
             }
+
+            // Tetap berjalan baik saat tab aktif/dibuka kembali maupun saat tab diminimalkan
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible' && state.auth.role) {
+                    checkLiveUpdatesAndNotify(true);
+                }
+            });
+
+            window.addEventListener('focus', () => {
+                if (state.auth.role) {
+                    checkLiveUpdatesAndNotify(false);
+                }
+            });
+
+            setInterval(() => {
+                checkLiveUpdatesAndNotify(false);
+            }, 25000);
         });
     </script>
 </body>
