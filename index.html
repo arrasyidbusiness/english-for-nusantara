@@ -143,6 +143,37 @@
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
+            /* Tabel lebar (Daftar Nilai, Presensi) muat di halaman cetak */
+            .overflow-x-auto { overflow: visible !important; }
+            table.print-fit {
+                width: 100% !important;
+                min-width: 0 !important;
+                font-size: 9px !important;
+            }
+            table.print-fit th, table.print-fit td {
+                min-width: 0 !important;
+                padding: 2px 3px !important;
+                position: static !important;
+                box-shadow: none !important;
+            }
+            table.print-fit th[class*="w-"] { width: auto !important; }
+            table.print-fit input {
+                width: 100% !important;
+                min-width: 0 !important;
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                text-align: center;
+                font-size: inherit !important;
+                color: #0F172A !important;
+                -webkit-appearance: none;
+                appearance: none;
+            }
+            table.print-presensi { table-layout: fixed; font-size: 8px !important; }
+            table.print-presensi th:first-child, table.print-presensi td:first-child { width: 7mm !important; }
+            table.print-presensi th:nth-child(2), table.print-presensi td:nth-child(2) { width: 46mm !important; white-space: normal !important; text-align: left; }
+            table.print-presensi th:nth-last-child(-n+4), table.print-presensi td:nth-last-child(-n+4) { width: 9mm !important; }
+            .print-page-break { page-break-after: always; break-after: page; }
         }
     </style>
 </head>
@@ -2628,7 +2659,20 @@
             safeIcons();
         }
 
+        // Daftar Nilai & Presensi dicetak lanskap agar kolom tidak terpotong; modul lain tetap potret
+        function setPrintOrientation(modId) {
+            let st = document.getElementById('print-page-style');
+            if (!st) {
+                st = document.createElement('style');
+                st.id = 'print-page-style';
+                document.head.appendChild(st);
+            }
+            const landscape = ['daftar-nilai', 'presensi'].includes(modId);
+            st.textContent = landscape ? '@page { size: A4 landscape; margin: 10mm; }' : '@page { size: A4; }';
+        }
+
         function closeModule() {
+            setPrintOrientation('');
             activeModuleId = null;
             document.getElementById('tc-workspace-section').classList.add('hidden');
             document.getElementById('tc-grid-section').classList.remove('hidden');
@@ -2669,6 +2713,13 @@
                         <p class="text-xs text-slate-600 mt-0.5">${sp.profile.alamat}</p>
                     </div>
                 `;
+
+            setPrintOrientation(modId);
+            // Paket Supervisi + Template: hanya Cover/Pengesahan/daftar (tanpa kop, judul, dan TTD bawaan)
+            const hideDocChrome = modId === 'paket-supervisi' || modId === 'template-kelas';
+            ['doc-kop-surat', 'doc-meta-header', 'doc-signature-area'].forEach(id => {
+                document.getElementById(id).style.display = hideDocChrome ? 'none' : '';
+            });
 
             document.getElementById('doc-meta-header').innerHTML = `
                 <div class="text-center mb-4">
@@ -3179,7 +3230,7 @@
                             <button type="button" onclick="resetStsSasToZero()" class="bg-white hover:bg-red-50 border border-red-300 text-red-600 text-[11px] font-extrabold px-3 py-1 rounded-lg cursor-pointer">Reset STS &amp; SAS ke 0 (kelas ini)</button>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="doc-table">
+                            <table class="doc-table print-fit">
                                 <thead>
                                     <tr>
                                         <th class="w-10">No</th>
@@ -3189,7 +3240,7 @@
                                         <th class="w-16">SAS</th>
                                         <th class="w-16" title="Nilai TKA tidak dihitung ke Nilai Akhir">TKA*</th>
                                         <th class="w-20" title="Skor ujian Remedial (terisi otomatis dari ujian siswa, dapat diubah manual). Jika terisi, Nilai Akhir mengikuti hasil remedial.">Remedial</th>
-                                        <th class="w-20" title="Tambahan nilai (katrol) yang diisi manual oleh guru, ditambahkan ke hasil remedial.">Katrol (+)</th>
+                                        <th class="no-print w-20" title="Tambahan nilai (katrol) yang diisi manual oleh guru, ditambahkan ke hasil remedial.">Katrol (+)</th>
                                         <th class="w-20">Nilai Akhir</th>
                                         <th class="w-28">Ket. KKTP (${kktp})</th>
                                     </tr>
@@ -3233,13 +3284,13 @@
                                                         onchange="updateStudentExamField(${s.id}, 'remedial${semKey}', this.value)"
                                                         class="w-12 text-center border rounded py-0.5 ${remedial > 0 ? 'border-amber-400 bg-amber-50 text-amber-800 font-bold' : 'border-slate-300'}">
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="no-print text-center">
                                                     <input type="number" min="0" max="100" value="${fg.katrol}"
                                                         onchange="updateStudentExamField(${s.id}, 'katrol${semKey}', this.value)"
                                                         class="w-12 text-center border rounded py-0.5 ${fg.katrol > 0 ? 'border-emerald-400 bg-emerald-50 text-emerald-700 font-bold' : 'border-slate-300'}">
                                                 </td>
                                                 <td class="text-center font-extrabold bg-blue-50/60 ${finalVal < kktp ? 'text-red-600' : 'text-navy'}">${finalVal}</td>
-                                                <td class="text-center text-xs font-extrabold ${finalVal < kktp ? 'text-red-600' : 'text-mint'}">${finalVal < kktp ? 'Belum Tuntas' : (fg.applied ? 'Tuntas (Remedial)' : 'Tuntas')}${fg.applied ? `<span class="block text-[10px] ${finalVal >= kktp ? 'text-emerald-700' : 'text-amber-700'} font-bold mt-0.5">Nilai awal ${fg.base}${remedial > 0 ? ` • Remedial ${remedial}` : ''}${fg.katrol > 0 ? ` • Katrol +${fg.katrol}` : ''}</span>` : ''}${vio.total ? `<span class="block text-[10px] text-amber-700 font-bold mt-0.5 cursor-help" title="${vio.detail}">⚠ Pelanggaran ujian: ${vio.total}x</span>` : ''}</td>
+                                                <td class="text-center text-xs font-extrabold ${finalVal < kktp ? 'text-red-600' : 'text-mint'}">${finalVal < kktp ? 'Belum Tuntas' : (fg.applied ? 'Tuntas (Remedial)' : 'Tuntas')}${fg.applied ? `<span class="block text-[10px] ${finalVal >= kktp ? 'text-emerald-700' : 'text-amber-700'} font-bold mt-0.5">Nilai awal ${fg.base}${remedial > 0 ? ` • Remedial ${remedial}` : ''}${fg.katrol > 0 ? `<span class="no-print"> • Katrol +${fg.katrol}</span>` : ''}</span>` : ''}${vio.total ? `<span class="block text-[10px] text-amber-700 font-bold mt-0.5 cursor-help" title="${vio.detail}">⚠ Pelanggaran ujian: ${vio.total}x</span>` : ''}</td>
                                             </tr>
                                         `;
                                     }).join('')}
@@ -3258,7 +3309,7 @@
                             <span class="font-extrabold text-royal">30 Pertemuan Aktif</span>
                         </div>
                         <div class="overflow-x-auto border border-slate-300 rounded-xl relative">
-                            <table class="doc-table text-xs min-w-[1150px]">
+                            <table class="doc-table text-xs min-w-[1150px] print-fit print-presensi">
                                 <thead>
                                     <tr>
                                         <th class="sticky left-0 z-20 bg-slate-100 w-10 min-w-[40px]">No</th>
@@ -3411,25 +3462,54 @@
                                 <p class="font-extrabold text-base">${sp.profile.nama}</p>
                                 <p class="text-xs">NIP. ${sp.profile.nip}</p>
                             </div>
-                            <div class="grid grid-cols-2 gap-6 w-full max-w-xl text-xs text-slate-800">
-                                <div>
-                                    <p>Mengetahui,</p>
-                                    <p class="font-semibold">Kepala Sekolah</p>
-                                    <div class="h-14"></div>
-                                    <p class="font-extrabold underline">${sp.profile.kepsek}</p>
-                                    <p>NIP. ${sp.profile.nipKepsek}</p>
-                                </div>
-                                <div>
-                                    <p>${sp.profile.kota}, ........................</p>
-                                    <p class="font-semibold">Guru Mata Pelajaran</p>
-                                    <div class="h-14"></div>
-                                    <p class="font-extrabold underline">${sp.profile.nama}</p>
-                                    <p>NIP. ${sp.profile.nip}</p>
-                                </div>
-                            </div>
                             <div class="space-y-0.5">
                                 <p class="font-extrabold uppercase text-sm text-slate-900">${sp.profile.sekolah}</p>
                                 <p class="text-xs text-slate-600">${sp.profile.alamat}</p>
+                            </div>
+                        </div>
+
+                        <!-- LEMBAR PENGESAHAN -->
+                        <div class="print-page-break border border-slate-300 rounded-sm p-8 sm:p-12 mb-6 flex flex-col gap-6 text-slate-900" style="min-height: 24cm;">
+                            <div class="text-center space-y-1">
+                                <h2 class="font-display font-extrabold text-xl uppercase underline">Lembar Pengesahan</h2>
+                                <p class="text-sm font-bold uppercase">Administrasi Pembelajaran Bahasa Inggris</p>
+                                <p class="text-xs font-semibold">Tahun Pelajaran ${sp.profile.tahunAjaran}</p>
+                            </div>
+                            <table class="w-full text-sm">
+                                <tr><td class="w-44 py-1 font-semibold">Satuan Pendidikan</td><td class="w-3">:</td><td>${sp.profile.sekolah}</td></tr>
+                                <tr><td class="py-1 font-semibold">Mata Pelajaran</td><td>:</td><td>Bahasa Inggris</td></tr>
+                                <tr><td class="py-1 font-semibold">Kelas</td><td>:</td><td>${r.label}</td></tr>
+                                <tr><td class="py-1 font-semibold">Semester</td><td>:</td><td>${semLabel}</td></tr>
+                                <tr><td class="py-1 font-semibold">Disusun oleh</td><td>:</td><td>${sp.profile.nama} (NIP. ${sp.profile.nip})</td></tr>
+                            </table>
+                            <p class="text-sm leading-relaxed text-justify">
+                                Perangkat administrasi pembelajaran ini telah diperiksa dan disahkan oleh Kepala Sekolah serta diketahui oleh Pengawas Sekolah, untuk digunakan sebagai pedoman pelaksanaan pembelajaran Bahasa Inggris pada Tahun Pelajaran ${sp.profile.tahunAjaran}.
+                            </p>
+                            <div class="mt-auto space-y-8 text-sm">
+                                <p class="text-right">${sp.profile.kota}, ................................</p>
+                                <div class="grid grid-cols-2 gap-6 text-center">
+                                    <div>
+                                        <p>Disahkan oleh,</p>
+                                        <p class="font-semibold">Kepala Sekolah</p>
+                                        <div class="h-20"></div>
+                                        <p class="font-extrabold underline">${sp.profile.kepsek}</p>
+                                        <p class="text-xs">NIP. ${sp.profile.nipKepsek}</p>
+                                    </div>
+                                    <div>
+                                        <p>Mengetahui,</p>
+                                        <p class="font-semibold">Pengawas Sekolah</p>
+                                        <div class="h-20"></div>
+                                        <p class="font-extrabold">(................................)</p>
+                                        <p class="text-xs">NIP. ................................</p>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p>Disusun oleh,</p>
+                                    <p class="font-semibold">Guru Mata Pelajaran</p>
+                                    <div class="h-20"></div>
+                                    <p class="font-extrabold underline">${sp.profile.nama}</p>
+                                    <p class="text-xs">NIP. ${sp.profile.nip}</p>
+                                </div>
                             </div>
                         </div>
 
