@@ -230,7 +230,7 @@ function tulisRekapNilai_(rootFolder, tbl) {
 // PENGGABUNGAN DATA DI SERVER (nilai terbaru per kolom menang)
 // Setiap perubahan nilai di aplikasi diberi cap waktu per kolom (_ts).
 // =====================================================================
-const TRACKED_SCALARS_ = ['sts1', 'sas1', 'sts2', 'sas2', 'remedial1', 'remedial2', 'katrol1', 'katrol2'];
+const TRACKED_SCALARS_ = ['sts1', 'sas1', 'sts2', 'sas2', 'remedial1', 'remedial2', 'katrol1', 'katrol2', 'wa'];
 const TRACKED_MAPS_ = ['scores', 'examResults', 'examViolations', 'lkpdSubmissions'];
 
 function normName_(s) {
@@ -344,6 +344,7 @@ function mergeTeacherSpace_(stored, incoming, senderRole, studentName) {
   return result;
 }
 
+
 function readJsonFile(folder, fileName, defaultData) {
   const files = folder.getFilesByName(fileName);
   if (!files.hasNext()) return defaultData;
@@ -384,6 +385,214 @@ function loadAllTeacherSpacesMap(rootFolder) {
     }
   }
   return map;
+}
+
+// =====================================================================
+// NOTIFIKASI WHATSAPP (opsional) — dikirim dari server lewat gateway WhatsApp
+// Token disimpan di Script Properties (BUKAN di kode). Cara menyimpan token:
+//   1) Isi token di fungsi simpanTokenWA() di bawah,
+//   2) pilih fungsi simpanTokenWA di menu fungsi lalu tekan Jalankan (sekali saja),
+//   3) setelah berhasil, hapus token dari kode.
+// Gateway bawaan: Fonnte (api.fonnte.com). Tanpa token, fitur ini otomatis tidak aktif.
+// =====================================================================
+function simpanTokenWA() {
+  PropertiesService.getScriptProperties().setProperty('WA_TOKEN', 'ISI_TOKEN_FONNTE_DI_SINI');
+}
+
+function waNorm_(n) {
+  let d = String(n || '').replace(/[^0-9]/g, '');
+  if (!d) return '';
+  if (d.indexOf('62') === 0) return d;
+  if (d.indexOf('0') === 0) return '62' + d.slice(1);
+  if (d.indexOf('8') === 0) return '62' + d;
+  return d;
+}
+
+// Mengirim satu pesan ke satu atau beberapa nomor (dipisah koma). Mengembalikan {ok, detail}.
+function waKirim_(targets, message) {
+  const token = PropertiesService.getScriptProperties().getProperty('WA_TOKEN');
+  if (!token || token === 'ISI_TOKEN_FONNTE_DI_SINI') return { ok: false, detail: 'Token WA belum diatur' };
+  const list = (Array.isArray(targets) ? targets : String(targets).split(','))
+    .map(waNorm_).filter(function (x) { return x.length >= 9; });
+  const uniq = list.filter(function (x, i) { return list.indexOf(x) === i; });
+  if (!uniq.length) return { ok: false, detail: 'Nomor tujuan tidak valid' };
+  const res = UrlFetchApp.fetch('https://api.fonnte.com/send', {
+    method: 'post',
+    headers: { Authorization: token },
+    payload: { target: uniq.join(','), message: message, countryCode: '62' },
+    muteHttpExceptions: true
+  });
+  const code = res.getResponseCode();
+  return { ok: code >= 200 && code < 300, detail: String(res.getContentText()).slice(0, 200) };
+}
+
+const MAKS_PELANGGARAN_ = 3;
+
+function labelUjian_(k) {
+  return /^TKA-.+-R$/.test(k) ? 'Remedial TKA' : k;
+}
+
+function gradeDariKunciUjian_(k) {
+  let m = String(k).match(/-(VII|VIII|IX)-/);
+  if (m) return m[1];
+  m = String(k).match(/TP (\d)/);
+  if (m) return m[1] === '7' ? 'VII' : m[1] === '8' ? 'VIII' : 'IX';
+  return '';
+}
+
+function petaSiswa_(sp) {
+  const map = {};
+  const rombels = (sp && sp.rombels) || {};
+  Object.keys(rombels).forEach(function (rId) {
+    const r = rombels[rId];
+    (r.students || []).forEach(function (st) {
+      map[rId + '|' + normName_(st.name)] = { rId: rId, label: r.label || rId, grade: r.grade || '', st: st };
+    });
+  });
+  return map;
+}
+
+// Membandingkan data tersimpan (lama) dengan hasil gabungan (baru) untuk mencari kejadian baru.
+function deteksiEventWa_(oldSp, newSp, senderRole) {
+  const res = { guru: [], siswa: {}, siaran: [], siswaSendiri: {} };
+  if (!oldSp || !newSp) return res;
+  const oldM = petaSiswa_(oldSp);
+  const newM = petaSiswa_(newSp);
+
+  if (senderRole === 'student') {
+    Object.keys(newM).forEach(function (key) {
+      const n = newM[key], o = oldM[key], st = n.st;
+      const nama = st.name + ' (' + n.label + ')';
+      if (!o) { res.guru.push('👤 Siswa baru bergabung: ' + nama); return; }
+      const sendiri = [];
+      // Nomor WA baru didaftarkan siswa -> pesan penyambutan sekaligus uji nomor
+      if (st.wa && !o.st.wa) sendiri.push('📱 Nomor WhatsApp Anda sudah terdaftar. Kabar ujian, LKPD, dan nilai akan dikirim ke nomor ini.');
+      const oe = o.st.examResults || {};
+      Object.keys(st.examResults || {}).forEach(function (k) {
+        if (oe[k] !== st.examResults[k]) {
+          res.guru.push('✅ ' + nama + ' selesai mengerjakan ' + labelUjian_(k) + ' — skor ' + st.examResults[k]);
+          sendiri.push('✅ Anda telah menyelesaikan ' + labelUjian_(k) + '. Skor Anda: ' + st.examResults[k]);
+        }
+      });
+      const ol = o.st.lkpdSubmissions || {};
+      Object.keys(st.lkpdSubmissions || {}).forEach(function (tp) {
+        if (!ol[tp]) {
+          res.guru.push('📝 ' + nama + ' mengirim jawaban LKPD ' + tp);
+          sendiri.push('📝 Jawaban LKPD ' + tp + ' Anda sudah terkirim ke guru.');
+        }
+      });
+      const ov = o.st.examViolations || {};
+      Object.keys(st.examViolations || {}).forEach(function (k) {
+        const c = (st.examViolations[k] || {}).count || 0;
+        const oc = (ov[k] || {}).count || 0;
+        if (c > oc) {
+          res.guru.push('⚠️ ' + nama + ' melanggar aturan ujian ' + labelUjian_(k) + ' (total ' + c + 'x)');
+          sendiri.push('⚠️ Pelanggaran aturan ujian ' + labelUjian_(k) + ' tercatat (total ' + c + 'x): berpindah tab/aplikasi atau memakai penerjemah. Setelah ' + MAKS_PELANGGARAN_ + 'x ujian dikumpulkan otomatis.');
+        }
+      });
+      if (sendiri.length) res.siswaSendiri[key] = { nama: st.name, wa: st.wa, lines: sendiri };
+    });
+    return res;
+  }
+
+  // Pengirim guru -> kabar untuk siswa
+  Object.keys(newM).forEach(function (key) {
+    const o = oldM[key];
+    if (!o) return;
+    const st = newM[key].st, os = o.st;
+    const lines = [];
+    const osub = os.lkpdSubmissions || {};
+    Object.keys(st.lkpdSubmissions || {}).forEach(function (tp) {
+      const sc = (st.lkpdSubmissions[tp] || {}).score;
+      const osc = (osub[tp] || {}).score;
+      if (sc !== null && sc !== undefined && sc !== osc) lines.push('🎯 LKPD ' + tp + ' sudah dinilai: ' + sc);
+    });
+    [1, 2].forEach(function (i) {
+      if (Number(st['remedial' + i] || 0) > 0 && st['remedial' + i] !== os['remedial' + i]) lines.push('🔁 Nilai remedial Semester ' + i + ': ' + st['remedial' + i]);
+      if (Number(st['katrol' + i] || 0) > 0 && st['katrol' + i] !== os['katrol' + i]) lines.push('⭐ Katrol +' + st['katrol' + i] + ' (Semester ' + i + ')');
+    });
+    if (lines.length) res.siswa[key] = { nama: st.name, wa: st.wa, lines: lines };
+  });
+
+  const oldEx = oldSp.exams || {};
+  const newEx = newSp.exams || {};
+  Object.keys(newEx).forEach(function (k) {
+    if (newEx[k] && newEx[k].published && !(oldEx[k] && oldEx[k].published)) {
+      res.siaran.push({ grade: gradeDariKunciUjian_(k), text: '📝 Ujian baru tersedia: ' + (newEx[k].title || k) });
+    }
+  });
+  const oldRes = oldSp.uploadedResources || [];
+  (newSp.uploadedResources || []).forEach(function (x) {
+    if (!x.visibleToStudent) return;
+    const idn = x.id || x.title;
+    const had = oldRes.some(function (y) { return (y.id || y.title) === idn && y.visibleToStudent; });
+    if (!had) res.siaran.push({ grade: x.grade || '', text: '📚 Materi baru dari guru: ' + (x.title || 'Materi') });
+  });
+  return res;
+}
+
+function kirimNotifikasiWa_(oldSp, newSp, senderRole) {
+  if (!newSp || !newSp.profile) return;
+  const prof = newSp.profile;
+  const ev = deteksiEventWa_(oldSp, newSp, senderRole);
+  const footer = '\n\n— English For Nusantara';
+  let kirim = 0;
+
+  // Ke guru
+  if (ev.guru.length && prof.waNotifGuru && waNorm_(prof.waGuru)) {
+    const baris = ev.guru.slice(0, 15).join('\n');
+    const lebih = ev.guru.length > 15 ? '\n…dan ' + (ev.guru.length - 15) + ' kejadian lainnya' : '';
+    waKirim_(prof.waGuru, '📣 Pembaruan dari siswa\n' + baris + lebih + footer);
+    kirim++;
+  }
+
+  if (!prof.waNotifSiswa) return;
+
+  // Ke siswa itu sendiri (selesai ujian + skor, LKPD terkirim, pelanggaran, nomor terdaftar)
+  Object.keys(ev.siswaSendiri).forEach(function (key) {
+    if (kirim >= 40) return;
+    const o = ev.siswaSendiri[key];
+    if (!waNorm_(o.wa)) return;
+    waKirim_(o.wa, 'Halo ' + o.nama + ',\n' + o.lines.join('\n') + footer);
+    kirim++;
+  });
+
+  // Ke siswa tertentu (nilai/LKPD/remedial/katrol)
+  Object.keys(ev.siswa).forEach(function (key) {
+    if (kirim >= 40) return;
+    const o = ev.siswa[key];
+    if (!waNorm_(o.wa)) return;
+    waKirim_(o.wa, 'Halo ' + o.nama + ',\n' + o.lines.join('\n') + footer);
+    kirim++;
+  });
+
+  // Siaran ke seluruh siswa satu jenjang (ujian/materi baru)
+  const grades = {};
+  ev.siaran.forEach(function (x) {
+    const g = x.grade || '*';
+    (grades[g] = grades[g] || []).push(x.text);
+  });
+  Object.keys(grades).forEach(function (g) {
+    const nomor = [];
+    Object.keys(newSp.rombels || {}).forEach(function (rId) {
+      const r = newSp.rombels[rId];
+      if (g !== '*' && r.grade !== g) return;
+      (r.students || []).forEach(function (st) { if (waNorm_(st.wa)) nomor.push(st.wa); });
+    });
+    if (nomor.length) {
+      waKirim_(nomor, 'Halo siswa' + (g !== '*' ? ' kelas ' + g : '') + ',\n' + grades[g].join('\n') + '\nSilakan buka portal English For Nusantara.' + footer);
+    }
+  });
+}
+
+// Data untuk siswa tidak boleh memuat nomor WA siapa pun
+function bersihkanUntukSiswa_(space) {
+  const copy = JSON.parse(JSON.stringify(space));
+  if (copy.profile) delete copy.profile.waGuru;
+  Object.keys(copy.rombels || {}).forEach(function (rId) {
+    (copy.rombels[rId].students || []).forEach(function (st) { delete st.wa; });
+  });
+  return copy;
 }
 
 function doGet(e) {
@@ -459,6 +668,13 @@ function doPost(e) {
         tulisRekapNilai_(root, body.gradeTable);
       }
 
+      // Notifikasi WhatsApp (jika diaktifkan guru & token tersedia); kegagalan tidak mengganggu sinkron
+      try {
+        kirimNotifikasiWa_(saved && saved.teacherSpace ? saved.teacherSpace : null, mergedSpace, senderRole);
+      } catch (waErr) {
+        console.error('Notifikasi WA gagal: ' + waErr);
+      }
+
       return jsonResponse({ status: 'ok', fileUrl: fileUrl });
     }
 
@@ -489,7 +705,7 @@ function doPost(e) {
       return jsonResponse({
         status: 'ok',
         teacherKey: ownerEmail,
-        teacherSpace: saved.teacherSpace
+        teacherSpace: bersihkanUntukSiswa_(saved.teacherSpace)
       });
     }
 
@@ -521,6 +737,12 @@ function doPost(e) {
         teachers: registry.teachers,
         tokens: registry.tokens
       });
+    }
+
+    // Pesan tes WhatsApp dari menu Data Kelas
+    if (action === 'testWa') {
+      const r = waKirim_(body.target, '✅ Tes notifikasi English For Nusantara berhasil.\nPesan ini dikirim dari server aplikasi.');
+      return jsonResponse(r.ok ? { status: 'ok' } : { status: 'error', message: r.detail });
     }
 
     // Uji koneksi dari aplikasi (Cek Status Sistem)
