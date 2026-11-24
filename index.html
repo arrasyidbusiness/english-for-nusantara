@@ -1533,12 +1533,49 @@
         let autoSyncTimeout = null;
         let googleAccessToken = null;
 
+        let lastLocalEditAt = 0;
+
+        // Setiap perubahan nilai dicatat waktunya per kolom (_ts), sehingga saat data digabung
+        // dari cloud, nilai yang PALING BARU yang menang (bukan salinan lama, mis. angka 85 lama).
+        function touchField(st, path) {
+            if (!st._ts) st._ts = {};
+            st._ts[path] = Date.now();
+        }
+
+        function mergeStudentRecords(local, cloud) {
+            const lts = local._ts || {};
+            const cts = cloud._ts || {};
+            const out = { ...local, ...cloud };
+            ['sts1', 'sas1', 'sts2', 'sas2', 'remedial1', 'remedial2', 'katrol1', 'katrol2'].forEach(k => {
+                if ((lts[k] || 0) > (cts[k] || 0)) out[k] = local[k];
+                else if (cloud[k] !== undefined) out[k] = cloud[k];
+                else if (local[k] !== undefined) out[k] = local[k];
+            });
+            ['scores', 'examResults', 'examViolations', 'lkpdSubmissions'].forEach(mk => {
+                const lm = local[mk] || {};
+                const cm = cloud[mk] || {};
+                const res = {};
+                new Set([...Object.keys(lm), ...Object.keys(cm)]).forEach(k => {
+                    const path = mk + '.' + k;
+                    if (!(k in cm)) res[k] = lm[k];
+                    else if (!(k in lm)) res[k] = cm[k];
+                    else res[k] = ((lts[path] || 0) > (cts[path] || 0)) ? lm[k] : cm[k];
+                });
+                out[mk] = res;
+            });
+            const ts = {};
+            new Set([...Object.keys(lts), ...Object.keys(cts)]).forEach(k => { ts[k] = Math.max(lts[k] || 0, cts[k] || 0); });
+            out._ts = ts;
+            return out;
+        }
+
         function persist(skipAutoCloud = false) {
             try {
                 localStorage.setItem(MASTER_STORE_KEY, JSON.stringify(state));
             } catch (e) {
                 console.warn('Penyimpanan lokal penuh:', e);
             }
+            if (!skipAutoCloud) lastLocalEditAt = Date.now();
             if (!skipAutoCloud && state.auth.role === 'teacher' && getGasUrl()) {
                 clearTimeout(autoSyncTimeout);
                 autoSyncTimeout = setTimeout(() => {
@@ -3138,6 +3175,7 @@
                                     class="w-16 text-center border border-amber-300 rounded py-0.5 bg-white font-bold">
                             </label>
                             <span>Nilai di bawah batas ditandai <strong class="text-red-600">merah</strong> dan berstatus <strong>Belum Tuntas</strong>. Kolom <strong>Remedial</strong> terisi otomatis dari skor ujian Remedial siswa (bisa diubah manual); Nilai Akhir mengikuti hasil remedial. Kolom <strong>Katrol (+)</strong> diisi manual oleh guru dan ditambahkan ke nilai tersebut (maks. 100). <strong>Nilai TKA tidak dihitung</strong> ke Nilai Akhir.</span>
+                            <button type="button" onclick="refreshTeacherFromCloud(true)" class="bg-white hover:bg-blue-50 border border-blue-300 text-royal text-[11px] font-extrabold px-3 py-1 rounded-lg cursor-pointer">↻ Segarkan Nilai Siswa</button>
                             <button type="button" onclick="resetStsSasToZero()" class="bg-white hover:bg-red-50 border border-red-300 text-red-600 text-[11px] font-extrabold px-3 py-1 rounded-lg cursor-pointer">Reset STS &amp; SAS ke 0 (kelas ini)</button>
                         </div>
                         <div class="overflow-x-auto">
@@ -3587,6 +3625,8 @@
             if (st && st.lkpdSubmissions?.[tpCode]) {
                 st.lkpdSubmissions[tpCode].score = Math.max(0, Math.min(100, Number(scoreVal) || 0));
                 st.scores[tpCode] = st.lkpdSubmissions[tpCode].score;
+                touchField(st, 'lkpdSubmissions.' + tpCode);
+                touchField(st, 'scores.' + tpCode);
                 persist();
                 showToast(`Nilai LKPD ${st.name} disimpan.`);
             }
@@ -3634,7 +3674,10 @@
         function resetStsSasToZero() {
             if (!confirm('Reset semua nilai STS & SAS (semester 1 dan 2) di kelas ini menjadi 0?')) return;
             const r = getActiveRombel();
-            r.students.forEach(st => { st.sts1 = 0; st.sas1 = 0; st.sts2 = 0; st.sas2 = 0; });
+            r.students.forEach(st => {
+                st.sts1 = 0; st.sas1 = 0; st.sts2 = 0; st.sas2 = 0;
+                ['sts1', 'sas1', 'sts2', 'sas2'].forEach(k => touchField(st, k));
+            });
             persist();
             renderWorkspace('daftar-nilai');
             showToast('Nilai STS & SAS kelas ini direset ke 0.');
@@ -3653,6 +3696,7 @@
             if (st) {
                 if (!st.scores) st.scores = {};
                 st.scores[tpCode] = Math.max(0, Math.min(100, Number(val) || 0));
+                touchField(st, 'scores.' + tpCode);
                 persist();
                 renderWorkspace('daftar-nilai');
             }
@@ -3663,6 +3707,7 @@
             const st = r.students.find(s => s.id === studentId);
             if (st) {
                 st[field] = Math.max(0, Math.min(100, Number(val) || 0));
+                touchField(st, field);
                 persist();
                 renderWorkspace('daftar-nilai');
             }
@@ -4099,8 +4144,9 @@
             }
             if (!st.lkpdSubmissions) st.lkpdSubmissions = {};
             st.lkpdSubmissions[tpCode] = { answer: ans, score: null, submittedAt: new Date().toLocaleDateString('id-ID') };
+            touchField(st, 'lkpdSubmissions.' + tpCode);
             persist(true);
-            if (getGasUrl()) await syncTeacherToCloud(true);
+            await pushStudentResultToCloud();
             renderStudentPortal();
             showToast('Jawaban LKPD berhasil dikirim ke guru!');
         }
@@ -4265,20 +4311,25 @@
             const score = Math.round((correct / ex.questions.length) * 100);
             if (!st.examResults) st.examResults = {};
             st.examResults[runner.key] = score;
+            touchField(st, 'examResults.' + runner.key);
             if (/^TKA-.+-R$/.test(runner.key)) {
                 // Skor ujian Remedial otomatis masuk ke kolom Remedial semester aktif
-                st[`remedial${sp.activeSemester === '2' ? '2' : '1'}`] = score;
+                const remKey = `remedial${sp.activeSemester === '2' ? '2' : '1'}`;
+                st[remKey] = score;
+                touchField(st, remKey);
             }
             recordExamViolations(st, runner);
+            touchField(st, 'examViolations.' + runner.key);
             if (runner.key.startsWith('UH-')) {
                 const tpCode = runner.key.replace('UH-', '');
                 if (!st.scores) st.scores = {};
                 st.scores[tpCode] = score;
+                touchField(st, 'scores.' + tpCode);
             }
             state.studentUI.examRunner = null;
             exitExamFullscreen();
             persist(true);
-            if (getGasUrl()) await syncTeacherToCloud(true);
+            await pushStudentResultToCloud();
             renderStudentPortal();
             showToast(`Ujian selesai! Nilai Anda: ${score}/100`);
         }
@@ -4658,6 +4709,54 @@
             showToast('Data kelas berhasil dipulihkan dari Google Drive!');
         }
 
+        // Tabel rekap nilai lengkap untuk Google Sheets. Judul kolom dibuat otomatis dari data
+        // (UH per TP, STS, SAS, Remedial, Katrol, Nilai Akhir, TKA, pelanggaran), jadi bila TP/kelas bertambah, kolom ikut bertambah.
+        function buildGradeTable(sp) {
+            const kktp = getKktp(sp);
+            const rombels = Object.values(sp.rombels || {});
+            const grades = [...new Set(rombels.map(rb => rb.grade))];
+            const uhCols = [];
+            grades.forEach(g => getGradeTps(sp, g).forEach(t => {
+                if (!uhCols.some(c => c.code === t.code)) uhCols.push({ grade: g, code: t.code });
+            }));
+            const headers = [
+                'Sekolah', 'Guru Pengampu', 'Kelas/Rombel', 'Kode Kelas', 'Nama Siswa', 'L/P', 'Hadir (dari 30)',
+                ...uhCols.map(c => `UH ${c.code}`),
+                'STS 1', 'SAS 1', 'Remedial 1', 'Katrol 1', 'Nilai Akhir 1', 'Status 1',
+                'STS 2', 'SAS 2', 'Remedial 2', 'Katrol 2', 'Nilai Akhir 2', 'Status 2',
+                'Skor TKA 1', 'Skor TKA 2', 'Skor Remedial TKA', 'Pelanggaran Ujian', 'Update Terakhir'
+            ];
+            const stamp = new Date().toLocaleString('id-ID');
+            const rows = [];
+            rombels.forEach(rb => {
+                (rb.students || []).forEach(st => {
+                    const semBlock = semKey => {
+                        const tps = getFilteredTps(sp, rb.grade, semKey);
+                        const vals = tps.map(t => Number(st.scores?.[t.code] ?? 0));
+                        const avgTp = vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+                        const fg = computeFinalGrade(st, semKey, avgTp, kktp);
+                        return [
+                            Number(st[`sts${semKey}`] || 0), Number(st[`sas${semKey}`] || 0),
+                            fg.remedial, fg.katrol, fg.final, fg.final >= kktp ? 'Tuntas' : 'Belum Tuntas'
+                        ];
+                    };
+                    rows.push([
+                        sp.profile.sekolah || '', sp.profile.nama || '', rb.label || '', rb.classCode || '',
+                        st.name || '', st.gender || '', (st.att || []).filter(a => a === 'H').length,
+                        ...uhCols.map(c => (c.grade === rb.grade ? Number(st.scores?.[c.code] ?? 0) : '')),
+                        ...semBlock('1'), ...semBlock('2'),
+                        st.examResults?.[`TKA-${rb.grade}-1`] ?? '',
+                        st.examResults?.[`TKA-${rb.grade}-2`] ?? '',
+                        st.examResults?.[`TKA-${rb.grade}-R`] ?? '',
+                        examViolationTotal(st).total,
+                        stamp
+                    ]);
+                });
+            });
+            const safeName = Array.from(String(sp.profile.nama || 'Guru')).map(ch => ('[]*?:/\\'.includes(ch) ? ' ' : ch)).join('').trim().slice(0, 60);
+            return { sheetName: `Nilai_${safeName}`, headers, rows };
+        }
+
         async function syncTeacherToCloud(silent = false) {
             const gasUrl = getGasUrl();
             if (!gasUrl) return;
@@ -4671,6 +4770,14 @@
                     teacherRecord: teacherRec,
                     teacherSpace: sp
                 };
+                payload.senderRole = state.auth.role || 'teacher';
+                if (state.auth.role === 'student') {
+                    try { payload.studentName = getLoggedStudent().st.name; } catch (e) { /* abaikan */ }
+                }
+                // Rekap nilai untuk Google Sheets hanya dikirim dari portal guru (data guru yang paling lengkap)
+                if (state.auth.role === 'teacher') {
+                    try { payload.gradeTable = buildGradeTable(sp); } catch (e) { /* abaikan */ }
+                }
                 const res = await fetch(gasUrl, {
                     method: 'POST',
                     body: JSON.stringify(payload)
@@ -4711,7 +4818,7 @@
                                     if (existingIdx === -1) {
                                         localList.push(cs);
                                     } else {
-                                        localList[existingIdx] = { ...localList[existingIdx], ...cs };
+                                        localList[existingIdx] = mergeStudentRecords(localList[existingIdx], cs);
                                     }
                                 });
                             }
@@ -4730,7 +4837,7 @@
             } catch (e) { /* abaikan jika offline */ }
         }
 
-        async function pullClassByCodeFromCloud(classCode) {
+        async function pullClassByCodeFromCloud(classCode, keepOwnName) {
             const gasUrl = getGasUrl();
             if (!gasUrl) return;
             try {
@@ -4755,7 +4862,8 @@
                                     if (existingIdx === -1) {
                                         localList.push(cs);
                                     } else {
-                                        localList[existingIdx] = { ...localList[existingIdx], ...cs };
+                                        // Gabung per kolom: nilai terbaru menang (hasil ujian siswa & nilai guru sama-sama aman)
+                                        localList[existingIdx] = mergeStudentRecords(localList[existingIdx], cs);
                                     }
                                 });
                             }
@@ -4767,6 +4875,17 @@
                     persist(true);
                 }
             } catch (e) { /* abaikan jika offline */ }
+        }
+
+        // Kirim hasil siswa ke cloud: tarik data kelas terbaru dulu (agar tidak menimpa perubahan guru
+        // dengan salinan lama), lalu kirim.
+        async function pushStudentResultToCloud() {
+            if (!getGasUrl()) return;
+            try {
+                const { r, st } = getLoggedStudent();
+                await pullClassByCodeFromCloud(r.classCode, st.name);
+            } catch (e) { /* lanjut kirim walau gagal menarik */ }
+            await syncTeacherToCloud(true);
         }
 
         async function syncStudentCloud() {
@@ -4891,6 +5010,57 @@
         // =========================================================================
         // 12. INISIALISASI SAAT HALAMAN DIMUAT + AUTO SYNC CLOUD SAAT BOOT
         // =========================================================================
+        // ---- Pembaruan otomatis portal guru: hasil ujian/LKPD siswa masuk tanpa muat ulang halaman ----
+        const TEACHER_AUTO_REFRESH_MS = 15000;
+        let teacherRefreshBusy = false;
+        let teacherRefreshPending = false;
+
+        function studentDataSignature(sp) {
+            try {
+                return JSON.stringify(Object.values(sp.rombels || {}).map(rb => (rb.students || []).map(st => [
+                    st.id, st.scores, st.sts1, st.sas1, st.sts2, st.sas2, st.remedial1, st.remedial2,
+                    st.katrol1, st.katrol2, st.examResults, st.examViolations, st.lkpdSubmissions
+                ])));
+            } catch (e) { return ''; }
+        }
+
+        async function refreshTeacherFromCloud(manual = false) {
+            if (state.auth.role !== 'teacher' || !getGasUrl() || teacherRefreshBusy) return;
+            // Jangan menarik data saat guru baru saja mengedit (menunggu sinkron ke cloud selesai)
+            if (!manual && Date.now() - lastLocalEditAt < 6000) return;
+            teacherRefreshBusy = true;
+            try {
+                const before = studentDataSignature(getActiveSpace());
+                await pullTeacherFromCloud(state.auth.teacherKey);
+                const changed = before !== studentDataSignature(getActiveSpace());
+                if (changed || teacherRefreshPending) {
+                    const ae = document.activeElement;
+                    const typing = ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) && !manual;
+                    if (typing) {
+                        teacherRefreshPending = true; // render nanti setelah guru selesai mengetik
+                    } else {
+                        teacherRefreshPending = false;
+                        if (activeModuleId) renderWorkspace(activeModuleId); else renderTeacherPortal();
+                        if (!manual) showToast('Data siswa diperbarui otomatis dari cloud.');
+                    }
+                    // Perbarui rekap Google Sheets dengan hasil siswa terbaru
+                    syncTeacherToCloud(true);
+                }
+                if (manual) showToast(changed ? 'Nilai siswa terbaru berhasil dimuat!' : 'Data sudah yang terbaru.');
+            } catch (e) {
+                if (manual) showToast('Gagal memuat data dari cloud. Periksa koneksi internet.');
+            } finally {
+                teacherRefreshBusy = false;
+            }
+        }
+
+        setInterval(() => {
+            if (!document.hidden) refreshTeacherFromCloud(false);
+        }, TEACHER_AUTO_REFRESH_MS);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) refreshTeacherFromCloud(false);
+        });
+
         async function bootCloudHydration() {
             if (!getGasUrl()) return;
             try {
