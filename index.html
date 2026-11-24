@@ -2710,12 +2710,15 @@
             // Kop Surat dengan Logo di pinggir kiri & jarak proporsional ke tulisan
             document.getElementById('doc-kop-surat').innerHTML = sp.profile.logoDataUrl
                 ? `
-                    <div class="flex items-center justify-center gap-4 sm:gap-5 px-1 sm:px-3">
-                        <img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0">
+                    <div class="grid grid-cols-[64px_1fr] sm:grid-cols-[80px_1fr_80px] items-center gap-3 sm:gap-4 pl-4 pr-2 sm:pl-8 sm:pr-4">
+                        <div class="flex items-center justify-start">
+                            <img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain">
+                        </div>
                         <div class="text-center">
                             <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900 leading-snug">${sp.profile.sekolah}</h2>
                             <p class="text-xs text-slate-600 mt-0.5">${sp.profile.alamat}</p>
                         </div>
+                        <div class="hidden sm:block" aria-hidden="true"></div>
                     </div>
                 `
                 : `
@@ -3869,12 +3872,12 @@
                 kopEl.innerHTML = `
                     <table style="width:100%; border:none; border-bottom:2px solid #000; margin-bottom:10pt; padding-bottom:4pt;">
                         <tr>
-                            ${sp.profile.logoDataUrl ? `<td style="width:110pt; border:none; text-align:right; vertical-align:middle; padding-left:30pt; padding-right:8pt;"><img src="${sp.profile.logoDataUrl}" width="64" height="64" style="object-fit:contain;"></td>` : ''}
+                            ${sp.profile.logoDataUrl ? `<td style="width:84pt; border:none; text-align:left; vertical-align:middle; padding-left:18pt; padding-right:6pt;"><img src="${sp.profile.logoDataUrl}" width="64" height="64" style="object-fit:contain;"></td>` : ''}
                             <td style="border:none; text-align:center; vertical-align:middle;">
                                 <div style="font-size:14pt; font-weight:bold; text-transform:uppercase;">${sp.profile.sekolah}</div>
                                 <div style="font-size:9.5pt; color:#333;">${sp.profile.alamat}</div>
                             </td>
-                            ${sp.profile.logoDataUrl ? `<td style="width:110pt; border:none;"></td>` : ''}
+                            ${sp.profile.logoDataUrl ? `<td style="width:84pt; border:none;"></td>` : ''}
                         </tr>
                     </table>
                 `;
