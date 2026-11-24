@@ -560,6 +560,10 @@
                         <option value="2">Sem 2 (Genap)</option>
                         <option value="ALL">Full 1 Tahun</option>
                     </select>
+                    <button type="button" onclick="toggleNotifPanel(event)" title="Notifikasi" class="relative bg-white/15 hover:bg-white/25 text-white rounded-xl px-2.5 py-1.5 cursor-pointer inline-flex items-center">
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                        <span class="notif-badge hidden absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-extrabold rounded-full min-w-[18px] h-[18px] px-1 items-center justify-center">0</span>
+                    </button>
                     <button type="button" onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer inline-flex items-center gap-1">
                         <i data-lucide="log-out" class="w-3.5 h-3.5"></i><span>Keluar</span>
                     </button>
@@ -643,6 +647,10 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
+                    <button type="button" onclick="toggleNotifPanel(event)" title="Notifikasi" class="relative bg-white/15 hover:bg-white/25 text-white rounded-xl px-2.5 py-1.5 cursor-pointer inline-flex items-center">
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                        <span class="notif-badge hidden absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-extrabold rounded-full min-w-[18px] h-[18px] px-1 items-center justify-center">0</span>
+                    </button>
                     <button type="button" data-st-lock onclick="syncStudentCloud()" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer inline-flex items-center gap-1">
                         <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i><span>Sinkron Kelas</span>
                     </button>
@@ -2463,6 +2471,7 @@
         }
 
         function renderTeacherPortal() {
+            ensureNotifLoaded();
             const sp = getActiveSpace();
             const r = getActiveRombel(sp);
             const allowedGrades = getAllowedGrades(sp);
@@ -3956,6 +3965,7 @@
         }
 
         function renderStudentPortal() {
+            ensureNotifLoaded();
             const { sp, r, st } = getLoggedStudent();
             document.getElementById('st-header-name').textContent = `Halo, ${st.name}`;
             document.getElementById('st-header-sub').textContent = `${r.label} (${r.classCode}) • ${sp.profile.sekolah}`;
@@ -4991,6 +5001,7 @@
                         });
                         if (json.teacherSpace.exams) localSp.exams = json.teacherSpace.exams;
                         if (json.teacherSpace.uploadedResources) localSp.uploadedResources = json.teacherSpace.uploadedResources;
+                        if (json.teacherSpace.curriculum) localSp.curriculum = json.teacherSpace.curriculum;
                     }
                     ensureTkaBanksInSpace(state.teacherSpaces[tKey]);
                     persist(true);
@@ -5131,6 +5142,254 @@
         // =========================================================================
         // 12. INISIALISASI SAAT HALAMAN DIMUAT + AUTO SYNC CLOUD SAAT BOOT
         // =========================================================================
+        // =========================================================================
+        // PUSAT NOTIFIKASI (lonceng): guru menerima kabar aktivitas siswa,
+        // siswa menerima kabar pembaruan dari guru. Disimpan per pengguna di perangkat ini.
+        // =========================================================================
+        let notifItems = [];
+        let notifLoadedKey = null;
+
+        function notifKey() {
+            const a = state.auth || {};
+            return `efn_notif_${a.role || 'x'}_${a.teacherKey || ''}_${a.studentId || ''}`;
+        }
+
+        function ensureNotifLoaded() {
+            const key = notifKey();
+            if (notifLoadedKey === key) return;
+            notifLoadedKey = key;
+            try { notifItems = JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { notifItems = []; }
+            updateNotifBadges();
+        }
+
+        function saveNotifs() {
+            try { localStorage.setItem(notifKey(), JSON.stringify(notifItems.slice(0, 60))); } catch (e) { /* abaikan */ }
+        }
+
+        function updateNotifBadges() {
+            const n = notifItems.filter(i => !i.read).length;
+            document.querySelectorAll('.notif-badge').forEach(el => {
+                el.textContent = n > 99 ? '99+' : String(n);
+                el.classList.toggle('hidden', n === 0);
+                el.classList.toggle('flex', n > 0);
+            });
+        }
+
+        function pushNotifs(texts) {
+            if (!texts || !texts.length) return;
+            ensureNotifLoaded();
+            const now = Date.now();
+            texts.slice().reverse().forEach((t, i) => notifItems.unshift({ id: now + '_' + i, text: t, time: now, read: false }));
+            notifItems = notifItems.slice(0, 60);
+            saveNotifs();
+            updateNotifBadges();
+            const summary = texts.length === 1 ? texts[0] : `${texts.length} pembaruan baru. Ketuk 🔔 untuk melihat.`;
+            showToast(summary);
+            try {
+                if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
+                    new Notification('English For Nusantara', { body: summary });
+                }
+            } catch (e) { /* abaikan */ }
+            if (document.getElementById('notif-panel')) renderNotifPanel();
+        }
+
+        function escapeNotif(t) {
+            return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function formatNotifTime(ms) {
+            const d = new Date(ms);
+            const hh = String(d.getHours()).padStart(2, '0');
+            const mm = String(d.getMinutes()).padStart(2, '0');
+            const today = new Date().toDateString() === d.toDateString();
+            return today ? `${hh}.${mm}` : `${d.getDate()}/${d.getMonth() + 1} ${hh}.${mm}`;
+        }
+
+        function renderNotifPanel() {
+            const panel = document.getElementById('notif-panel');
+            if (!panel) return;
+            const canAsk = 'Notification' in window && Notification.permission === 'default';
+            panel.innerHTML = `
+                <div class="flex items-center justify-between px-3 py-2.5 border-b border-slate-200 bg-slate-50 rounded-t-2xl">
+                    <span class="font-extrabold text-sm text-navy">Notifikasi</span>
+                    <div class="flex items-center gap-2 text-[11px] font-bold">
+                        <button type="button" onclick="markAllNotifsRead()" class="text-royal hover:underline cursor-pointer">Tandai dibaca</button>
+                        <button type="button" onclick="clearAllNotifs()" class="text-red-600 hover:underline cursor-pointer">Hapus semua</button>
+                    </div>
+                </div>
+                ${canAsk ? `<button type="button" onclick="requestNotifPermission()" class="w-full text-left text-[11px] font-bold text-royal bg-blue-50 hover:bg-blue-100 px-3 py-2 cursor-pointer">🔔 Aktifkan notifikasi browser (muncul saat tab di latar belakang)</button>` : ''}
+                <div class="max-h-[55vh] overflow-y-auto divide-y divide-slate-100">
+                    ${notifItems.length ? notifItems.map(i => `
+                        <div class="px-3 py-2.5 text-xs ${i.read ? 'bg-white text-slate-600' : 'bg-amber-50/70 text-navy font-semibold'}">
+                            <div class="leading-snug">${escapeNotif(i.text)}</div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">${formatNotifTime(i.time)}</div>
+                        </div>
+                    `).join('') : '<p class="px-3 py-6 text-center text-xs text-slate-400">Belum ada notifikasi.</p>'}
+                </div>
+            `;
+        }
+
+        function toggleNotifPanel(ev) {
+            if (ev) ev.stopPropagation();
+            ensureNotifLoaded();
+            const existing = document.getElementById('notif-panel');
+            if (existing) { existing.remove(); return; }
+            const panel = document.createElement('div');
+            panel.id = 'notif-panel';
+            panel.className = 'no-print fixed top-14 right-2 sm:right-4 z-[150] w-[min(94vw,23rem)] bg-white border border-slate-200 rounded-2xl shadow-2xl text-slate-800';
+            document.body.appendChild(panel);
+            renderNotifPanel();
+            // Dibuka = dianggap sudah dilihat
+            setTimeout(() => { notifItems.forEach(i => { i.read = true; }); saveNotifs(); updateNotifBadges(); }, 1200);
+        }
+
+        document.addEventListener('click', e => {
+            const panel = document.getElementById('notif-panel');
+            if (panel && !panel.contains(e.target)) panel.remove();
+        });
+
+        function markAllNotifsRead() {
+            notifItems.forEach(i => { i.read = true; });
+            saveNotifs();
+            updateNotifBadges();
+            renderNotifPanel();
+        }
+
+        function clearAllNotifs() {
+            notifItems = [];
+            saveNotifs();
+            updateNotifBadges();
+            renderNotifPanel();
+        }
+
+        function requestNotifPermission() {
+            try {
+                Notification.requestPermission().then(() => renderNotifPanel());
+            } catch (e) { /* tidak didukung */ }
+        }
+
+        // ---- Guru: kabar aktivitas siswa ----
+        function teacherSnapshot(sp) {
+            const snap = {};
+            Object.entries(sp.rombels || {}).forEach(([rId, rb]) => {
+                (rb.students || []).forEach(st => {
+                    const viol = {};
+                    Object.entries(st.examViolations || {}).forEach(([k, v]) => { viol[k] = (v && v.count) || 0; });
+                    snap[`${rId}|${normalizeStr(st.name)}`] = {
+                        name: st.name,
+                        kelas: rb.label || rId,
+                        results: Object.assign({}, st.examResults || {}),
+                        lkpd: Object.keys(st.lkpdSubmissions || {}),
+                        viol
+                    };
+                });
+            });
+            return snap;
+        }
+
+        function diffTeacherSnapshots(before, after) {
+            const out = [];
+            Object.entries(after).forEach(([key, a]) => {
+                const b = before[key];
+                if (!b) { out.push(`👤 Siswa baru bergabung: ${a.name} (${a.kelas})`); return; }
+                Object.entries(a.results).forEach(([k, v]) => {
+                    if (b.results[k] !== v) out.push(`✅ ${a.name} (${a.kelas}) selesai mengerjakan ${examKeyLabel(k)} — skor ${v}`);
+                });
+                a.lkpd.forEach(tp => {
+                    if (!b.lkpd.includes(tp)) out.push(`📝 ${a.name} (${a.kelas}) mengirim jawaban LKPD ${tp}`);
+                });
+                Object.entries(a.viol).forEach(([k, c]) => {
+                    if (c > (b.viol[k] || 0)) out.push(`⚠️ ${a.name} (${a.kelas}) tercatat melanggar aturan ujian ${examKeyLabel(k)} (total ${c}x)`);
+                });
+            });
+            return out;
+        }
+
+        // ---- Siswa: kabar pembaruan dari guru ----
+        function studentSnapshot() {
+            const { sp, r, st } = getLoggedStudent();
+            const gnum = r.grade === 'VII' ? '7' : r.grade === 'VIII' ? '8' : '9';
+            const exams = {};
+            Object.entries(sp.exams || {}).forEach(([k, ex]) => {
+                if (ex && ex.published && (k.includes(`TP ${gnum}`) || k.includes(`-${r.grade}-`))) exams[k] = ex.title || k;
+            });
+            const resources = {};
+            (sp.uploadedResources || []).forEach(x => {
+                if (x.grade === r.grade && x.visibleToStudent) resources[x.id || x.title] = x.title || 'Materi';
+            });
+            const lkpdSig = {};
+            const materiSig = {};
+            getGradeTps(sp, r.grade).forEach(ch => {
+                lkpdSig[ch.code] = JSON.stringify(ch.lkpd || null);
+                const rest = Object.assign({}, ch);
+                delete rest.lkpd;
+                materiSig[ch.code] = JSON.stringify(rest);
+            });
+            const graded = {};
+            Object.entries(st.lkpdSubmissions || {}).forEach(([tp, sub]) => {
+                if (sub && sub.score !== null && sub.score !== undefined) graded[tp] = sub.score;
+            });
+            return {
+                exams, resources, lkpdSig, materiSig, graded,
+                scores: Object.assign({}, st.scores || {}),
+                remedial: [Number(st.remedial1 || 0), Number(st.remedial2 || 0)],
+                katrol: [Number(st.katrol1 || 0), Number(st.katrol2 || 0)]
+            };
+        }
+
+        function diffStudentSnapshots(b, a) {
+            const out = [];
+            Object.entries(a.exams).forEach(([k, title]) => {
+                if (!(k in b.exams)) out.push(`📝 Ujian baru tersedia: ${title}`);
+            });
+            Object.entries(a.resources).forEach(([id, title]) => {
+                if (!(id in b.resources)) out.push(`📚 Materi baru dari guru: ${title}`);
+            });
+            Object.keys(a.lkpdSig).forEach(code => {
+                if (b.lkpdSig[code] !== undefined && b.lkpdSig[code] !== a.lkpdSig[code]) out.push(`✏️ LKPD ${code} diperbarui oleh guru`);
+                if (b.materiSig[code] !== undefined && b.materiSig[code] !== a.materiSig[code]) out.push(`📖 Materi ${code} diperbarui oleh guru`);
+            });
+            Object.entries(a.graded).forEach(([tp, sc]) => {
+                if (b.graded[tp] !== sc) out.push(`🎯 LKPD ${tp} sudah dinilai guru: ${sc}`);
+            });
+            Object.entries(a.scores).forEach(([tp, v]) => {
+                if (b.scores[tp] !== undefined && b.scores[tp] !== v && !(tp in a.graded && b.graded[tp] !== a.graded[tp])) out.push(`📊 Nilai ${tp} Anda diperbarui: ${v}`);
+            });
+            [0, 1].forEach(i => {
+                if (a.remedial[i] !== b.remedial[i] && a.remedial[i] > 0) out.push(`🔁 Nilai remedial Semester ${i + 1} Anda: ${a.remedial[i]}`);
+                if (a.katrol[i] !== b.katrol[i] && a.katrol[i] > 0) out.push(`⭐ Katrol +${a.katrol[i]} dari guru (Semester ${i + 1})`);
+            });
+            return out;
+        }
+
+        let studentRefreshBusy = false;
+        async function refreshStudentFromCloud() {
+            if (state.auth.role !== 'student' || !getGasUrl() || studentRefreshBusy || examIsRunning()) return;
+            studentRefreshBusy = true;
+            try {
+                ensureNotifLoaded();
+                const info = getLoggedStudent();
+                const before = studentSnapshot();
+                await pullClassByCodeFromCloud(info.r.classCode, info.st.name);
+                if (examIsRunning()) return;
+                const items = diffStudentSnapshots(before, studentSnapshot());
+                if (items.length) {
+                    pushNotifs(items);
+                    const ae = document.activeElement;
+                    const typing = ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName);
+                    if (!typing) renderStudentPortal();
+                }
+            } catch (e) { /* abaikan jika offline */ }
+            finally { studentRefreshBusy = false; }
+        }
+
+        setInterval(() => {
+            if (!document.hidden) refreshStudentFromCloud();
+        }, 30000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) refreshStudentFromCloud();
+        });
+
         // ---- Pembaruan otomatis portal guru: hasil ujian/LKPD siswa masuk tanpa muat ulang halaman ----
         const TEACHER_AUTO_REFRESH_MS = 15000;
         let teacherRefreshBusy = false;
@@ -5151,9 +5410,12 @@
             if (!manual && Date.now() - lastLocalEditAt < 6000) return;
             teacherRefreshBusy = true;
             try {
+                ensureNotifLoaded();
                 const before = studentDataSignature(getActiveSpace());
+                const snapBefore = teacherSnapshot(getActiveSpace());
                 await pullTeacherFromCloud(state.auth.teacherKey);
                 const changed = before !== studentDataSignature(getActiveSpace());
+                if (changed) pushNotifs(diffTeacherSnapshots(snapBefore, teacherSnapshot(getActiveSpace())));
                 if (changed || teacherRefreshPending) {
                     const ae = document.activeElement;
                     const typing = ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) && !manual;
@@ -5162,7 +5424,6 @@
                     } else {
                         teacherRefreshPending = false;
                         if (activeModuleId) renderWorkspace(activeModuleId); else renderTeacherPortal();
-                        if (!manual) showToast('Data siswa diperbarui otomatis dari cloud.');
                     }
                     // Perbarui rekap Google Sheets dengan hasil siswa terbaru
                     syncTeacherToCloud(true);
