@@ -165,7 +165,7 @@ function syncToGoogleSheets(rootFolder, registry, allTeacherSpaces) {
   // Susun kolom Data_Siswa_Nilai (UH per TP otomatis, urut alami)
   const tpKeys = Object.keys(tpKeySet).sort(compareTpKeys_);
   const siswaHeaders = [
-    'Sekolah', 'Guru Pengampu', 'Kelas/Rombel', 'Kode Kelas', 'Nama Siswa', 'L/P', 'PIN', 'Hadir (dari 30)'
+    'Sekolah', 'Guru Pengampu', 'Kelas/Rombel', 'Kode Kelas', 'NIS', 'Nama Siswa', 'L/P', 'PIN', 'Hadir (dari 30)'
   ].concat(tpKeys.map(k => 'UH ' + k)).concat([
     'STS 1', 'SAS 1', 'Remedial 1', 'Katrol 1',
     'STS 2', 'SAS 2', 'Remedial 2', 'Katrol 2',
@@ -192,6 +192,7 @@ function syncToGoogleSheets(rootFolder, registry, allTeacherSpaces) {
       o.guruNama,
       r.label || o.rId,
       r.classCode || '',
+      st.nis || '',
       st.name || '',
       st.gender || 'L',
       st.pin || '1234',

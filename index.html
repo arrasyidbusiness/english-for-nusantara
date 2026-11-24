@@ -169,10 +169,15 @@
                 -webkit-appearance: none;
                 appearance: none;
             }
-            table.print-presensi { table-layout: fixed; font-size: 8px !important; }
-            table.print-presensi th:first-child, table.print-presensi td:first-child { width: 7mm !important; }
-            table.print-presensi th:nth-child(2), table.print-presensi td:nth-child(2) { width: 46mm !important; white-space: normal !important; text-align: left; }
-            table.print-presensi th:nth-last-child(-n+4), table.print-presensi td:nth-last-child(-n+4) { width: 9mm !important; }
+            table.print-nilai { font-size: 8px !important; }
+            table.print-nilai th, table.print-nilai td { padding: 2px 2px !important; }
+            table.print-nilai td:last-child { font-size: 7px !important; }
+            table.print-presensi { table-layout: fixed; font-size: 7px !important; }
+            table.print-presensi th, table.print-presensi td { padding: 1px 0 !important; text-align: center; }
+            table.print-presensi th { font-size: 6px !important; }
+            table.print-presensi th:first-child, table.print-presensi td:first-child { width: 6mm !important; }
+            table.print-presensi th:nth-child(2), table.print-presensi td:nth-child(2) { width: 36mm !important; white-space: normal !important; text-align: left; padding-left: 1mm !important; }
+            table.print-presensi th:nth-last-child(-n+4), table.print-presensi td:nth-last-child(-n+4) { width: 7mm !important; }
             .print-page-break { page-break-after: always; break-after: page; }
         }
     </style>
@@ -1437,6 +1442,7 @@
                     sekolah: profile.sekolah || 'SMP Negeri 1 Nusantara',
                     alamat: profile.alamat || 'Jl. Pendidikan Merdeka No. 45, Indonesia',
                     kota: profile.kota || 'Jakarta',
+                    titimangsa: profile.titimangsa || '',
                     kepsek: profile.kepsek || 'Drs. H. Ahmad Suryana, M.Pd.',
                     nipKepsek: profile.nipKepsek || '19680512 199403 1 007',
                     tahunAjaran: profile.tahunAjaran || '2026/2027',
@@ -1759,10 +1765,10 @@
                 ['DAFTAR NAMA PESERTA DIDIK'],
                 [`KELAS ${r.id}`],
                 [`TAHUN PELAJARAN ${sp.profile.tahunAjaran}`],
-                ['No.', 'NAMA', 'L/P', 'PIN'],
-                [1, 'Ananda Rizky Pratama', 'L', '1234'],
-                [2, 'Putri Indah Permata', 'P', '1234'],
-                [3, 'Rizki Ramadhan Saputra', 'L', '1234']
+                ['No.', 'NIS', 'NAMA', 'L/P', 'PIN'],
+                [1, '2026001', 'Ananda Rizky Pratama', 'L', '1234'],
+                [2, '2026002', 'Putri Indah Permata', 'P', '1234'],
+                [3, '2026003', 'Rizki Ramadhan Saputra', 'L', '1234']
             ];
             const ws = XLSX.utils.aoa_to_sheet(aoa);
             const wb = XLSX.utils.book_new();
@@ -1780,8 +1786,8 @@
                 ['DAFTAR NAMA PESERTA DIDIK'],
                 [`KELAS ${r.id}`],
                 [`TAHUN PELAJARAN ${sp.profile.tahunAjaran}`],
-                ['No.', 'NAMA', 'L/P', 'PIN'],
-                ...r.students.map((s, idx) => [idx + 1, s.name, s.gender, s.pin])
+                ['No.', 'NIS', 'NAMA', 'L/P', 'PIN'],
+                ...r.students.map((s, idx) => [idx + 1, s.nis || '', s.name, s.gender, s.pin])
             ];
             const ws = XLSX.utils.aoa_to_sheet(aoa);
             const wb = XLSX.utils.book_new();
@@ -1809,6 +1815,7 @@
                     let nameColIdx = 1;
                     let genderColIdx = 2;
                     let pinColIdx = 3;
+                    let nisColIdx = -1;
 
                     for (let i = 0; i < Math.min(aoa.length, 15); i++) {
                         const rowCells = aoa[i].map(c => cleanInputText(c).toUpperCase());
@@ -1818,6 +1825,7 @@
                             nameColIdx = foundNameIdx;
                             const foundGenderIdx = rowCells.findIndex(c => c === 'L/P' || c === 'JK' || c === 'JENIS KELAMIN');
                             const foundPinIdx = rowCells.findIndex(c => c === 'PIN' || c === 'PASSWORD');
+                            nisColIdx = rowCells.findIndex(c => c === 'NIS' || c === 'NISN' || c === 'NIS/NISN' || c === 'NO INDUK' || c === 'NOMOR INDUK');
                             genderColIdx = foundGenderIdx !== -1 ? foundGenderIdx : foundNameIdx + 1;
                             pinColIdx = foundPinIdx !== -1 ? foundPinIdx : foundNameIdx + 2;
                             break;
@@ -1834,8 +1842,13 @@
                         if (!rawName) continue;
                         if (/^(DAFTAR NAMA|KELAS|TAHUN PELAJARAN|NAMA|NO\.?)$/i.test(rawName)) continue;
 
-                        const exists = r.students.some(s => normalizeStr(s.name) === normalizeStr(rawName));
-                        if (exists) continue;
+                        const rawNis = nisColIdx >= 0 ? cleanInputText(row[nisColIdx]) : '';
+                        const existing = r.students.find(s => normalizeStr(s.name) === normalizeStr(rawName));
+                        if (existing) {
+                            // Impor ulang untuk melengkapi NIS siswa yang sudah ada
+                            if (rawNis && !existing.nis) { existing.nis = rawNis; added++; }
+                            continue;
+                        }
 
                         const rawGender = cleanInputText(row[genderColIdx] || 'L').toUpperCase();
                         const gender = rawGender.startsWith('P') ? 'P' : 'L';
@@ -1845,6 +1858,7 @@
                         r.students.push({
                             id: ts() + i,
                             name: rawName,
+                            nis: rawNis,
                             gender,
                             pin,
                             att: Array(30).fill('H'),
@@ -2659,7 +2673,7 @@
             safeIcons();
         }
 
-        // Daftar Nilai & Presensi dicetak lanskap agar kolom tidak terpotong; modul lain tetap potret
+        // Daftar Nilai & Presensi dicetak potret dengan margin tipis dan huruf dipadatkan agar kolom tidak terpotong
         function setPrintOrientation(modId) {
             let st = document.getElementById('print-page-style');
             if (!st) {
@@ -2667,8 +2681,8 @@
                 st.id = 'print-page-style';
                 document.head.appendChild(st);
             }
-            const landscape = ['daftar-nilai', 'presensi'].includes(modId);
-            st.textContent = landscape ? '@page { size: A4 landscape; margin: 10mm; }' : '@page { size: A4; }';
+            const wide = ['daftar-nilai', 'presensi'].includes(modId);
+            st.textContent = wide ? '@page { size: A4 portrait; margin: 8mm; }' : '@page { size: A4; }';
         }
 
         function closeModule() {
@@ -2696,15 +2710,12 @@
             // Kop Surat dengan Logo di pinggir kiri & jarak proporsional ke tulisan
             document.getElementById('doc-kop-surat').innerHTML = sp.profile.logoDataUrl
                 ? `
-                    <div class="grid grid-cols-[64px_1fr] sm:grid-cols-[80px_1fr_80px] items-center gap-4 sm:gap-6 px-1 sm:px-3">
-                        <div class="flex items-center justify-start">
-                            <img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain">
-                        </div>
+                    <div class="flex items-center justify-center gap-4 sm:gap-5 px-1 sm:px-3">
+                        <img src="${sp.profile.logoDataUrl}" alt="Logo Sekolah" class="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0">
                         <div class="text-center">
                             <h2 class="text-base sm:text-lg font-extrabold uppercase tracking-wide text-slate-900 leading-snug">${sp.profile.sekolah}</h2>
                             <p class="text-xs text-slate-600 mt-0.5">${sp.profile.alamat}</p>
                         </div>
-                        <div class="hidden sm:block" aria-hidden="true"></div>
                     </div>
                 `
                 : `
@@ -2747,7 +2758,7 @@
                     <p class="text-xs text-slate-600">NIP. ${sp.profile.nipKepsek}</p>
                 </div>
                 <div class="text-center">
-                    <p>${sp.profile.kota}, Juli 2026</p>
+                    <p>${getTitimangsa(sp)}</p>
                     <p>Guru Mata Pelajaran</p>
                     <div class="h-16"></div>
                     <p class="font-bold underline">${sp.profile.nama}</p>
@@ -2784,6 +2795,11 @@
                             <div>
                                 <label class="block text-xs font-bold text-navy mb-1">NIP Kepala Sekolah</label>
                                 <input type="text" id="id-nip-kepsek" value="${sp.profile.nipKepsek}" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-navy mb-1">Titimangsa (Tempat &amp; Tanggal) untuk Tanda Tangan</label>
+                                <input type="text" id="id-titimangsa" value="${sp.profile.titimangsa || ''}" placeholder="Contoh: Surakarta, 24 Juli 2026" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white">
+                                <p class="text-[11px] text-navy-muted mt-1">Diisi manual. Kosongkan bila ingin ditulis tangan (akan tercetak titik-titik).</p>
                             </div>
                             <div class="sm:col-span-2 bg-white border border-slate-200 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
@@ -2836,6 +2852,7 @@
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
                             <h4 class="font-bold text-sm text-navy">Daftar Peserta Didik ${r.label} (${r.students.length} Siswa)</h4>
                             <div class="no-print flex flex-wrap gap-1.5">
+                                <input type="text" id="add-st-nis" placeholder="NIS" class="w-24 border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs">
                                 <input type="text" id="add-st-name" placeholder="Nama Lengkap Siswa..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-xs">
                                 <select id="add-st-gender" class="border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs">
                                     <option value="L">L</option>
@@ -2850,6 +2867,7 @@
                             <thead>
                                 <tr>
                                     <th class="w-10">No</th>
+                                    <th class="w-28">NIS</th>
                                     <th>Nama Lengkap Siswa</th>
                                     <th class="w-14">L/P</th>
                                     <th class="w-24">PIN Login</th>
@@ -2860,6 +2878,10 @@
                                 ${r.students.map((s, idx) => `
                                     <tr>
                                         <td class="text-center">${idx + 1}</td>
+                                        <td class="text-center">
+                                            <input type="text" value="${s.nis || ''}" placeholder="NIS" onchange="updateStudentNis(${s.id}, this.value)" class="no-print w-24 text-center border border-slate-300 rounded py-0.5 text-xs">
+                                            <span class="hidden print:inline">${s.nis || ''}</span>
+                                        </td>
                                         <td class="font-semibold">${s.name}</td>
                                         <td class="text-center">${s.gender}</td>
                                         <td class="text-center font-mono text-xs">${s.pin}</td>
@@ -3230,7 +3252,7 @@
                             <button type="button" onclick="resetStsSasToZero()" class="bg-white hover:bg-red-50 border border-red-300 text-red-600 text-[11px] font-extrabold px-3 py-1 rounded-lg cursor-pointer">Reset STS &amp; SAS ke 0 (kelas ini)</button>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="doc-table print-fit">
+                            <table class="doc-table print-fit print-nilai">
                                 <thead>
                                     <tr>
                                         <th class="w-10">No</th>
@@ -3486,7 +3508,7 @@
                                 Perangkat administrasi pembelajaran ini telah diperiksa dan disahkan oleh Kepala Sekolah serta diketahui oleh Pengawas Sekolah, untuk digunakan sebagai pedoman pelaksanaan pembelajaran Bahasa Inggris pada Tahun Pelajaran ${sp.profile.tahunAjaran}.
                             </p>
                             <div class="mt-auto space-y-8 text-sm">
-                                <p class="text-right">${sp.profile.kota}, ................................</p>
+                                <p class="text-right">${getTitimangsa(sp)}</p>
                                 <div class="grid grid-cols-2 gap-6 text-center">
                                     <div>
                                         <p>Disahkan oleh,</p>
@@ -3578,6 +3600,10 @@
             showToast('Logo sekolah dihapus dari Kop Surat.');
         }
 
+        function getTitimangsa(sp) {
+            return (sp.profile.titimangsa && sp.profile.titimangsa.trim()) || `${sp.profile.kota}, ................................`;
+        }
+
         function saveTeacherIdentity(e) {
             e.preventDefault();
             const sp = getActiveSpace();
@@ -3587,6 +3613,7 @@
             sp.profile.nip = document.getElementById('id-nip').value.trim();
             sp.profile.kepsek = document.getElementById('id-kepsek').value.trim();
             sp.profile.nipKepsek = document.getElementById('id-nip-kepsek').value.trim();
+            sp.profile.titimangsa = document.getElementById('id-titimangsa').value.trim();
             persist();
             renderTeacherPortal();
             showToast('Identitas sekolah & guru diperbarui!');
@@ -3594,6 +3621,7 @@
 
         function addStudentToRombel() {
             const name = cleanInputText(document.getElementById('add-st-name').value);
+            const nis = cleanInputText(document.getElementById('add-st-nis').value);
             const gender = document.getElementById('add-st-gender').value;
             const pin = cleanInputText(document.getElementById('add-st-pin').value) || '1234';
             if (!name) return;
@@ -3605,6 +3633,7 @@
             r.students.push({
                 id: ts(),
                 name,
+                nis,
                 gender,
                 pin,
                 att: Array(30).fill('H'),
@@ -3617,6 +3646,15 @@
             persist();
             renderWorkspace('data-kelas');
             showToast(`Siswa "${name}" ditambahkan ke ${r.label}!`);
+        }
+
+        function updateStudentNis(studentId, val) {
+            const r = getActiveRombel();
+            const st = r.students.find(s => s.id === studentId);
+            if (!st) return;
+            st.nis = cleanInputText(val);
+            persist();
+            showToast(`NIS ${st.name} disimpan.`);
         }
 
         function deleteStudentFromRombel(studentId) {
@@ -3831,12 +3869,12 @@
                 kopEl.innerHTML = `
                     <table style="width:100%; border:none; border-bottom:2px solid #000; margin-bottom:10pt; padding-bottom:4pt;">
                         <tr>
-                            ${sp.profile.logoDataUrl ? `<td style="width:76pt; border:none; text-align:left; vertical-align:middle; padding-left:4pt; padding-right:12pt;"><img src="${sp.profile.logoDataUrl}" width="64" height="64" style="object-fit:contain;"></td>` : ''}
+                            ${sp.profile.logoDataUrl ? `<td style="width:110pt; border:none; text-align:right; vertical-align:middle; padding-left:30pt; padding-right:8pt;"><img src="${sp.profile.logoDataUrl}" width="64" height="64" style="object-fit:contain;"></td>` : ''}
                             <td style="border:none; text-align:center; vertical-align:middle;">
                                 <div style="font-size:14pt; font-weight:bold; text-transform:uppercase;">${sp.profile.sekolah}</div>
                                 <div style="font-size:9.5pt; color:#333;">${sp.profile.alamat}</div>
                             </td>
-                            ${sp.profile.logoDataUrl ? `<td style="width:76pt; border:none;"></td>` : ''}
+                            ${sp.profile.logoDataUrl ? `<td style="width:110pt; border:none;"></td>` : ''}
                         </tr>
                     </table>
                 `;
@@ -4800,7 +4838,7 @@
                 if (!uhCols.some(c => c.code === t.code)) uhCols.push({ grade: g, code: t.code });
             }));
             const headers = [
-                'Sekolah', 'Guru Pengampu', 'Kelas/Rombel', 'Kode Kelas', 'Nama Siswa', 'L/P', 'Hadir (dari 30)',
+                'Sekolah', 'Guru Pengampu', 'Kelas/Rombel', 'Kode Kelas', 'NIS', 'Nama Siswa', 'L/P', 'Hadir (dari 30)',
                 ...uhCols.map(c => `UH ${c.code}`),
                 'STS 1', 'SAS 1', 'Remedial 1', 'Katrol 1', 'Nilai Akhir 1', 'Status 1',
                 'STS 2', 'SAS 2', 'Remedial 2', 'Katrol 2', 'Nilai Akhir 2', 'Status 2',
@@ -4822,7 +4860,7 @@
                     };
                     rows.push([
                         sp.profile.sekolah || '', sp.profile.nama || '', rb.label || '', rb.classCode || '',
-                        st.name || '', st.gender || '', (st.att || []).filter(a => a === 'H').length,
+                        st.nis || '', st.name || '', st.gender || '', (st.att || []).filter(a => a === 'H').length,
                         ...uhCols.map(c => (c.grade === rb.grade ? Number(st.scores?.[c.code] ?? 0) : '')),
                         ...semBlock('1'), ...semBlock('2'),
                         st.examResults?.[`TKA-${rb.grade}-1`] ?? '',
