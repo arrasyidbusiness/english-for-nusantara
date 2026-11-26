@@ -128,6 +128,25 @@
         .animate-pop-in {
             animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+        /* ===== Modul Ajar / RPP ===== */
+        .ma-doc { font-size: 12px; line-height: 1.5; color: #0F172A; }
+        .ma-doc h2.ma-title { text-align: center; font-weight: 800; font-size: 15px; text-transform: uppercase; margin: 2px 0 2px; }
+        .ma-doc p.ma-subtitle { text-align: center; font-weight: 700; margin: 0 0 8px; }
+        .ma-doc h3.ma-h { font-weight: 800; text-transform: uppercase; background: #E2E8F0; border: 1px solid #94A3B8; padding: 4px 8px; margin: 14px 0 6px; font-size: 12.5px; -webkit-print-color-adjust: exact; print-color-adjust: exact; break-after: avoid; }
+        .ma-doc h4.ma-sub { font-weight: 800; margin: 10px 0 3px; font-size: 12px; break-after: avoid; }
+        .ma-doc p { margin: 2px 0 4px; }
+        .ma-doc table.ma-t { width: 100%; border-collapse: collapse; margin: 4px 0 8px; }
+        .ma-doc table.ma-t th, .ma-doc table.ma-t td { border: 1px solid #64748B; padding: 4px 6px; vertical-align: top; text-align: left; font-size: 11.5px; }
+        .ma-doc table.ma-t th { background: #E2E8F0; font-weight: 800; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .ma-doc table.ma-t tr { break-inside: avoid; page-break-inside: avoid; }
+        .ma-doc table.ma-t td.ma-k { width: 30%; font-weight: 700; background: #F8FAFC; }
+        .ma-doc table.ma-t td.ma-c, .ma-doc table.ma-t th.ma-c { text-align: center; }
+        .ma-doc .ma-list { margin: 2px 0 2px 18px; padding: 0; }
+        .ma-doc ol.ma-list { list-style: decimal; }
+        .ma-doc ul.ma-list { list-style: disc; }
+        .ma-doc .ma-line { border-bottom: 1px dotted #475569; height: 22px; }
+        .ma-doc .ma-box { border: 1px solid #94A3B8; padding: 8px 10px; border-radius: 4px; background: #F8FAFC; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .ma-break { page-break-before: always; break-before: page; height: 0; }
         @media print {
             body { background: #FFFFFF !important; }
             .no-print { display: none !important; }
@@ -1785,6 +1804,289 @@
         }
 
         // =========================================================================
+        // MODUL AJAR / RPP LENGKAP (Kurikulum Merdeka) — otomatis dari data TP, dapat disesuaikan guru
+        // =========================================================================
+        function escMa(t) {
+            return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function maLines(t) {
+            return String(t || '').split('\n').map(x => x.trim()).filter(Boolean);
+        }
+
+        function maList(t, ordered) {
+            const items = maLines(t);
+            if (!items.length) return '<p>-</p>';
+            const tag = ordered ? 'ol' : 'ul';
+            return `<${tag} class="ma-list">${items.map(i => `<li>${escMa(i)}</li>`).join('')}</${tag}>`;
+        }
+
+        function maPara(t) {
+            const items = maLines(t);
+            return items.length ? items.map(i => `<p>${escMa(i)}</p>`).join('') : '<p>-</p>';
+        }
+
+        const MA_FIELDS = [
+            { key: 'kompetensiAwal', label: 'Kompetensi Awal', rows: 3 },
+            { key: 'profil', label: 'Profil Pelajar Pancasila (satu dimensi per baris)', rows: 4 },
+            { key: 'sarana', label: 'Sarana dan Prasarana (satu per baris)', rows: 4 },
+            { key: 'target', label: 'Target Peserta Didik', rows: 3 },
+            { key: 'model', label: 'Model, Pendekatan, dan Metode Pembelajaran', rows: 3 },
+            { key: 'pemahaman', label: 'Pemahaman Bermakna', rows: 3 },
+            { key: 'pemantik', label: 'Pertanyaan Pemantik (satu per baris)', rows: 3 },
+            { key: 'indikator', label: 'Indikator Ketercapaian Tujuan (satu per baris)', rows: 4 },
+            { key: 'pengayaan', label: 'Pengayaan (satu per baris)', rows: 3 },
+            { key: 'remedial', label: 'Remedial (satu per baris)', rows: 3 },
+            { key: 'refleksiSiswa', label: 'Refleksi Peserta Didik (satu per baris)', rows: 3 },
+            { key: 'refleksiGuru', label: 'Refleksi Guru (satu per baris)', rows: 4 },
+            { key: 'pustaka', label: 'Daftar Pustaka / Sumber Belajar (satu per baris)', rows: 3 }
+        ];
+
+        function modulAjarDefaults(sp, ch) {
+            const grade = sp.activeGrade;
+            const topic = String(ch.chapter || '').replace(/^Chapter\s*\d+\s*:\s*/i, '').trim() || ch.chapter;
+            const firstMateri = String(ch.materi || '').split(',')[0].trim() || 'materi bab ini';
+            const prev = grade === 'VII' ? 'jenjang SD/MI (kosakata dasar bahasa Inggris)' : (grade === 'VIII' ? 'materi Kelas VII' : 'materi Kelas VIII');
+            return {
+                jpPer: 3,
+                kompetensiAwal: `Peserta didik telah memiliki pengetahuan dasar bahasa Inggris dari ${prev} dan mampu memahami kalimat serta instruksi sederhana.\nPeserta didik mampu membaca teks pendek, menyimak ungkapan sederhana, dan menggunakan kosakata sehari-hari.`,
+                profil: `Bernalar kritis: menganalisis informasi dari teks dan menarik kesimpulan.\nBergotong royong: bekerja sama dalam kerja berpasangan dan kelompok.\nMandiri: menyelesaikan LKPD dan tugas secara bertanggung jawab.\nBerkebinekaan global: menghargai keberagaman budaya melalui konteks lokal dan Nusantara.`,
+                sarana: `Ruang kelas, papan tulis, proyektor/LCD, dan laptop\nTeks bacaan "${ch.readingTitle}" dan LKPD\nPortal English For Nusantara (materi, flashcard, ujian CBT)\nKamus bahasa Inggris–Indonesia\nPerangkat audio untuk kegiatan menyimak`,
+                target: `Peserta didik reguler/umum: tidak ada kesulitan dalam mencerna dan memahami materi.\nPeserta didik dengan kesulitan belajar: memerlukan scaffolding berupa kosakata bergambar, kalimat model, dan bimbingan lebih intensif.\nPeserta didik dengan pencapaian tinggi: diberi tantangan berupa produksi teks yang lebih mandiri dan tugas pengayaan.`,
+                model: `Model pembelajaran: Discovery Learning / Project-Based Learning.\nPendekatan: Genre-based approach (Building Knowledge of the Field, Modelling, Joint Construction, Independent Construction) dan pembelajaran berdiferensiasi.\nMetode: ceramah interaktif, tanya jawab, diskusi kelompok, kerja berpasangan, demonstrasi, dan presentasi.`,
+                pemahaman: `Bahasa Inggris digunakan untuk berkomunikasi dalam situasi nyata. Melalui topik "${topic}", peserta didik memahami bahwa penguasaan ${ch.materi} membantu mereka memahami dan menyampaikan informasi secara tepat, baik lisan maupun tulis.`,
+                pemantik: `What do you already know about "${ch.readingTitle}"?\nBagaimana kamu menggunakan ${firstMateri} dalam kehidupan sehari-hari?\nApa yang menarik dari topik "${topic}" bagi kamu?`,
+                indikator: `Mengidentifikasi kosakata kunci terkait topik (${(ch.vocab || []).slice(0, 4).map(v => v.en).join(', ') || 'kosakata bab ini'}).\nMemahami ide pokok dan informasi rinci dari teks "${ch.readingTitle}".\nMenggunakan unsur kebahasaan (${firstMateri}) secara tepat dalam kalimat atau teks sederhana.\nMenyajikan hasil sesuai tujuan pembelajaran secara lisan dan/atau tulis dengan percaya diri.`,
+                pengayaan: `Menulis atau menyajikan versi teks yang lebih panjang dengan topik lain yang berkaitan.\nMembaca teks tambahan dan membuat ringkasan 3–5 kalimat dalam bahasa Inggris.\nMenjadi tutor sebaya bagi teman yang membutuhkan bantuan.`,
+                remedial: `Pembelajaran ulang kosakata kunci menggunakan flashcard dan contoh kalimat.\nBimbingan kelompok kecil atau individu oleh guru pada bagian yang belum dikuasai.\nPenugasan ulang LKPD dengan scaffolding, dilanjutkan asesmen ulang hingga mencapai KKTP.`,
+                refleksiSiswa: `Apa hal baru yang kamu pelajari hari ini?\nBagian mana yang masih sulit bagimu?\nBagaimana kamu akan memperbaiki dan melatihnya?`,
+                refleksiGuru: `Apakah tujuan pembelajaran tercapai bagi sebagian besar peserta didik?\nBagian kegiatan mana yang berjalan efektif dan perlu dipertahankan?\nPeserta didik mana yang memerlukan pendampingan lanjutan?\nApa perbaikan yang akan dilakukan pada pertemuan berikutnya?`,
+                pustaka: `Kemendikbudristek. Buku teks Bahasa Inggris "English for Nusantara" untuk SMP/MTs Kelas ${grade}.\nPortal pembelajaran English For Nusantara (materi, flashcard, LKPD, dan ujian CBT).\nKamus Bahasa Inggris–Indonesia.`
+            };
+        }
+
+        function getModulAjarData(sp, ch) {
+            const def = modulAjarDefaults(sp, ch);
+            const ov = (sp.modulAjar && sp.modulAjar[`${sp.activeGrade}|${ch.code}`]) || {};
+            return Object.assign({}, def, ov);
+        }
+
+        function maBuildMeetings(ch, jpPer) {
+            const n = Math.max(1, Math.ceil((Number(ch.jp) || jpPer) / jpPer));
+            const topic = String(ch.chapter || '').replace(/^Chapter\s*\d+\s*:\s*/i, '').trim() || ch.chapter;
+            const w4 = (ch.vocab || []).slice(0, 4).map(v => v.en).join(', ') || 'kosakata kunci';
+            const lk = (ch.lkpd && ch.lkpd.title) || 'LKPD';
+            const st = {
+                build: {
+                    fokus: 'Building Knowledge of the Field (membangun pengetahuan awal)',
+                    pend: `Guru membuka pembelajaran dengan salam dan doa, mengecek kehadiran, dan menyampaikan tujuan pembelajaran. Apersepsi melalui pertanyaan pemantik tentang topik "${topic}".`,
+                    inti: [`Peserta didik mengamati judul/gambar dan menyimak teks "${ch.readingTitle}" yang dibacakan guru atau melalui audio.`, `Peserta didik membaca teks secara mandiri dan menandai kosakata baru (${w4}).`, `Guru dan peserta didik membahas arti kosakata menggunakan flashcard dan contoh kalimat.`, `Peserta didik berdiskusi berpasangan untuk menjawab pertanyaan awal tentang isi teks.`],
+                    pen: `Peserta didik dan guru menyimpulkan kosakata kunci, melakukan refleksi singkat, serta guru menyampaikan rencana pertemuan berikutnya dan doa penutup.`
+                },
+                model: {
+                    fokus: 'Modelling the Text (pemodelan teks)',
+                    pend: `Guru mereviu kosakata pertemuan sebelumnya melalui kuis singkat, kemudian menyampaikan tujuan pertemuan.`,
+                    inti: [`Guru memodelkan cara memahami teks "${ch.readingTitle}": menentukan ide pokok, informasi rinci, dan struktur teks.`, `Guru menjelaskan ${ch.materi} disertai contoh dari teks.`, `Peserta didik mengidentifikasi unsur kebahasaan pada teks dengan bimbingan guru.`, `Latihan terbimbing: peserta didik melengkapi tabel atau kalimat rumpang sesuai model.`],
+                    pen: `Guru memperkuat konsep, melakukan tanya jawab pemahaman, dan refleksi singkat.`
+                },
+                joint: {
+                    fokus: 'Joint Construction (menyusun bersama)',
+                    pend: `Apersepsi melalui tanya jawab materi sebelumnya; guru menyampaikan tujuan dan rangkaian kegiatan hari ini.`,
+                    inti: [`Peserta didik bekerja berpasangan/kelompok menyusun kalimat atau teks pendek sesuai tujuan pembelajaran.`, `Guru memberikan umpan balik dan perbaikan langsung (scaffolding).`, `Kelompok bertukar hasil dan saling memberi masukan (peer feedback).`, `Peserta didik mulai mengerjakan bagian awal ${lk}.`],
+                    pen: `Klarifikasi kesalahan umum, penguatan materi, dan refleksi.`
+                },
+                indep: {
+                    fokus: 'Independent Construction (menyusun mandiri)',
+                    pend: `Guru mengondisikan kelas, mereviu materi singkat, dan menjelaskan tugas mandiri hari ini.`,
+                    inti: [`Peserta didik mengerjakan ${lk} secara mandiri.`, `Peserta didik menyusun produk akhir (teks/dialog/presentasi) sesuai tujuan pembelajaran dan mempersiapkan penyajiannya.`, `Guru berkeliling memberi bimbingan dan melakukan penilaian formatif dengan lembar observasi.`],
+                    pen: `Pengumpulan LKPD, penyampaian rencana presentasi dan penilaian, serta doa penutup.`
+                },
+                final: {
+                    fokus: 'Presentasi, Asesmen Sumatif, dan Refleksi',
+                    pend: `Guru mengondisikan kelas dan mereviu poin-poin penting bab ini.`,
+                    inti: [`Peserta didik mempresentasikan atau menyajikan hasil kerja secara lisan/tulis.`, `Guru dan teman sebaya memberi umpan balik menggunakan rubrik penilaian.`, `Peserta didik mengerjakan asesmen sumatif (Ulangan Harian ${ch.code}) melalui portal CBT English For Nusantara atau secara tertulis.`],
+                    pen: `Refleksi peserta didik dan guru, penyampaian tindak lanjut (pengayaan/remedial), dan doa penutup.`
+                }
+            };
+            let seq;
+            if (n === 1) seq = ['final'];
+            else if (n === 2) seq = ['build', 'final'];
+            else if (n === 3) seq = ['build', 'model', 'final'];
+            else seq = ['build', 'model', ...Array(n - 4).fill('joint'), 'indep', 'final'];
+            return seq.map(k => st[k]);
+        }
+
+        function renderModulAjarDoc(sp, ch) {
+            const d = getModulAjarData(sp, ch);
+            const jpPer = Math.max(1, Number(d.jpPer) || 3);
+            const meetings = maBuildMeetings(ch, jpPer);
+            const kktp = getKktp(sp);
+            const total = jpPer * 40;
+            const pendMin = total >= 90 ? 15 : 10;
+            const penMin = total >= 90 ? 15 : 10;
+            const intiMin = Math.max(10, total - pendMin - penMin);
+            const pr = sp.profile;
+            const gradeLabel = sp.activeGrade;
+            const lk = ch.lkpd || { title: 'LKPD', instruction: '', questions: [] };
+            const rubrik = [
+                ['Isi / ketepatan jawaban', 'Seluruh jawaban benar, lengkap, dan sesuai konteks', 'Sebagian besar jawaban benar dan sesuai', 'Sebagian kecil jawaban benar', 'Jawaban belum sesuai'],
+                ['Struktur &amp; tata bahasa', 'Struktur dan tata bahasa tepat, hampir tanpa kesalahan', 'Beberapa kesalahan kecil, makna tetap jelas', 'Banyak kesalahan, makna kadang kurang jelas', 'Kesalahan banyak, makna tidak jelas'],
+                ['Kosakata', 'Kosakata kaya dan tepat sesuai topik', 'Kosakata cukup dan umumnya tepat', 'Kosakata terbatas, beberapa kurang tepat', 'Kosakata sangat terbatas'],
+                ['Kelancaran / kerapian penyajian', 'Disajikan lancar, percaya diri, dan rapi', 'Cukup lancar dan rapi', 'Kurang lancar, perlu bantuan', 'Belum mampu menyajikan']
+            ];
+            const meetingHtml = meetings.map((m, i) => `
+                <table class="doc-table ma-t">
+                    <thead><tr><th colspan="3">Pertemuan ke-${i + 1} • ${jpPer} JP (${jpPer} × 40 menit) • ${m.fokus}</th></tr>
+                    <tr><th style="width:17%">Tahap</th><th>Kegiatan</th><th class="ma-c" style="width:12%">Waktu</th></tr></thead>
+                    <tbody>
+                        <tr><td class="ma-k">Pendahuluan</td><td>${m.pend}</td><td class="ma-c">${pendMin} menit</td></tr>
+                        <tr><td class="ma-k">Kegiatan Inti</td><td><ol class="ma-list">${m.inti.map(x => `<li>${x}</li>`).join('')}</ol></td><td class="ma-c">${intiMin} menit</td></tr>
+                        <tr><td class="ma-k">Penutup</td><td>${m.pen}</td><td class="ma-c">${penMin} menit</td></tr>
+                    </tbody>
+                </table>`).join('');
+
+            return `
+                <h2 class="ma-title">Modul Ajar Bahasa Inggris</h2>
+                <p class="ma-subtitle">${escMa(ch.chapter)} • ${ch.code} • Kelas ${gradeLabel} Semester ${ch.sem}</p>
+
+                <h3 class="ma-h">A. Informasi Umum</h3>
+                <h4 class="ma-sub">1. Identitas Modul</h4>
+                <table class="doc-table ma-t"><tbody>
+                    <tr><td class="ma-k">Penyusun</td><td>${escMa(pr.nama)} (NIP. ${escMa(pr.nip)})</td></tr>
+                    <tr><td class="ma-k">Satuan Pendidikan</td><td>${escMa(pr.sekolah)}</td></tr>
+                    <tr><td class="ma-k">Tahun Pelajaran</td><td>${escMa(pr.tahunAjaran)}</td></tr>
+                    <tr><td class="ma-k">Mata Pelajaran</td><td>Bahasa Inggris</td></tr>
+                    <tr><td class="ma-k">Fase / Kelas / Semester</td><td>Fase D / Kelas ${gradeLabel} / Semester ${ch.sem}</td></tr>
+                    <tr><td class="ma-k">Topik / Bab</td><td>${escMa(ch.chapter)} (${ch.code})</td></tr>
+                    <tr><td class="ma-k">Lingkup Materi</td><td>${escMa(ch.materi)}</td></tr>
+                    <tr><td class="ma-k">Alokasi Waktu</td><td>${ch.jp} JP (@ 40 menit) ≈ ${meetings.length} pertemuan × ${jpPer} JP</td></tr>
+                </tbody></table>
+                <h4 class="ma-sub">2. Kompetensi Awal</h4>${maList(d.kompetensiAwal, false)}
+                <h4 class="ma-sub">3. Profil Pelajar Pancasila</h4>${maList(d.profil, false)}
+                <h4 class="ma-sub">4. Sarana dan Prasarana</h4>${maList(d.sarana, false)}
+                <h4 class="ma-sub">5. Target Peserta Didik</h4>${maList(d.target, false)}
+                <h4 class="ma-sub">6. Model, Pendekatan, dan Metode Pembelajaran</h4>${maList(d.model, false)}
+
+                <h3 class="ma-h">B. Komponen Inti</h3>
+                <h4 class="ma-sub">1. Capaian Pembelajaran (Fase D)</h4>
+                <p>Pada akhir Fase D, peserta didik menggunakan teks lisan, tulisan, dan visual dalam bahasa Inggris untuk berinteraksi dan berkomunikasi dalam konteks yang lebih beragam serta dalam situasi formal dan informal.</p>
+                <table class="doc-table ma-t"><thead><tr><th style="width:28%">Elemen</th><th>Ringkasan Capaian</th></tr></thead><tbody>
+                    <tr><td class="ma-k">Menyimak – Berbicara</td><td>Berinteraksi dan bertukar informasi secara lisan dengan guru, teman sebaya, dan orang lain pada berbagai situasi.</td></tr>
+                    <tr><td class="ma-k">Membaca – Memirsa</td><td>Memahami ide pokok dan informasi rinci dari berbagai jenis teks tulis dan visual.</td></tr>
+                    <tr><td class="ma-k">Menulis – Mempresentasikan</td><td>Menulis dan menyajikan teks dengan struktur, kosakata, dan unsur kebahasaan sesuai tujuan dan pembaca.</td></tr>
+                </tbody></table>
+                <h4 class="ma-sub">2. Tujuan Pembelajaran (${ch.code})</h4>
+                <p>${escMa(ch.tp)}</p>
+                <h4 class="ma-sub">3. Indikator Ketercapaian Tujuan Pembelajaran</h4>${maList(d.indikator, true)}
+                <h4 class="ma-sub">4. Pemahaman Bermakna</h4>${maPara(d.pemahaman)}
+                <h4 class="ma-sub">5. Pertanyaan Pemantik</h4>${maList(d.pemantik, true)}
+                ${ch.teacherNote ? `<h4 class="ma-sub">Catatan Guru</h4><p>${escMa(ch.teacherNote)}</p>` : ''}
+
+                <h4 class="ma-sub">6. Kegiatan Pembelajaran</h4>
+                ${meetingHtml}
+
+                <h4 class="ma-sub">7. Asesmen</h4>
+                <table class="doc-table ma-t"><thead><tr><th style="width:15%">Jenis</th><th style="width:28%">Teknik</th><th>Instrumen</th><th style="width:20%">Waktu</th></tr></thead><tbody>
+                    <tr><td class="ma-k">Diagnostik</td><td>Tanya jawab lisan</td><td>Pertanyaan pemantik dan pengamatan kesiapan peserta didik</td><td>Awal pertemuan ke-1</td></tr>
+                    <tr><td class="ma-k">Formatif</td><td>Observasi dan penilaian kinerja</td><td>Lembar observasi, ${escMa(lk.title)}, kuis kosakata (flashcard)</td><td>Selama pembelajaran</td></tr>
+                    <tr><td class="ma-k">Sumatif</td><td>Tes tertulis/CBT dan penilaian produk/presentasi</td><td>Soal Ulangan Harian ${ch.code} (portal CBT) dan rubrik penilaian</td><td>Pertemuan terakhir</td></tr>
+                </tbody></table>
+                <p><strong>Kriteria ketercapaian (KKTP/KKM): ${kktp}.</strong> Peserta didik dengan nilai di bawah ${kktp} mengikuti kegiatan remedial.</p>
+                <p><strong>Rubrik penilaian kinerja/produk</strong> (skor 4 = sangat baik, 3 = baik, 2 = cukup, 1 = perlu bimbingan):</p>
+                <table class="doc-table ma-t"><thead><tr><th style="width:20%">Aspek</th><th>4</th><th>3</th><th>2</th><th>1</th></tr></thead><tbody>
+                    ${rubrik.map(r => `<tr><td class="ma-k">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')}
+                </tbody></table>
+                <p><strong>Nilai = (jumlah skor ÷ 16) × 100.</strong></p>
+
+                <h4 class="ma-sub">8. Pengayaan dan Remedial</h4>
+                <p><strong>Pengayaan</strong> (bagi peserta didik yang telah mencapai KKTP):</p>${maList(d.pengayaan, false)}
+                <p><strong>Remedial</strong> (bagi peserta didik yang belum mencapai KKTP):</p>${maList(d.remedial, false)}
+
+                <h4 class="ma-sub">9. Refleksi</h4>
+                <p><strong>Refleksi Peserta Didik:</strong></p>${maList(d.refleksiSiswa, true)}
+                <p><strong>Refleksi Guru:</strong></p>${maList(d.refleksiGuru, true)}
+
+                <div class="ma-break"></div>
+                <h3 class="ma-h">C. Lampiran</h3>
+                <h4 class="ma-sub">Lampiran 1. Lembar Kerja Peserta Didik (LKPD)</h4>
+                <div class="ma-box">
+                    <p><strong>${escMa(lk.title)}</strong></p>
+                    <p>Nama: ........................................... &nbsp; Kelas: ............ &nbsp; Tanggal: ....................</p>
+                    <p><em>${escMa(lk.instruction || '')}</em></p>
+                    <ol class="ma-list">${(lk.questions || []).map(q => `<li>${escMa(q)}<div class="ma-line"></div><div class="ma-line"></div></li>`).join('')}</ol>
+                </div>
+
+                <h4 class="ma-sub">Lampiran 2. Bahan Bacaan</h4>
+                <div class="ma-box">
+                    <p><strong>${escMa(ch.readingTitle)}</strong></p>
+                    <p>${escMa(ch.readingText)}</p>
+                    ${ch.readingIndo ? `<p><em>Terjemahan ringkas:</em> ${escMa(ch.readingIndo)}</p>` : ''}
+                </div>
+
+                ${(ch.vocab && ch.vocab.length) ? `
+                <h4 class="ma-sub">Lampiran 3. Glosarium</h4>
+                <table class="doc-table ma-t"><thead><tr><th class="ma-c" style="width:6%">No</th><th style="width:24%">English</th><th style="width:26%">Bahasa Indonesia</th><th>Contoh Kalimat</th></tr></thead><tbody>
+                    ${ch.vocab.map((v, i) => `<tr><td class="ma-c">${i + 1}</td><td><strong>${escMa(v.en)}</strong></td><td>${escMa(v.id)}</td><td><em>${escMa(v.ex)}</em></td></tr>`).join('')}
+                </tbody></table>` : ''}
+
+                <h4 class="ma-sub">${(ch.vocab && ch.vocab.length) ? 'Lampiran 4' : 'Lampiran 3'}. Daftar Pustaka / Sumber Belajar</h4>${maList(d.pustaka, true)}
+            `;
+        }
+
+        function renderModulAjarEditor(sp, ch) {
+            const d = getModulAjarData(sp, ch);
+            return `
+                <details class="no-print mb-4 bg-amber-50 border border-amber-200 rounded-2xl p-3 text-xs">
+                    <summary class="font-extrabold text-navy cursor-pointer">✏️ Sesuaikan isi modul ${ch.code} (opsional — bagian lain terisi otomatis)</summary>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                        <div>
+                            <label class="block font-bold text-navy mb-1">Jumlah JP per pertemuan</label>
+                            <input type="number" id="ma-jpPer" min="1" max="6" value="${d.jpPer}" class="w-24 border border-slate-300 rounded-xl px-3 py-1.5 bg-white">
+                            <p class="text-[11px] text-slate-500 mt-1">Menentukan banyak pertemuan dan alokasi waktu tiap kegiatan.</p>
+                        </div>
+                        ${MA_FIELDS.map(f => `
+                            <div>
+                                <label class="block font-bold text-navy mb-1">${f.label}</label>
+                                <textarea id="ma-${f.key}" rows="${f.rows}" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white">${escMa(d[f.key])}</textarea>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <button type="button" onclick="saveModulAjarEdits()" class="bg-royal text-white font-extrabold px-4 py-2 rounded-xl cursor-pointer">Simpan Perubahan</button>
+                        <button type="button" onclick="resetModulAjarEdits()" class="bg-white border border-slate-300 font-bold px-4 py-2 rounded-xl cursor-pointer">Kembalikan ke Isi Otomatis</button>
+                    </div>
+                </details>`;
+        }
+
+        function saveModulAjarEdits() {
+            const sp = getActiveSpace();
+            const ch = getGradeTps(sp, sp.activeGrade)[sp.selectedChapterIdx] || getGradeTps(sp, sp.activeGrade)[0];
+            const def = modulAjarDefaults(sp, ch);
+            const ov = {};
+            const jp = Number(document.getElementById('ma-jpPer').value) || def.jpPer;
+            if (jp !== def.jpPer) ov.jpPer = Math.max(1, Math.min(6, jp));
+            MA_FIELDS.forEach(f => {
+                const v = document.getElementById('ma-' + f.key).value.trim();
+                if (v !== String(def[f.key]).trim()) ov[f.key] = v;
+            });
+            if (!sp.modulAjar) sp.modulAjar = {};
+            const key = `${sp.activeGrade}|${ch.code}`;
+            if (Object.keys(ov).length) sp.modulAjar[key] = ov; else delete sp.modulAjar[key];
+            persist();
+            renderWorkspace('modul-ajar');
+            showToast('Isi Modul Ajar disimpan.');
+        }
+
+        function resetModulAjarEdits() {
+            const sp = getActiveSpace();
+            const ch = getGradeTps(sp, sp.activeGrade)[sp.selectedChapterIdx] || getGradeTps(sp, sp.activeGrade)[0];
+            if (sp.modulAjar) delete sp.modulAjar[`${sp.activeGrade}|${ch.code}`];
+            persist();
+            renderWorkspace('modul-ajar');
+            showToast('Isi Modul Ajar dikembalikan ke otomatis.');
+        }
+
+        // =========================================================================
         // UPLOAD NILAI MASSAL (STS/SAS/UH/Remedial/Katrol dari Excel) & REKAP KE GRUP WA
         // =========================================================================
         function downloadGradeTemplate() {
@@ -3300,18 +3602,16 @@
                             `).join('')}
                         </div>
 
-                        <div class="space-y-3 text-xs sm:text-sm mb-6">
-                            <h4 class="font-bold text-navy uppercase border-b pb-1">1. Identitas Modul Ajar (${ch.chapter})</h4>
-                            <p><strong>Tujuan Pembelajaran (${ch.code}):</strong> ${ch.tp}</p>
-                            <p><strong>Lingkup Materi:</strong> ${ch.materi} • <strong>Alokasi Waktu:</strong> ${ch.jp} JP</p>
-                            <h4 class="font-bold text-navy uppercase border-b pb-1 pt-2">2. Langkah Pembelajaran</h4>
-                            <p><strong>Pendahuluan:</strong> Salam pembuka, doa, apersepsi pemantik, dan penyampaian tujuan belajar.</p>
-                            <p><strong>Kegiatan Inti:</strong> Peserta didik membaca dan mendengarkan teks <em>"${ch.readingTitle}"</em>, mengidentifikasi kosakata baru, berdiskusi, dan mengerjakan <em>${ch.lkpd.title}</em>.</p>
-                            <p><strong>Penutup:</strong> Refleksi bersama dan penguatan materi.</p>
-                            <div class="p-3.5 bg-slate-50 border border-slate-300 rounded-xl">
-                                <p class="font-bold mb-1">${ch.readingTitle}</p>
-                                <p class="leading-relaxed">${ch.readingText}</p>
-                            </div>
+                        <label class="no-print flex items-center gap-2 text-xs font-bold text-navy mb-3 cursor-pointer">
+                            <input type="checkbox" ${sp.modulAjarAll ? 'checked' : ''} onchange="getActiveSpace().modulAjarAll = this.checked; renderWorkspace('modul-ajar');">
+                            Cetak semua TP semester ini sekaligus (setiap TP mulai di halaman baru)
+                        </label>
+                        ${renderModulAjarEditor(sp, ch)}
+                        <div class="ma-doc mb-6">
+                            ${(sp.modulAjarAll
+                                ? allGradeTps.filter(t => sp.activeSemester === 'ALL' || String(t.sem) === String(sp.activeSemester))
+                                : [ch]
+                            ).map((t, i) => (i > 0 ? '<div class="ma-break"></div>' : '') + renderModulAjarDoc(sp, t)).join('')}
                         </div>
 
                         <!-- PUSAT UPLOAD MATERI, FILE PERANGKAT & IMPOR EXCEL MATERI -->
