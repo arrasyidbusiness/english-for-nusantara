@@ -57,6 +57,19 @@
         }
     </script>
     <style>
+        /* Gaya tambahan halaman pembuka (tidak bergantung pada Tailwind CDN) */
+        .efn-hide { display: none !important; }
+        .efn-card { position: relative; overflow: hidden; isolation: isolate; }
+        .efn-card .efn-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: transform .6s ease; }
+        .efn-card:hover .efn-art { transform: scale(1.06); }
+        .efn-card .efn-tint { position: absolute; inset: 0; z-index: 1; }
+        .efn-card .efn-shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(15,23,42,.78) 0%, rgba(15,23,42,.10) 65%, rgba(15,23,42,0) 100%); }
+        .efn-card > :not(.efn-art):not(.efn-tint):not(.efn-shade) { position: relative; z-index: 2; }
+        .efn-tint-ruang { background: linear-gradient(135deg, rgba(109,40,217,.55), rgba(219,39,119,.38)); }
+        .efn-tint-siswa { background: linear-gradient(135deg, rgba(2,132,199,.55), rgba(67,56,202,.45)); }
+        .efn-tint-guru { background: linear-gradient(135deg, rgba(5,150,105,.55), rgba(14,116,144,.45)); }
+        .efn-login-head { background-image: linear-gradient(95deg, rgba(15,23,42,.92), rgba(30,58,138,.78)), url('banner.png'); background-size: cover; background-position: center 30%; }
+        .efn-card-glow { box-shadow: 0 20px 45px -12px rgba(15,23,42,.35); }
         body {
             background: radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F8F7F4 65%, #EFECE4 100%);
             color: #102542;
@@ -290,7 +303,7 @@
 
         <div class="w-full max-w-6xl mx-auto px-4 py-6 sm:py-8">
             <!-- BANNER PANORAMA SEKOLAH CERAH (TERKUNCI - HANYA BISA DIUBAH DARI ADMIN) -->
-            <div class="rounded-[2rem] overflow-hidden shadow-xl border-2 border-white mb-7 bg-white">
+            <div id="login-hero" class="rounded-[2rem] overflow-hidden shadow-xl border-2 border-white mb-7 bg-white">
                 <div class="hero-panorama-frame relative w-full">
                     <img id="dashboard-hero-img" onerror="handleHeroImgFallback(this)"
                         alt="English For Nusantara - Bersama Wujudkan Generasi Hebat"
@@ -318,9 +331,69 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+            <!-- PINTU MASUK: 3 BAGIAN (Ruang Pembelajaran • Siswa • Guru) -->
+            <div class="relative mb-7">
+                <div class="text-center mb-5">
+                    <p class="text-[11px] font-extrabold uppercase tracking-[0.25em] text-indigo-600">Pilih ruangmu</p>
+                    <h2 class="font-display font-black text-xl sm:text-2xl bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-amber-500 bg-clip-text text-transparent">Mau belajar, latihan, atau mengelola kelas?</h2>
+                </div>
+                <div id="pintu-masuk-utama" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+                    <a href="belajar.html?mode=siswa" class="group relative overflow-hidden block rounded-3xl p-5 sm:p-6 text-white shadow-xl bg-gradient-to-br from-teal-400 via-cyan-500 to-indigo-600 hover:-translate-y-1 hover:shadow-2xl transition duration-300">
+                        <span class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/15 group-hover:scale-125 transition duration-500"></span>
+                        <span class="absolute -right-2 bottom-2 w-14 h-14 rounded-full bg-white/10"></span>
+                        <div class="relative flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-white/25 backdrop-blur flex items-center justify-center text-2xl shadow-inner">🎮</div>
+                            <div>
+                                <span class="inline-block text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white text-indigo-700">Tanpa Login</span>
+                                <h3 class="font-display font-black text-lg mt-1">Ruang Pembelajaran</h3>
+                            </div>
+                        </div>
+                        <p class="relative text-xs sm:text-sm text-white/90 mt-3 leading-relaxed">Belajar lewat slide, kartu kosakata, dan latihan Benar/Salah untuk Kelas VII–IX. Tanpa akun, kemajuan tidak dicatat.</p>
+                        <span class="relative inline-flex items-center gap-1 mt-4 text-xs font-black bg-white/20 px-3 py-1.5 rounded-xl group-hover:bg-white/30">Mulai belajar →</span>
+                    </a>
+                    <button type="button" onclick="pintuMasuk('siswa')" class="group relative overflow-hidden text-left rounded-3xl p-5 sm:p-6 text-white shadow-xl bg-gradient-to-br from-sky-500 via-blue-600 to-violet-600 hover:-translate-y-1 hover:shadow-2xl transition duration-300 cursor-pointer">
+                        <span class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/15 group-hover:scale-125 transition duration-500"></span>
+                        <span class="absolute -right-2 bottom-2 w-14 h-14 rounded-full bg-white/10"></span>
+                        <div class="relative flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-white/25 backdrop-blur flex items-center justify-center text-2xl shadow-inner">🎓</div>
+                            <div>
+                                <span class="inline-block text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-300 text-blue-900">Login Siswa</span>
+                                <h3 class="font-display font-black text-lg mt-1">Ujian &amp; Latihan</h3>
+                            </div>
+                        </div>
+                        <p class="relative text-xs sm:text-sm text-white/90 mt-3 leading-relaxed">Kerjakan soal UH, STS, SAS, TKA, dan Remedial. Masuk dengan nama lengkap dan PIN.</p>
+                        <span class="relative inline-flex items-center gap-1 mt-4 text-xs font-black bg-white/20 px-3 py-1.5 rounded-xl group-hover:bg-white/30">Masuk sebagai siswa →</span>
+                    </button>
+                    <button type="button" onclick="pintuMasuk('guru')" class="group relative overflow-hidden text-left rounded-3xl p-5 sm:p-6 text-white shadow-xl bg-gradient-to-br from-amber-400 via-orange-500 to-pink-600 hover:-translate-y-1 hover:shadow-2xl transition duration-300 cursor-pointer">
+                        <span class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/15 group-hover:scale-125 transition duration-500"></span>
+                        <span class="absolute -right-2 bottom-2 w-14 h-14 rounded-full bg-white/10"></span>
+                        <div class="relative flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-white/25 backdrop-blur flex items-center justify-center text-2xl shadow-inner">👩‍🏫</div>
+                            <div>
+                                <span class="inline-block text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white text-orange-700">Login Guru</span>
+                                <h3 class="font-display font-black text-lg mt-1">Kelola Materi &amp; Nilai</h3>
+                            </div>
+                        </div>
+                        <p class="relative text-xs sm:text-sm text-white/90 mt-3 leading-relaxed">Masukkan materi, gambar, soal, LKPD, dan nilai siswa. Butuh email dan PIN guru.</p>
+                        <span class="relative inline-flex items-center gap-1 mt-4 text-xs font-black bg-white/20 px-3 py-1.5 rounded-xl group-hover:bg-white/30">Masuk sebagai guru →</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bilah kembali: muncul saat kartu login disematkan -->
+            <div id="login-embed-bar" class="efn-hide hidden mb-4 flex flex-wrap items-center justify-between gap-2">
+                <button type="button" onclick="tutupLogin()" class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-navy font-extrabold text-xs shadow-sm cursor-pointer">← Kembali ke beranda</button>
+                <span class="text-[11px] font-bold text-slate-500">Masuk untuk melanjutkan</span>
+            </div>
+            <!-- Kartu login disematkan di sini saat tombol Login Siswa / Login Guru dipilih -->
+            <div id="login-page-head" class="efn-hide efn-login-head rounded-3xl p-6 sm:p-7 mb-5 text-white efn-card-glow">
+                <span id="login-page-badge" class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/20">Login</span>
+                <h2 id="login-page-title" class="font-display font-extrabold text-2xl sm:text-3xl mt-2">Login</h2>
+                <p id="login-page-sub" class="text-sm text-white/85 mt-1"></p>
+            </div>
+            <div id="login-embed" class="efn-hide hidden grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
                 <!-- KARTU 1: PORTAL SISWA (HANYA NAMA & PIN) -->
-                <div class="bg-white border-2 border-sky-200 hover:border-royal rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between relative overflow-hidden">
+                <div id="login-card-siswa" class="bg-white border-2 border-sky-200 hover:border-royal rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between relative overflow-hidden">
                     <div>
                         <div class="flex items-center justify-between mb-5 bg-gradient-to-r from-sky-50 to-emerald-50 border border-sky-100 rounded-2xl p-3">
                             <div class="flex items-center gap-3">
@@ -334,7 +407,7 @@
                             </div>
                         </div>
                         <p class="text-xs sm:text-sm text-navy-muted mt-1 mb-5">
-                            Masukkan <strong>Nama Lengkap Siswa</strong> dan <strong>PIN</strong> untuk mengakses materi ajar, buku panduan, LKPD, dan ujian UH / STS / UAS / <strong>TKA</strong>.
+                            Masukkan <strong>Nama Lengkap Siswa</strong> dan <strong>PIN</strong> untuk mengakses materi ajar, buku panduan, LKPD, dan ujian UH / STS / SAS / <strong>TKA</strong> / <strong>Remedial</strong>.
                         </p>
 
                         <div class="grid grid-cols-2 gap-1.5 bg-cream-soft p-1.5 rounded-2xl mb-5">
@@ -402,7 +475,7 @@
                 </div>
 
                 <!-- KARTU 2: PORTAL GURU -->
-                <div class="bg-white border-2 border-emerald-200 hover:border-navy rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between relative overflow-hidden">
+                <div id="login-card-guru" class="bg-white border-2 border-emerald-200 hover:border-navy rounded-3xl p-6 sm:p-8 shadow-xl transition flex flex-col justify-between relative overflow-hidden">
                     <div>
                         <div class="flex items-center justify-between mb-5 bg-gradient-to-r from-emerald-50 to-amber-50 border border-emerald-100 rounded-2xl p-3">
                             <div class="flex items-center gap-3">
@@ -544,6 +617,8 @@
                 <button type="button" onclick="setAdminTab('teachers')" id="adm-nav-teachers" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-navy text-white cursor-pointer">1. Akun &amp; Lisensi Guru</button>
                 <button type="button" onclick="setAdminTab('tokens')" id="adm-nav-tokens" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">2. Generator Token</button>
                 <button type="button" onclick="setAdminTab('config')" id="adm-nav-config" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">3. Tampilan Banner &amp; Cloud</button>
+                <button type="button" onclick="setAdminTab('pesanan')" id="adm-nav-pesanan" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">💳 Pesanan & Harga</button>
+                <button type="button" onclick="setAdminTab('materi')" id="adm-nav-materi" class="px-4 py-2 rounded-xl text-xs font-extrabold text-navy hover:bg-cream cursor-pointer">🎨 Izin & Materi</button>
             </div>
             <div id="admin-content-area"></div>
         </div>
@@ -591,6 +666,13 @@
         </header>
 
         <div id="tc-grid-section" class="max-w-5xl w-full mx-auto px-4 py-6 sm:py-8">
+            <div id="tc-interaktif-card" class="bg-indigo-50 border border-indigo-200 rounded-2xl p-3.5 mb-4 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div>
+                    <p class="font-extrabold text-navy text-sm">🎮 Presentasi &amp; Belajar Interaktif</p>
+                    <p class="text-slate-600">Slide, kartu kosakata 3D, dan latihan pilihan ganda &amp; Benar/Salah per materi untuk Kelas VII–IX. Siswa mengaksesnya lewat tab <b>🎮 Interaktif</b>; kemajuannya masuk otomatis ke rekap.</p>
+                </div>
+                <button type="button" onclick="bukaInteraktifGuru()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2 rounded-xl cursor-pointer">Buka Mode Guru (presentasi kelas)</button>
+            </div>
             <div id="tc-wa-card" class="bg-green-50 border border-green-200 rounded-2xl p-3.5 mb-6 space-y-2.5 text-xs">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <span class="font-extrabold text-navy text-sm">📱 Daftar Nomor WA Guru (penerima notifikasi)</span>
@@ -952,6 +1034,7 @@
             { id: 'promes', title: 'Promes', featured: false },
             { id: 'silabus', title: 'Silabus', featured: false },
             { id: 'modul-ajar', title: 'Modul Ajar / RPP', featured: false },
+            { id: 'edit-interaktif', title: 'Edit Materi Interaktif (Gambar & Teks)', featured: true },
             { id: 'lkpd', title: 'LKPD', featured: false },
             { id: 'bank-soal-uh', title: 'Bank Soal UH', featured: false },
             { id: 'soal-sts', title: 'Soal STS (Tengah Sem)', featured: false },
@@ -1635,7 +1718,7 @@
                 else if (cloud[k] !== undefined) out[k] = cloud[k];
                 else if (local[k] !== undefined) out[k] = local[k];
             });
-            ['scores', 'examResults', 'examViolations', 'lkpdSubmissions'].forEach(mk => {
+            ['scores', 'examResults', 'examViolations', 'lkpdSubmissions', 'interaktif'].forEach(mk => {
                 const lm = local[mk] || {};
                 const cm = cloud[mk] || {};
                 const res = {};
@@ -1801,6 +1884,130 @@
             XLSX.utils.book_append_sheet(wb, ws, sheetName);
             XLSX.writeFile(wb, fileName);
             showToast(`Template "${fileName}" berhasil diunduh!`);
+        }
+
+        // =========================================================================
+        // BELAJAR INTERAKTIF (belajar.html) — tab siswa + penerima kemajuan
+        // belajar.html dibuka di dalam iframe (satu alamat situs). Kemajuan pertemuan disimpan di
+        // st.interaktif berisi kemajuan pertemuan dan hasil latihan (pilihan ganda & Benar/Salah) per pertemuan.
+        // =========================================================================
+        const INTERAKTIF_FILE = 'belajar.html';
+
+        function interaktifGradeNum(r) {
+            return r.grade === 'VII' ? 7 : (r.grade === 'VIII' ? 8 : 9);
+        }
+
+        function interaktifStats(st, gnum) {
+            const prog = st.interaktif || {};
+            const keys = Object.keys(prog).filter(k => k.indexOf(gnum + '|') === 0);
+            const done = keys.filter(k => prog[k] && prog[k].done).length;
+            const quizVals = keys.map(k => prog[k]).filter(v => v && v.quiz && v.quiz[1] > 0);
+            const quizAvg = quizVals.length ? Math.round(quizVals.reduce((a, v) => a + v.quiz[0] / v.quiz[1] * 100, 0) / quizVals.length) : null;
+            return { done, quizAvg };
+        }
+
+        // Kelas VIII: bab 4 lama (Embrace Yourself + No Littering) dipisah menjadi bab 4 No Littering dan bab 5 Embrace Yourself.
+        // Progres lama dipetakan ulang sekali: indeks 8|3|0 (Embrace) -> 8|4|0, 8|3|1 (No Littering) -> 8|3|0.
+        function migrateInteraktifV2(st) {
+            if (!st || st.interaktifV2) return false;
+            st.interaktifV2 = true;
+            if (!st.interaktif) return false;
+            const out = {};
+            let changed = false;
+            Object.keys(st.interaktif).forEach(k => {
+                let nk = k;
+                if (k.indexOf('8|3|') === 0) {
+                    nk = Number(k.split('|')[2]) === 0 ? '8|4|0' : '8|3|0';
+                    changed = true;
+                }
+                out[nk] = st.interaktif[k];
+            });
+            if (changed) st.interaktif = out;
+            return changed;
+        }
+
+        function renderInteraktifSummary(st, gnum) {
+            if (migrateInteraktifV2(st)) persist(true);
+            const box = document.getElementById('interaktif-summary');
+            if (!box) return;
+            const sm = interaktifStats(st, gnum);
+            box.innerHTML = `
+                <span class="bg-emerald-50 border border-emerald-200 text-emerald-800 font-extrabold px-2.5 py-1 rounded-lg">✓ Pertemuan selesai: ${sm.done}</span>
+                <span class="bg-blue-50 border border-blue-200 text-blue-800 font-extrabold px-2.5 py-1 rounded-lg">Rata-rata kuis: ${sm.quizAvg === null ? '-' : sm.quizAvg + '%'}</span>
+                <span class="bg-amber-50 border border-amber-200 text-amber-800 font-extrabold px-2.5 py-1 rounded-lg">Latihan Benar/Salah &amp; pilihan ganda per materi</span>`;
+        }
+
+        function renderStudentInteraktif(contentEl, sp, r, st) {
+            const gnum = interaktifGradeNum(r);
+            contentEl.innerHTML = `
+                <div class="space-y-3">
+                    <div class="bg-white border border-cream-border rounded-2xl p-3.5 space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="font-display font-extrabold text-sm text-navy">🎮 Belajar Interaktif Kelas ${r.grade}</h3>
+                            <a href="${INTERAKTIF_FILE}?mode=siswa&grade=${gnum}" target="_blank" rel="noopener" class="text-[11px] font-bold text-royal hover:underline">Buka layar penuh ↗</a>
+                        </div>
+                        <p class="text-xs text-slate-600">Belajar lewat slide, kartu kosakata 3D, susun kalimat, dan latihan pilihan ganda &amp; Benar/Salah per materi. Kemajuan dan hasil latihan tersimpan otomatis ke akun Anda.</p>
+                        <div id="interaktif-summary" class="flex flex-wrap gap-2 text-[11px]"></div>
+                    </div>
+                    <div id="interaktif-frame-wrap" class="rounded-2xl overflow-hidden border border-cream-border bg-white">
+                        <iframe id="efn-interaktif-frame" src="${INTERAKTIF_FILE}?mode=siswa&grade=${gnum}" title="Belajar Interaktif" class="w-full block" style="height:78vh;min-height:520px;border:0" allow="fullscreen; autoplay"></iframe>
+                    </div>
+                </div>`;
+            renderInteraktifSummary(st, gnum);
+            // Pastikan berkas belajar.html sudah diunggah di situs
+            fetch(INTERAKTIF_FILE, { method: 'HEAD' }).then(res => {
+                if (!res.ok) throw new Error('missing');
+            }).catch(() => {
+                const wrap = document.getElementById('interaktif-frame-wrap');
+                if (wrap) wrap.innerHTML = '<p class="p-5 text-xs font-bold text-red-600">Berkas belajar.html belum tersedia di situs. Minta guru mengunggahnya ke GitHub (satu folder dengan index.html).</p>';
+            });
+        }
+
+        let interaktifSyncTimer = null;
+        function scheduleInteraktifSync() {
+            clearTimeout(interaktifSyncTimer);
+            interaktifSyncTimer = setTimeout(() => { pushStudentResultToCloud(); }, 5000);
+        }
+
+        window.addEventListener('message', async ev => {
+            if (ev.origin !== location.origin) return;
+            const d = ev.data;
+            if (!d || d.source !== 'efn-interaktif') return;
+            if (!state.auth || state.auth.role !== 'student' || examIsRunning()) return;
+            let info;
+            try { info = getLoggedStudent(); } catch (e) { return; }
+            const { r, st } = info;
+            if (migrateInteraktifV2(st)) persist(true);
+            const gnum = interaktifGradeNum(r);
+            const frame = document.getElementById('efn-interaktif-frame');
+            if (d.type === 'ready') {
+                if (frame && frame.contentWindow) frame.contentWindow.postMessage({ source: 'efn-lms', type: 'init', progress: st.interaktif || {}, edits: (info.sp && info.sp.interaktifEdits) || {} }, location.origin);
+                return;
+            }
+            if (d.type === 'back') { setStudentTab('materi'); return; }
+            if (d.type === 'meeting_done' || d.type === 'quiz' || d.type === 'builder') {
+                const x = d.data || {};
+                if (x.grade !== gnum) return;
+                const key = `${x.grade}|${x.ci}|${x.mi}`;
+                if (!st.interaktif) st.interaktif = {};
+                const prev = st.interaktif[key] || {};
+                const rec = Object.assign({}, prev, { ts: Date.now(), chapter: x.chapter, meeting: x.meeting });
+                if (d.type === 'meeting_done') rec.done = true;
+                if (x.quiz && x.quiz[1] > 0) rec.quiz = x.quiz;
+                if (d.type === 'builder') rec.builder = true;
+                st.interaktif[key] = rec;
+                touchField(st, 'interaktif.' + key);
+                persist(true);
+                renderInteraktifSummary(st, gnum);
+                if (d.type === 'meeting_done') showToast(`✓ Pertemuan selesai: ${x.meeting || ''}`);
+                scheduleInteraktifSync();
+                return;
+            }
+        });
+
+        // Guru: buka presentasi interaktif (semua alat kelas aktif)
+        function bukaInteraktifGuru() {
+            window.open(INTERAKTIF_FILE, '_blank', 'noopener');
         }
 
         // =========================================================================
@@ -2684,6 +2891,79 @@
         // =========================================================================
         // 5. AUTENTIKASI: SISWA (NAMA + PIN), GURU, DAN ADMIN PUSAT
         // =========================================================================
+        // ---- Halaman login terpisah: tiap pilihan membuka halaman sendiri (alamat #login-siswa / #login-guru) ----
+        function setTampil(id, tampil) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.toggle('efn-hide', !tampil);
+            el.classList.toggle('hidden', !tampil);
+        }
+
+        function tampilkanHalamanLogin(peran) {
+            const isGuru = peran === 'guru';
+            const cardSiswa = document.getElementById('login-card-siswa');
+            const cardGuru = document.getElementById('login-card-guru');
+            if (!cardSiswa || !cardGuru) return;
+            setTampil('login-card-siswa', !isGuru);
+            setTampil('login-card-guru', isGuru);
+            cardSiswa.classList.remove('lg:col-span-2');
+            cardGuru.classList.remove('lg:col-span-2');
+            const embed = document.getElementById('login-embed');
+            embed.classList.remove('lg:grid-cols-2');
+            embed.classList.add('max-w-xl', 'mx-auto', 'w-full');
+            document.getElementById('login-page-title').textContent = isGuru ? 'Login Guru' : 'Login Siswa';
+            document.getElementById('login-page-badge').textContent = isGuru ? 'Portal Guru' : 'Portal Siswa';
+            document.getElementById('login-page-sub').textContent = isGuru
+                ? 'Masuk dengan email dan PIN untuk mengelola materi, soal, LKPD, dan nilai.'
+                : 'Masuk dengan nama lengkap dan PIN untuk mengerjakan UH, STS, SAS, TKA, dan Remedial.';
+            setTampil('login-hero', false);
+            setTampil('pintu-masuk-utama', false);
+            setTampil('login-page-head', true);
+            setTampil('login-embed', true);
+            setTampil('login-embed-bar', true);
+            if (isGuru) switchTeacherTab('login'); else switchStudentTab('login');
+            window.scrollTo({ top: 0, behavior: 'auto' });
+            const first = (isGuru ? cardGuru : cardSiswa).querySelector('input');
+            setTimeout(() => { if (first) first.focus({ preventScroll: true }); }, 300);
+        }
+
+        function tampilkanBeranda() {
+            setTampil('login-page-head', false);
+            setTampil('login-embed', false);
+            setTampil('login-embed-bar', false);
+            const embed = document.getElementById('login-embed');
+            embed.classList.add('lg:grid-cols-2');
+            embed.classList.remove('max-w-xl', 'mx-auto', 'w-full');
+            document.getElementById('login-card-siswa').classList.remove('lg:col-span-2');
+            document.getElementById('login-card-guru').classList.remove('lg:col-span-2');
+            setTampil('login-card-siswa', true);
+            setTampil('login-card-guru', true);
+            setTampil('login-hero', true);
+            setTampil('pintu-masuk-utama', true);
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+
+        // Dipanggil dari kartu beranda: membuka halaman login baru (bisa kembali dengan tombol Back browser)
+        function pintuMasuk(peran) {
+            history.pushState({ halaman: peran }, '', '#login-' + (peran === 'guru' ? 'guru' : 'siswa'));
+            tampilkanHalamanLogin(peran === 'guru' ? 'guru' : 'siswa');
+        }
+
+        // Kembali ke beranda dari halaman login
+        function tutupLogin() {
+            history.pushState({ halaman: 'beranda' }, '', location.pathname + location.search);
+            tampilkanBeranda();
+        }
+
+        function terapkanHalamanDariAlamat() {
+            const h = location.hash;
+            if (h === '#login-siswa') tampilkanHalamanLogin('siswa');
+            else if (h === '#login-guru') tampilkanHalamanLogin('guru');
+            else tampilkanBeranda();
+        }
+        window.addEventListener('popstate', terapkanHalamanDariAlamat);
+        window.addEventListener('load', terapkanHalamanDariAlamat);
+
         function switchStudentTab(tab) {
             const isLogin = tab === 'login';
             document.getElementById('form-student-login').classList.toggle('hidden', !isLogin);
@@ -3074,8 +3354,147 @@
             safeIcons();
         }
 
+        // =====================================================================
+        // LISENSI GURU: masa berlaku habis -> layar perpanjangan (pesan paket, bayar, pakai kode)
+        // =====================================================================
+        const PAKET_KLIEN = {
+            'PRO-1-BULAN': { label: 'Paket 1 Bulan', days: 30 },
+            'PRO-1-TAHUN': { label: 'Paket 1 Tahun', days: 365 },
+            'PRO-2-TAHUN': { label: 'Paket 2 Tahun', days: 730 }
+        };
+        let lisensiPaket = null;
+        let lisensiBayar = '';
+
+        function hariIni() {
+            const d = new Date();
+            const pad = n => String(n).padStart(2, '0');
+            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+        }
+
+        function lisensiRecord() {
+            const email = state.auth && state.auth.teacherKey;
+            return email ? state.teachers.find(t => normalizeStr(t.email) === normalizeStr(email)) : null;
+        }
+
+        // Dipanggil di awal renderTeacherPortal: true = layar perpanjangan sedang menutup portal
+        function lisensiCek() {
+            const rec = lisensiRecord();
+            const habis = !!(rec && rec.expiresAt && rec.expiresAt < hariIni());
+            if (habis) { lisensiTampil(rec); return true; }
+            const ov = document.getElementById('lisensi-overlay');
+            if (ov) ov.remove();
+            return false;
+        }
+
+        function gasAksi(payload) {
+            if (!getGasUrl()) return Promise.reject(new Error('URL Google Apps Script belum diisi.'));
+            return fetch(getGasUrl(), { method: 'POST', body: JSON.stringify(payload) }).then(r => r.json());
+        }
+
+        function lisensiTampil(rec) {
+            let ov = document.getElementById('lisensi-overlay');
+            if (!ov) {
+                ov = document.createElement('div');
+                ov.id = 'lisensi-overlay';
+                ov.className = 'fixed inset-0 z-[300] bg-slate-900/80 backdrop-blur-sm overflow-y-auto p-3 sm:p-6 flex items-start justify-center';
+                document.body.appendChild(ov);
+            }
+            ov.innerHTML = `<div id="lisensi-body" class="bg-white rounded-3xl w-full max-w-xl p-5 sm:p-7 space-y-4 text-xs text-slate-800 shadow-2xl"></div>`;
+            if (!lisensiPaket) {
+                gasAksi({ action: 'getPrices' }).then(j => { if (j.status === 'ok') { lisensiPaket = j.paket; lisensiBayar = j.paymentInfo || ''; lisensiIsi(rec); } }).catch(() => {});
+            }
+            lisensiIsi(rec);
+        }
+
+        function lisensiIsi(rec) {
+            const box = document.getElementById('lisensi-body');
+            if (!box) return;
+            const email = state.auth.teacherKey;
+            const kodeTersimpan = localStorage.getItem('efn_order_' + email) || '';
+            const paketHtml = lisensiPaket ? Object.keys(PAKET_KLIEN).map(k => {
+                const p = lisensiPaket[k];
+                return `<button type="button" onclick="lisensiPesan('${k}')" class="text-left bg-gradient-to-br from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white rounded-2xl p-3.5 shadow cursor-pointer">
+                    <span class="block font-black text-sm">${p.label}</span>
+                    <span class="block text-[11px] opacity-90">${p.days} hari akses</span>
+                    <span class="block font-black text-base mt-1">Rp ${Number(p.harga).toLocaleString('id-ID')}</span></button>`;
+            }).join('') : '<p class="text-slate-500">Memuat daftar paket...</p>';
+            box.innerHTML = `
+                <div class="flex items-start justify-between gap-2">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-wider text-rose-600">Lisensi berakhir</p>
+                        <h3 class="font-display font-black text-lg text-navy">Masa aktif Anda sudah habis</h3>
+                        <p class="text-[11px] text-slate-600">Berakhir pada ${rec && rec.expiresAt ? rec.expiresAt : '-'}. Perpanjang untuk kembali mengelola kelas.</p>
+                    </div>
+                    <button type="button" onclick="logout()" class="shrink-0 bg-slate-100 hover:bg-slate-200 font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">Keluar</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">${paketHtml}</div>
+                <div id="lisensi-pesanan" class="${kodeTersimpan ? '' : 'hidden'} bg-amber-50 border border-amber-200 rounded-2xl p-3.5 space-y-2">
+                    <p class="font-black text-amber-900">Pesanan Anda: <span class="font-mono">${kodeTersimpan}</span></p>
+                    <p class="text-[11px] text-amber-900 whitespace-pre-line">${lisensiBayar ? escEd(lisensiBayar) : 'Transfer sesuai nominal pesanan ke rekening yang diberikan admin, lalu tekan Cek Pembayaran.'}</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="lisensiCekBayar()" class="bg-white border border-amber-300 hover:bg-amber-100 font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">🔄 Cek Pembayaran</button>
+                    </div>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block font-extrabold text-navy">Sudah punya kode aktivasi?</label>
+                    <div class="flex flex-wrap gap-2">
+                        <input id="lisensi-kode" type="text" placeholder="EFN-XXXXXXXX" class="flex-1 min-w-[10rem] border border-slate-300 rounded-xl px-3 py-2 font-mono uppercase">
+                        <button type="button" onclick="lisensiAktifkan(document.getElementById('lisensi-kode').value)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-4 py-2 rounded-xl cursor-pointer">Aktifkan</button>
+                    </div>
+                </div>`;
+        }
+
+        function lisensiPesan(paket) {
+            const email = state.auth.teacherKey;
+            gasAksi({ action: 'createOrder', email, plan: paket }).then(j => {
+                if (j.status !== 'ok') { showToast('Gagal membuat pesanan: ' + (j.message || '')); return; }
+                localStorage.setItem('efn_order_' + email, j.order.code);
+                lisensiBayar = j.paymentInfo || lisensiBayar;
+                showToast(`Pesanan ${j.order.code} dibuat. Lakukan pembayaran.`);
+                lisensiIsi(lisensiRecord());
+            }).catch(() => showToast('Tidak bisa menghubungi server.'));
+        }
+
+        function lisensiCekBayar() {
+            const email = state.auth.teacherKey;
+            const code = localStorage.getItem('efn_order_' + email);
+            if (!code) { showToast('Belum ada pesanan.'); return; }
+            gasAksi({ action: 'getOrder', email, code }).then(j => {
+                if (j.status !== 'ok') { showToast(j.message || 'Pesanan tidak ditemukan.'); return; }
+                if (j.order.status === 'LUNAS' && j.order.tokenCode) {
+                    showToast('Pembayaran dikonfirmasi. Kode aktivasi diisi otomatis.');
+                    const inp = document.getElementById('lisensi-kode');
+                    if (inp) inp.value = j.order.tokenCode;
+                } else if (j.order.status === 'SELESAI') {
+                    localStorage.removeItem('efn_order_' + email);
+                    showToast('Pesanan ini sudah diaktifkan.');
+                    lisensiIsi(lisensiRecord());
+                } else {
+                    showToast('Pembayaran belum dikonfirmasi admin. Coba lagi nanti.');
+                }
+            }).catch(() => showToast('Tidak bisa menghubungi server.'));
+        }
+
+        function lisensiAktifkan(kode) {
+            const email = state.auth.teacherKey;
+            const code = String(kode || '').trim().toUpperCase();
+            if (!code) { showToast('Masukkan kode aktivasi.'); return; }
+            gasAksi({ action: 'redeemToken', email, code }).then(j => {
+                if (j.status !== 'ok') { showToast(j.message || 'Kode tidak valid.'); return; }
+                const idx = state.teachers.findIndex(t => normalizeStr(t.email) === normalizeStr(email));
+                if (idx >= 0) state.teachers[idx] = Object.assign({}, state.teachers[idx], j.teacherRecord);
+                localStorage.removeItem('efn_order_' + email);
+                persist(true);
+                const ov = document.getElementById('lisensi-overlay');
+                if (ov) ov.remove();
+                renderTeacherPortal();
+                showToast(`Lisensi aktif sampai ${j.teacherRecord.expiresAt}.`);
+            }).catch(() => showToast('Tidak bisa menghubungi server.'));
+        }
+
         function renderTeacherPortal() {
             ensureNotifLoaded();
+            if (state.auth.role === 'teacher' && lisensiCek()) return;
             const sp = getActiveSpace();
             const r = getActiveRombel(sp);
             const allowedGrades = getAllowedGrades(sp);
@@ -3305,6 +3724,294 @@
             document.getElementById('tc-workspace-section').classList.add('hidden');
             document.getElementById('tc-grid-section').classList.remove('hidden');
             renderTeacherPortal();
+        }
+
+        // =====================================================================
+        // EDITOR MATERI INTERAKTIF (portal guru): gambar & teks bahan belajar siswa
+        // Kurikulum diambil dari belajar.html (iframe tersembunyi), perubahan disimpan di sp.interaktifEdits
+        // =====================================================================
+        let efnEdFrame = null;
+        let efnEdReady = false;
+        let efnEdCb = null;
+        let efnEdSel = { g: '8', ci: 0, mi: 0 };
+        let efnEdData = null;
+
+        // Guru hanya boleh mengedit jenjang yang ia ampu (VII/VIII/IX -> 7/8/9)
+        const ED_ROMAWI_KE_ANGKA = { VII: '7', VIII: '8', IX: '9' };
+        function edJenjangDiampu(sp) {
+            // Jenjang yang boleh diedit = jenjang yang diampu DAN diizinkan admin (centang izin)
+            const izin = (sp.profile && sp.profile.editGrades) || [];
+            return getAllowedGrades(sp).filter(x => izin.includes(x)).map(x => ED_ROMAWI_KE_ANGKA[x]).filter(Boolean);
+        }
+
+        // Konteks editor: null = guru sendiri; { email, sp } = admin yang mengedit materi guru tertentu
+        let efnEdCtx = null;
+        let efnEdBody = 'doc-module-body';
+        function edSp() { return efnEdCtx ? efnEdCtx.sp : getActiveSpace(); }
+        function edBodyEl() { return document.getElementById(efnEdBody); }
+
+        // Simpan perubahan: guru ke data kelasnya, admin ke server (hanya bagian materi)
+        function edPersist(sp) {
+            if (!efnEdCtx) { persist(); return Promise.resolve(true); }
+            return adminKirim('adminSaveEdits', { email: efnEdCtx.email, edits: sp.interaktifEdits || {} }).then(json => {
+                if (json.status !== 'ok') { showToast('Gagal menyimpan: ' + (json.message || '')); return false; }
+                return true;
+            });
+        }
+
+        function escEd(t) {
+            return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function efnEdRequest(cb) {
+            efnEdCb = cb;
+            const sp = edSp();
+            if (!efnEdFrame) {
+                efnEdFrame = document.createElement('iframe');
+                efnEdFrame.src = 'belajar.html?mode=guru';
+                efnEdFrame.style.display = 'none';
+                document.body.appendChild(efnEdFrame);
+                efnEdReady = false;
+                return;
+            }
+            if (efnEdReady) efnEdFrame.contentWindow.postMessage({ source: 'efn-lms', type: 'getCurriculum', edits: (sp && sp.interaktifEdits) || {} }, location.origin);
+        }
+
+        window.addEventListener('message', function (ev) {
+            if (ev.origin !== location.origin) return;
+            const d = ev.data;
+            if (!d || d.source !== 'efn-interaktif') return;
+            if (d.type === 'ready' && efnEdFrame && ev.source === efnEdFrame.contentWindow) {
+                efnEdReady = true;
+                efnEdFrame.contentWindow.postMessage({ source: 'efn-lms', type: 'getCurriculum', edits: edSp().interaktifEdits || {} }, location.origin);
+            }
+            if (d.type === 'curriculum') {
+                efnEdData = d.data;
+                const cb = efnEdCb; efnEdCb = null;
+                if (cb) cb();
+            }
+        });
+
+        function renderEditInteraktif(bodyEl, sp) {
+            efnEdCtx = null;
+            efnEdBody = 'doc-module-body';
+            bodyEl.innerHTML = '<div class="p-6 text-sm text-slate-600 font-bold">⏳ Memuat materi interaktif...</div>';
+            efnEdRequest(function () { drawEditInteraktif(bodyEl); });
+        }
+
+        function edImgBlock(id, label, value) {
+            return `
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-extrabold text-navy">${label}</label>
+                    <div class="flex flex-wrap items-start gap-3">
+                        <img id="${id}-prev" src="${escEd(value)}" alt="" class="${value ? '' : 'hidden'} w-40 h-24 object-cover rounded-xl border border-slate-200 bg-slate-50">
+                        <div class="flex-1 min-w-[12rem] space-y-1.5">
+                            <input type="text" id="${id}" value="${escEd(value)}" placeholder="Tempel alamat gambar (https://...) atau unggah file" class="w-full border border-slate-300 rounded-xl px-3 py-1.5 text-xs bg-white">
+                            <label class="inline-flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">
+                                ⬆ Unggah Gambar
+                                <input type="file" accept="image/*" class="hidden" onchange="edUnggahGambar(event, '${id}')">
+                            </label>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function edResizeImage(file, maxW, quality) {
+            return new Promise(function (resolve, reject) {
+                const reader = new FileReader();
+                reader.onerror = reject;
+                reader.onload = function () {
+                    const img = new Image();
+                    img.onerror = reject;
+                    img.onload = function () {
+                        const scale = Math.min(1, maxW / img.width);
+                        const cv = document.createElement('canvas');
+                        cv.width = Math.round(img.width * scale);
+                        cv.height = Math.round(img.height * scale);
+                        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+                        resolve(cv.toDataURL('image/jpeg', quality));
+                    };
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function edUnggahGambar(ev, id) {
+            const file = ev.target.files && ev.target.files[0];
+            if (!file) return;
+            try {
+                let url = await edResizeImage(file, 1000, 0.82);
+                if (url.length > 350000) url = await edResizeImage(file, 800, 0.6);
+                if (url.length > 500000) { showToast('Gambar terlalu besar. Pilih gambar yang lebih kecil.'); return; }
+                document.getElementById(id).value = url;
+                const prev = document.getElementById(id + '-prev');
+                prev.src = url;
+                prev.classList.remove('hidden');
+                showToast('Gambar siap. Klik Simpan Perubahan.');
+            } catch (e) {
+                showToast('Gagal membaca gambar.');
+            } finally {
+                ev.target.value = '';
+            }
+        }
+
+        function drawEditInteraktif(bodyEl) {
+            const sp = getActiveSpace();
+            const sel = efnEdSel;
+            const boleh = edJenjangDiampu(sp);
+            if (!boleh.length) {
+                bodyEl.innerHTML = '<div class="p-5 rounded-2xl bg-amber-50 border border-amber-200 text-xs font-bold text-amber-900">Belum ada izin edit materi untuk jenjang Anda. Hubungi admin untuk mencentang kelas yang boleh Anda edit.</div>';
+                return;
+            }
+            if (!boleh.includes(sel.g)) { sel.g = boleh[0]; sel.ci = 0; sel.mi = 0; }
+            const chs = (efnEdData && efnEdData[sel.g]) || [];
+            if (!chs.length) { bodyEl.innerHTML = '<p class="text-sm text-red-600 font-bold">Materi belum bisa dimuat. Muat ulang halaman lalu coba lagi.</p>'; return; }
+            if (sel.ci >= chs.length) sel.ci = 0;
+            const ch = chs[sel.ci];
+            if (sel.mi >= ch.meetings.length) sel.mi = 0;
+            const m = ch.meetings[sel.mi];
+            const ed = (sp.interaktifEdits && sp.interaktifEdits.meetings) || {};
+            const edc = (sp.interaktifEdits && sp.interaktifEdits.chapters) || {};
+            const mKey = `${sel.g}|${sel.ci}|${sel.mi}`;
+            const cKey = `${sel.g}|${sel.ci}`;
+            const hasM = !!ed[mKey], hasC = !!edc[cKey];
+            const fcText = (m.flashcards || []).map(f => [f.word, f.phonetic, f.meaning, f.example].join(' | ')).join('\n');
+            const gradeBtn = g => {
+                const ok = boleh.includes(g);
+                const cls = !ok ? 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
+                    : sel.g === g ? 'bg-indigo-600 text-white cursor-pointer' : 'bg-white border border-slate-300 text-navy cursor-pointer';
+                return `<button type="button" ${ok ? `onclick="edPilih('${g}',0,0)"` : 'disabled'} class="px-3 py-1.5 rounded-xl text-xs font-extrabold ${cls}">Kelas ${g}${ok ? '' : ' 🔒'}</button>`;
+            };
+            bodyEl.innerHTML = `
+                <div class="space-y-5 text-xs text-slate-800">
+                    <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-2xl p-4">
+                        <p class="font-black text-sm">🎨 Edit Materi Interaktif</p>
+                        <p class="text-[11px] opacity-90 mt-1">Ubah gambar dan teks bahan belajar yang dilihat siswa di tab 🎮 Interaktif. Perubahan tersimpan di data kelas ini dan ikut tersinkron. Kosongkan perubahan dengan "Kembalikan Bawaan".</p>
+                    </div>
+                    <p class="text-[11px] text-slate-600">Anda hanya dapat mengedit jenjang yang diizinkan admin. Jenjang lain dikunci (🔒).</p>
+                    <div class="flex flex-wrap gap-2">${[7, 8, 9].map(g => gradeBtn(String(g))).join('')}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Bab</label>
+                            <select id="ed-ci" onchange="edPilih('${sel.g}', this.value, 0)" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white">
+                                ${chs.map((c, i) => `<option value="${i}" ${i === sel.ci ? 'selected' : ''}>${escEd(c.title)}${edc[`${sel.g}|${i}`] ? ' ✎' : ''}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Pertemuan</label>
+                            <select id="ed-mi" onchange="edPilih('${sel.g}', ${sel.ci}, this.value)" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white">
+                                ${ch.meetings.map((x, i) => `<option value="${i}" ${i === sel.mi ? 'selected' : ''}>${i + 1}. ${escEd(x.unitTitle)}${ed[`${sel.g}|${sel.ci}|${i}`] ? ' ✎' : ''}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
+                        <p class="font-black text-navy text-sm">Sampul bab ${hasC ? '<span class="text-amber-600">(sudah diubah)</span>' : ''}</p>
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Judul bab</label>
+                            <input type="text" id="ed-ch-title" value="${escEd(ch.title)}" class="w-full border border-slate-300 rounded-xl px-3 py-1.5 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Keterangan gambar sampul</label>
+                            <input type="text" id="ed-ch-heroCaption" value="${escEd(ch.heroCaption)}" class="w-full border border-slate-300 rounded-xl px-3 py-1.5 bg-white">
+                        </div>
+                        ${edImgBlock('ed-ch-heroImg', 'Gambar sampul bab', ch.heroImg)}
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
+                        <p class="font-black text-navy text-sm">Pertemuan ${sel.mi + 1} ${hasM ? '<span class="text-amber-600">(sudah diubah)</span>' : ''}</p>
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Judul pertemuan</label>
+                            <input type="text" id="ed-m-unitTitle" value="${escEd(m.unitTitle)}" class="w-full border border-slate-300 rounded-xl px-3 py-1.5 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Ringkasan pertemuan</label>
+                            <textarea id="ed-m-summary" rows="2" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white">${escEd(m.summary)}</textarea>
+                        </div>
+                        ${edImgBlock('ed-m-visualImg', 'Gambar pertemuan (slide konteks)', m.visualImg)}
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Keterangan gambar</label>
+                            <input type="text" id="ed-m-visualCaption" value="${escEd(m.visualCaption)}" class="w-full border border-slate-300 rounded-xl px-3 py-1.5 bg-white">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-extrabold text-navy mb-1">Judul teks bacaan</label>
+                                <input type="text" id="ed-m-readingTitle" value="${escEd(m.readingTitle)}" class="w-full border border-slate-300 rounded-xl px-3 py-1.5 bg-white">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Teks bacaan</label>
+                            <textarea id="ed-m-readingText" rows="5" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white">${escEd(m.readingText)}</textarea>
+                        </div>
+                        <div>
+                            <label class="block font-extrabold text-navy mb-1">Kosakata (satu per baris: kata | fonetik | arti | contoh kalimat)</label>
+                            <textarea id="ed-m-flash" rows="5" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white font-mono">${escEd(fcText)}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="edSimpan()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-5 py-2.5 rounded-xl cursor-pointer">💾 Simpan Perubahan</button>
+                        <button type="button" onclick="edKembalikan()" class="bg-white border border-slate-300 hover:bg-slate-50 text-navy font-extrabold px-4 py-2.5 rounded-xl cursor-pointer">↺ Kembalikan Bawaan (pertemuan ini)</button>
+                    </div>
+                </div>`;
+        }
+
+        function edBolehJenjang(g) {
+            return efnEdCtx ? true : edJenjangDiampu(edSp()).includes(String(g));
+        }
+
+        function edPilih(g, ci, mi) {
+            if (!edBolehJenjang(g)) { showToast('Anda tidak mengampu jenjang ini.'); return; }
+            efnEdSel = { g: String(g), ci: Number(ci) || 0, mi: Number(mi) || 0 };
+            const bodyEl = edBodyEl();
+            if (bodyEl) drawEditInteraktif(bodyEl);
+        }
+
+        function edKumpulFlash(text) {
+            const out = [];
+            String(text || '').split('\n').forEach(line => {
+                const parts = line.split('|').map(x => x.trim());
+                if (parts.length >= 4 && parts[0] && parts[2]) out.push({ word: parts[0], phonetic: parts[1], meaning: parts[2], example: parts.slice(3).join(' | ') });
+            });
+            return out;
+        }
+
+        function edSimpan() {
+            const sp = edSp();
+            const sel = efnEdSel;
+            if (!edBolehJenjang(sel.g)) { showToast('Anda tidak mengampu jenjang ini.'); return; }
+            const ed = sp.interaktifEdits || { chapters: {}, meetings: {} };
+            ed.chapters = ed.chapters || {};
+            ed.meetings = ed.meetings || {};
+            ed.chapters[`${sel.g}|${sel.ci}`] = {
+                title: document.getElementById('ed-ch-title').value.trim(),
+                heroCaption: document.getElementById('ed-ch-heroCaption').value.trim(),
+                heroImg: document.getElementById('ed-ch-heroImg').value.trim()
+            };
+            const fl = edKumpulFlash(document.getElementById('ed-m-flash').value);
+            ed.meetings[`${sel.g}|${sel.ci}|${sel.mi}`] = {
+                unitTitle: document.getElementById('ed-m-unitTitle').value.trim(),
+                summary: document.getElementById('ed-m-summary').value.trim(),
+                visualImg: document.getElementById('ed-m-visualImg').value.trim(),
+                visualCaption: document.getElementById('ed-m-visualCaption').value.trim(),
+                readingTitle: document.getElementById('ed-m-readingTitle').value.trim(),
+                readingText: document.getElementById('ed-m-readingText').value.trim(),
+                flashcards: fl.length ? fl : undefined
+            };
+            sp.interaktifEdits = ed;
+            edPersist(sp).then(ok => { if (ok) showToast(efnEdCtx ? 'Materi tersimpan di server.' : 'Perubahan materi disimpan. Siswa melihatnya setelah sinkron.'); });
+            efnEdRequest(function () { drawEditInteraktif(edBodyEl()); });
+        }
+
+        function edKembalikan() {
+            if (!confirm('Kembalikan pertemuan ini ke isi bawaan (gambar dan teks)? Bab ini tidak ikut berubah.')) return;
+            const sp = edSp();
+            const sel = efnEdSel;
+            if (!edBolehJenjang(sel.g)) { showToast('Anda tidak mengampu jenjang ini.'); return; }
+            if (sp.interaktifEdits && sp.interaktifEdits.meetings) delete sp.interaktifEdits.meetings[`${sel.g}|${sel.ci}|${sel.mi}`];
+            edPersist(sp).then(ok => { if (ok) showToast('Pertemuan dikembalikan ke isi bawaan.'); });
+            efnEdRequest(function () { drawEditInteraktif(edBodyEl()); });
         }
 
         function renderWorkspace(modId) {
@@ -4083,6 +4790,10 @@
                     break;
                 }
 
+                case 'edit-interaktif': {
+                    renderEditInteraktif(bodyEl, sp);
+                    break;
+                }
                 case 'paket-supervisi':
                 case 'template-kelas':
                 default: {
@@ -4684,10 +5395,11 @@
 
             const body = document.getElementById('student-portal-body');
             body.innerHTML = `
-                <div data-st-nav class="grid grid-cols-2 sm:grid-cols-6 gap-1.5 bg-white p-1.5 rounded-2xl border border-cream-border mb-5 shadow-2xs">
+                <div data-st-nav class="grid grid-cols-2 sm:grid-cols-7 gap-1.5 bg-white p-1.5 rounded-2xl border border-cream-border mb-5 shadow-2xs">
                     <button type="button" onclick="setStudentTab('materi')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'materi' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">📖 Materi Ajar</button>
                     <button type="button" onclick="setStudentTab('pustaka')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'pustaka' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">📚 Buku Panduan</button>
                     <button type="button" onclick="setStudentTab('flashcard')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'flashcard' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">✨ Flashcard</button>
+                    <button type="button" onclick="setStudentTab('interaktif')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'interaktif' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">🎮 Interaktif</button>
                     <button type="button" onclick="setStudentTab('lkpd')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'lkpd' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">📝 Tugas LKPD</button>
                     <button type="button" onclick="setStudentTab('ujian')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'ujian' ? 'bg-royal text-white' : 'text-navy hover:bg-cream'}">⏱️ Ujian &amp; TKA</button>
                     <button type="button" onclick="setStudentTab('nilai')" class="py-2.5 px-2 rounded-xl text-xs font-extrabold cursor-pointer ${ui.tab === 'nilai' ? 'bg-navy text-white' : 'text-navy hover:bg-cream'}">🏆 Rapor Saya</button>
@@ -4895,6 +5607,8 @@
                         </div>
                     `;
                 }
+            } else if (ui.tab === 'interaktif') {
+                renderStudentInteraktif(contentEl, sp, r, st);
             } else if (ui.tab === 'nilai') {
                 const countH = (st.att || []).filter(v => v === 'H').length;
                 const tkaEntries = Object.entries(st.examResults || {}).filter(([k]) => k.startsWith(`TKA-${r.grade}`));
@@ -5231,6 +5945,168 @@
             safeIcons();
         }
 
+        // ---- Aksi admin ke server (dijaga kunci admin) ----
+        function getAdminKey() {
+            let k = localStorage.getItem('efn_admin_key') || '';
+            if (!k) {
+                k = (window.prompt('Masukkan Kunci Admin (dari Script properties ADMIN_KEY):') || '').trim();
+                if (k) localStorage.setItem('efn_admin_key', k);
+            }
+            return k;
+        }
+
+        function adminKirim(action, payload) {
+            const key = getAdminKey();
+            if (!key) return Promise.resolve({ status: 'error', message: 'Kunci admin belum diisi.' });
+            return gasAksi(Object.assign({ action, adminKey: key }, payload || {})).then(j => {
+                if (j.status !== 'ok' && /Kunci admin/.test(j.message || '')) localStorage.removeItem('efn_admin_key');
+                return j;
+            }).catch(e => ({ status: 'error', message: 'Tidak bisa menghubungi server: ' + e.message }));
+        }
+
+        function adminPesananKonfirmasi(code) {
+            if (!confirm(`Konfirmasi pembayaran untuk pesanan ${code}? Kode aktivasi akan dibuat.`)) return;
+            adminKirim('confirmOrder', { code }).then(j => {
+                if (j.status !== 'ok') { showToast('Gagal: ' + (j.message || '')); return; }
+                showToast(`Pesanan lunas. Kode: ${j.order.tokenCode}`);
+                syncAdminCloud(true).then(() => renderAdminDashboard());
+            });
+        }
+
+        function adminSimpanHarga() {
+            const prices = {};
+            Object.keys(PAKET_KLIEN).forEach(k => {
+                const v = Number(document.getElementById('adm-harga-' + k).value);
+                prices[k] = { harga: isFinite(v) && v >= 0 ? v : 0 };
+            });
+            const paymentInfo = document.getElementById('adm-rekening').value;
+            adminKirim('setPrices', { prices, paymentInfo }).then(j => {
+                if (j.status !== 'ok') { showToast('Gagal: ' + (j.message || '')); return; }
+                showToast('Harga & rekening disimpan.');
+                syncAdminCloud(true).then(() => renderAdminDashboard());
+            });
+        }
+
+        function admSimpanIzin() {
+            const email = document.getElementById('adm-mat-guru').value;
+            const grades = Array.from(document.querySelectorAll('.adm-izin:checked')).map(x => x.value);
+            adminKirim('setPermissions', { email, editGrades: grades }).then(j => {
+                if (j.status !== 'ok') { showToast('Gagal: ' + (j.message || '')); return; }
+                showToast('Izin edit materi disimpan.');
+            });
+        }
+
+        function admBukaEditor() {
+            const email = document.getElementById('adm-mat-guru').value;
+            if (!email) { showToast('Pilih guru terlebih dahulu.'); return; }
+            adminKirim('adminGetSpace', { email }).then(j => {
+                if (j.status !== 'ok') { showToast('Gagal: ' + (j.message || '')); return; }
+                const semua = ['VII', 'VIII', 'IX'];
+                efnEdCtx = { email, sp: { interaktifEdits: j.interaktifEdits || {}, profile: { allowedGrades: semua, editGrades: semua } } };
+                efnEdBody = 'adm-edit-body';
+                efnEdSel = { g: '7', ci: 0, mi: 0 };
+                efnEdRequest(() => { const b = edBodyEl(); if (b) drawEditInteraktif(b); });
+            });
+        }
+
+        function admPesananHtml() {
+            const orders = (state.orders || []).slice().reverse();
+            const paket = state.prices || {};
+            const statusBadge = st => ({
+                MENUNGGU: 'bg-amber-100 text-amber-800', LUNAS: 'bg-emerald-100 text-emerald-800', SELESAI: 'bg-slate-200 text-slate-700'
+            }[st] || 'bg-slate-100');
+            const harga = k => (paket[k] && paket[k].harga) || 0;
+            return `
+                <div class="bg-white border border-cream-border rounded-3xl p-5 shadow-xs space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h3 class="font-display font-extrabold text-base text-navy">Pesanan Perpanjangan Lisensi</h3>
+                        <button type="button" onclick="syncAdminCloud(true).then(() => renderAdminDashboard())" class="bg-slate-100 hover:bg-slate-200 text-xs font-extrabold px-3 py-1.5 rounded-xl cursor-pointer">↻ Muat Ulang</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                    <table class="doc-table"><thead><tr><th>Kode</th><th>Guru</th><th>Paket</th><th>Nominal</th><th>Status</th><th>Aksi</th></tr></thead><tbody>
+                        ${orders.length ? orders.map(o => `<tr>
+                            <td class="font-mono font-bold">${o.code}</td><td>${o.email}</td><td>${(PAKET_KLIEN[o.plan] || {}).label || o.plan}</td>
+                            <td class="text-right">Rp ${Number(o.amount).toLocaleString('id-ID')}</td>
+                            <td class="text-center"><span class="text-[10px] font-black px-2 py-0.5 rounded-full ${statusBadge(o.status)}">${o.status}</span></td>
+                            <td class="text-center">${o.status === 'MENUNGGU' ? `<button type="button" onclick="adminPesananKonfirmasi('${o.code}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-lg cursor-pointer">Konfirmasi Lunas</button>` : (o.tokenCode ? `<span class="font-mono text-[11px]">${o.tokenCode}</span>` : '-')}</td>
+                        </tr>`).join('') : '<tr><td colspan="6" class="text-center text-slate-500">Belum ada pesanan.</td></tr>'}
+                    </tbody></table>
+                    </div>
+                    <div class="border-t pt-4 space-y-3">
+                        <h4 class="font-extrabold text-navy">Harga Paket & Rekening Pembayaran</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            ${Object.keys(PAKET_KLIEN).map(k => `<div>
+                                <label class="block text-xs font-bold text-navy mb-1">${PAKET_KLIEN[k].label} (Rp)</label>
+                                <input type="number" min="0" id="adm-harga-${k}" value="${harga(k)}" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white">
+                            </div>`).join('')}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-navy mb-1">Instruksi pembayaran (ditampilkan ke guru)</label>
+                            <textarea id="adm-rekening" rows="3" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white" placeholder="Contoh: Transfer ke BCA 1234567890 a.n. Nama Admin">${escEd(state.paymentInfo || '')}</textarea>
+                        </div>
+                        <button type="button" onclick="adminSimpanHarga()" class="bg-royal text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">Simpan Harga & Rekening</button>
+                    </div>
+                </div>`;
+        }
+
+        function admMateriHtml() {
+            const guru = state.teachers || [];
+            const pilih = guru.length ? guru : [];
+            const first = pilih[0] ? pilih[0].email : '';
+            return `
+                <div class="bg-white border border-cream-border rounded-3xl p-5 shadow-xs space-y-4">
+                    <h3 class="font-display font-extrabold text-base text-navy">Izin & Edit Materi Interaktif</h3>
+                    <p class="text-[11px] text-slate-600">Admin dapat mengedit materi semua jenjang. Centang jenjang untuk memberi izin edit kepada guru. Guru hanya bisa mengedit jenjang yang diizinkan dan yang ia ampu.</p>
+                    ${pilih.length ? `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-navy mb-1">Guru</label>
+                            <select id="adm-mat-guru" onchange="admMateriGuruBerubah()" class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-white">
+                                ${pilih.map(t => `<option value="${t.email}">${t.nama || t.email} (${(t.allowedGrades || []).join(', ')})</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-navy mb-1">Izin edit jenjang</label>
+                            <div id="adm-izin-box" class="flex flex-wrap gap-3 text-xs font-bold">${admIzinBox(first)}</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="admSimpanIzin()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">Simpan Izin</button>
+                        <button type="button" onclick="admBukaEditor()" class="bg-royal text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">🎨 Buka Editor Materi (semua jenjang)</button>
+                    </div>
+                    <div id="adm-edit-body" class="pt-2"></div>` : '<p class="text-sm text-slate-500">Belum ada akun guru.</p>'}
+                </div>`;
+        }
+
+        function admIzinBox(email, izinServer) {
+            const t = (state.teachers || []).find(x => x.email === email) || {};
+            const ada = (t.allowedGrades || []);
+            const izin = izinServer || [];
+            return ['VII', 'VIII', 'IX'].map(g => `<label class="inline-flex items-center gap-1.5 ${ada.includes(g) ? '' : 'opacity-40'}">
+                <input type="checkbox" class="adm-izin" value="${g}" ${izin.includes(g) ? 'checked' : ''} ${ada.includes(g) ? '' : 'disabled'}> Kelas ${g}</label>`).join('');
+        }
+
+        function admMateriGuruBerubah() {
+            const email = document.getElementById('adm-mat-guru').value;
+            document.getElementById('adm-izin-box').innerHTML = admIzinBox(email);
+            document.getElementById('adm-edit-body').innerHTML = '';
+            efnEdCtx = null;
+            admLoadIzin(email);
+        }
+
+        // Muat izin edit yang tersimpan di server (hanya bila kunci admin sudah ada di perangkat ini)
+        function admLoadIzin(email) {
+            if (!email || !localStorage.getItem('efn_admin_key')) return;
+            adminKirim('adminGetSpace', { email }).then(j => {
+                if (j.status !== 'ok') return;
+                const sel = document.getElementById('adm-mat-guru');
+                if (!sel || sel.value !== email) return;
+                const box = document.getElementById('adm-izin-box');
+                if (!box) return;
+                box.innerHTML = admIzinBox(email, j.editGrades || []);
+            });
+        }
+
         function renderAdminDashboard() {
             const activeCount = state.teachers.filter(t => t.status === 'ACTIVE').length;
             const totalStudents = Object.values(state.teacherSpaces).reduce((sum, sp) => {
@@ -5256,7 +6132,7 @@
                 </div>
             `;
 
-            ['teachers', 'tokens', 'config'].forEach(t => {
+            ['teachers', 'tokens', 'config', 'pesanan', 'materi'].forEach(t => {
                 const btn = document.getElementById(`adm-nav-${t}`);
                 btn.className = state.adminTab === t
                     ? 'px-4 py-2 rounded-xl text-xs font-extrabold bg-navy text-white cursor-pointer'
@@ -5303,12 +6179,19 @@
                         </table>
                     </div>
                 `;
+            } else if (state.adminTab === 'pesanan') {
+                area.innerHTML = admPesananHtml();
+            } else if (state.adminTab === 'materi') {
+                area.innerHTML = admMateriHtml();
+                const g0 = document.getElementById('adm-mat-guru');
+                if (g0) admLoadIzin(g0.value);
             } else if (state.adminTab === 'tokens') {
                 area.innerHTML = `
                     <div class="bg-white border border-cream-border rounded-3xl p-5 shadow-xs space-y-4">
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <h3 class="font-display font-extrabold text-base text-navy">Generator Token Lisensi Guru</h3>
-                            <button type="button" onclick="generateNewToken()" class="bg-royal text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">+ Buat Token Baru (365 Hari)</button>
+                            <div class="flex flex-wrap gap-2">${Object.keys(PAKET_KLIEN).map(k => `<button type="button" onclick="generateNewToken('${k}')" class="bg-royal text-white text-xs font-extrabold px-3 py-2 rounded-xl cursor-pointer">+ ${PAKET_KLIEN[k].label} (${PAKET_KLIEN[k].days} hari)</button>`).join('')}</div>
+                            <button type="button" style="display:none" onclick="generateNewToken()" class="bg-royal text-white text-xs font-extrabold px-4 py-2 rounded-xl cursor-pointer">+ Buat Token Baru (365 Hari)</button>
                         </div>
                         <table class="doc-table">
                             <thead>
@@ -5459,9 +6342,10 @@
             showToast('Akun guru dihapus.');
         }
 
-        function generateNewToken() {
+        function generateNewToken(paket = 'PRO-1-TAHUN') {
             const rand = Math.random().toString(36).substring(2, 7).toUpperCase();
-            state.tokens.unshift({ code: `EFN-PRO-${rand}`, plan: 'PRO-1-TAHUN', days: 365, usedBy: '' });
+            const p = PAKET_KLIEN[paket] || PAKET_KLIEN['PRO-1-TAHUN'];
+            state.tokens.unshift({ code: `EFN-${paket.replace('PRO-', '')}-${rand}`, plan: paket, days: p.days, usedBy: '' });
             persist();
             if (getGasUrl()) syncAdminCloud(true);
             renderAdminDashboard();
@@ -5564,7 +6448,7 @@
                 ...uhCols.map(c => `UH ${c.code}`),
                 'STS 1', 'SAS 1', 'Remedial 1', 'Katrol 1', 'Nilai Akhir 1', 'Status 1',
                 'STS 2', 'SAS 2', 'Remedial 2', 'Katrol 2', 'Nilai Akhir 2', 'Status 2',
-                'Skor TKA 1', 'Skor TKA 2', 'Skor Remedial TKA', 'Pelanggaran Ujian', 'Update Terakhir'
+                'Skor TKA 1', 'Skor TKA 2', 'Skor Remedial TKA', 'Pertemuan Interaktif Selesai', 'Rata-rata Latihan Interaktif (%)', 'Pelanggaran Ujian', 'Update Terakhir'
             ];
             const stamp = new Date().toLocaleString('id-ID');
             const rows = [];
@@ -5588,6 +6472,8 @@
                         st.examResults?.[`TKA-${rb.grade}-1`] ?? '',
                         st.examResults?.[`TKA-${rb.grade}-2`] ?? '',
                         st.examResults?.[`TKA-${rb.grade}-R`] ?? '',
+                        Object.keys(st.interaktif || {}).filter(k => k.indexOf(interaktifGradeNum(rb) + '|') === 0 && st.interaktif[k] && st.interaktif[k].done).length,
+                        (interaktifStats(st, interaktifGradeNum(rb)).quizAvg ?? ''),
                         examViolationTotal(st).total,
                         stamp
                     ]);
@@ -5667,6 +6553,12 @@
                         if (json.teacherSpace.uploadedResources?.length) localSp.uploadedResources = json.teacherSpace.uploadedResources;
                     }
                     ensureTkaBanksInSpace(state.teacherSpaces[normEmail]);
+                    if (state.teacherSpaces[normEmail]) {
+                        const tsp = state.teacherSpaces[normEmail];
+                        tsp.profile = tsp.profile || {};
+                        tsp.profile.editGrades = (json.permissions && json.permissions.editGrades) || [];
+                        if (json.teacherSpace.interaktifEdits) tsp.interaktifEdits = json.teacherSpace.interaktifEdits;
+                    }
                     if (json.teacherRecord) {
                         const existingIdx = state.teachers.findIndex(t => normalizeStr(t.email) === normEmail);
                         if (existingIdx >= 0) state.teachers[existingIdx] = json.teacherRecord;
@@ -5711,6 +6603,7 @@
                         if (json.teacherSpace.exams) localSp.exams = json.teacherSpace.exams;
                         if (json.teacherSpace.uploadedResources) localSp.uploadedResources = json.teacherSpace.uploadedResources;
                         if (json.teacherSpace.curriculum) localSp.curriculum = json.teacherSpace.curriculum;
+                        if (json.teacherSpace.interaktifEdits) localSp.interaktifEdits = json.teacherSpace.interaktifEdits;
                     }
                     ensureTkaBanksInSpace(state.teacherSpaces[tKey]);
                     persist(true);
@@ -5760,7 +6653,17 @@
                         const key = normalizeStr(ct.email);
                         if (!mergedMap.has(key)) mergedMap.set(key, ct);
                     });
+                    json.teachers.forEach(ct => {
+                        const key = normalizeStr(ct.email);
+                        const loc = mergedMap.get(key);
+                        if (loc && ct.expiresAt && ct.expiresAt > (loc.expiresAt || '')) {
+                            mergedMap.set(key, Object.assign({}, loc, { plan: ct.plan, expiresAt: ct.expiresAt, status: ct.status }));
+                        }
+                    });
                     state.teachers = Array.from(mergedMap.values());
+                    if (Array.isArray(json.orders)) state.orders = json.orders;
+                    if (json.prices) state.prices = json.prices;
+                    if (json.paymentInfo !== undefined) state.paymentInfo = json.paymentInfo;
                     if (Array.isArray(json.tokens)) {
                         const tokMap = new Map();
                         state.tokens.forEach(tk => tokMap.set(tk.code, tk));
@@ -6086,7 +6989,7 @@
                     pushNotifs(items);
                     const ae = document.activeElement;
                     const typing = ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName);
-                    if (!typing) renderStudentPortal();
+                    if (!typing && state.studentUI.tab !== 'interaktif') renderStudentPortal();
                 }
             } catch (e) { /* abaikan jika offline */ }
             finally { studentRefreshBusy = false; }

@@ -231,7 +231,7 @@ function tulisRekapNilai_(rootFolder, tbl) {
 // Setiap perubahan nilai di aplikasi diberi cap waktu per kolom (_ts).
 // =====================================================================
 const TRACKED_SCALARS_ = ['sts1', 'sas1', 'sts2', 'sas2', 'remedial1', 'remedial2', 'katrol1', 'katrol2', 'wa'];
-const TRACKED_MAPS_ = ['scores', 'examResults', 'examViolations', 'lkpdSubmissions'];
+const TRACKED_MAPS_ = ['scores', 'examResults', 'examViolations', 'lkpdSubmissions', 'interaktif'];
 
 function normName_(s) {
   return String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
@@ -444,6 +444,23 @@ function waHasil_(res) {
 function waKunciValid_(body) {
   const k = PropertiesService.getScriptProperties().getProperty('WA_API_KEY');
   return !k || String(body.apiKey || '') === k;
+}
+
+// Batas jenjang untuk edit materi interaktif: guru hanya boleh mengubah jenjang yang ia ampu.
+// Perubahan jenjang lain dari klien diabaikan; isi jenjang lain yang sudah tersimpan tetap dipertahankan.
+const ROMAWI_KE_ANGKA_ = { VII: '7', VIII: '8', IX: '9' };
+
+function batasiEditMateri_(stored, incoming, allowedRoman) {
+  const boleh = (allowedRoman || []).map(function (x) { return ROMAWI_KE_ANGKA_[x]; }).filter(Boolean);
+  const cek = function (k) { return boleh.indexOf(String(k).split('|')[0]) >= 0; };
+  const out = { chapters: {}, meetings: {} };
+  const sCh = (stored && stored.chapters) || {}, sMe = (stored && stored.meetings) || {};
+  const iCh = (incoming && incoming.chapters) || {}, iMe = (incoming && incoming.meetings) || {};
+  Object.keys(sCh).forEach(function (k) { if (!cek(k)) out.chapters[k] = sCh[k]; });
+  Object.keys(sMe).forEach(function (k) { if (!cek(k)) out.meetings[k] = sMe[k]; });
+  Object.keys(iCh).forEach(function (k) { if (cek(k)) out.chapters[k] = iCh[k]; });
+  Object.keys(iMe).forEach(function (k) { if (cek(k)) out.meetings[k] = iMe[k]; });
+  return out;
 }
 
 // Kirim ke grup WhatsApp (target = ID grup berakhiran @g.us)
@@ -661,6 +678,174 @@ function bersihkanUntukSiswa_(space) {
   return copy;
 }
 
+// =====================================================================
+// LISENSI, PAKET, PESANAN & IZIN EDIT MATERI
+// Harga & rekening bisa diubah admin (menu Pesanan). Aksi admin dijaga ADMIN_KEY di Script properties.
+// Pembayaran dikonfirmasi manual oleh admin (cocokkan transfer), lalu kode token diberikan ke guru.
+// =====================================================================
+const PAKET_DEFAULT_ = {
+  'PRO-1-BULAN': { label: 'Paket 1 Bulan', days: 30, harga: 25000 },
+  'PRO-1-TAHUN': { label: 'Paket 1 Tahun', days: 365, harga: 250000 },
+  'PRO-2-TAHUN': { label: 'Paket 2 Tahun', days: 730, harga: 450000 }
+};
+
+function adminOk_(body) {
+  const k = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+  return !!k && String(body.adminKey || '') === k;
+}
+
+function getRegistry_(root) {
+  const r = readJsonFile(root, 'master_registry.json', { teachers: [], tokens: [], classIndex: {} });
+  if (!r.teachers) r.teachers = [];
+  if (!r.tokens) r.tokens = [];
+  if (!r.classIndex) r.classIndex = {};
+  if (!r.orders) r.orders = [];
+  if (!r.prices) r.prices = {};
+  return r;
+}
+
+function hargaPaket_(reg) {
+  const out = {};
+  Object.keys(PAKET_DEFAULT_).forEach(function (k) {
+    const d = PAKET_DEFAULT_[k];
+    out[k] = { label: d.label, days: d.days, harga: (reg.prices[k] && reg.prices[k].harga) || d.harga };
+  });
+  return out;
+}
+
+function kodeAcak_(prefix) {
+  return prefix + '-' + Utilities.getUuid().replace(/-/g, '').substring(0, 8).toUpperCase();
+}
+
+function tanggalISO_(d) {
+  return Utilities.formatDate(d, 'Asia/Jakarta', 'yyyy-MM-dd');
+}
+
+// Guru tidak boleh mengubah lisensi dari perangkatnya: nilai lisensi dari server dipertahankan
+function jagaLisensi_(incoming, saved) {
+  if (!saved || !saved.teacherRecord || !incoming) return incoming;
+  const out = Object.assign({}, incoming);
+  ['plan', 'expiresAt', 'status'].forEach(function (k) {
+    if (saved.teacherRecord[k] !== undefined) out[k] = saved.teacherRecord[k];
+  });
+  return out;
+}
+
+function lisensiAksi_(action, body, root) {
+  const reg = getRegistry_(root);
+
+  if (action === 'getPrices') {
+    return { status: 'ok', paket: hargaPaket_(reg), paymentInfo: reg.paymentInfo || '' };
+  }
+
+  if (action === 'createOrder') {
+    const email = String(body.email || '').trim().toLowerCase();
+    const paket = hargaPaket_(reg)[String(body.plan || '')];
+    if (!email || !paket) return { status: 'error', message: 'Paket atau email tidak valid' };
+    const order = { code: kodeAcak_('ORD'), email: email, plan: body.plan, days: paket.days, amount: paket.harga, status: 'MENUNGGU', tokenCode: '', createdAt: new Date().toISOString() };
+    reg.orders.push(order);
+    writeJsonFile(root, 'master_registry.json', reg);
+    return { status: 'ok', order: order, paymentInfo: reg.paymentInfo || '' };
+  }
+
+  if (action === 'getOrder') {
+    const email = String(body.email || '').trim().toLowerCase();
+    const code = String(body.code || '').trim().toUpperCase();
+    const order = reg.orders.filter(function (o) { return o.code === code && o.email === email; })[0];
+    if (!order) return { status: 'error', message: 'Pesanan tidak ditemukan' };
+    return { status: 'ok', order: { code: order.code, plan: order.plan, amount: order.amount, status: order.status, tokenCode: order.status === 'LUNAS' ? order.tokenCode : '' } };
+  }
+
+  if (action === 'confirmOrder') {
+    if (!adminOk_(body)) return { status: 'error', message: 'Kunci admin salah' };
+    const code = String(body.code || '').trim().toUpperCase();
+    const order = reg.orders.filter(function (o) { return o.code === code; })[0];
+    if (!order) return { status: 'error', message: 'Pesanan tidak ditemukan' };
+    if (order.status !== 'MENUNGGU') return { status: 'error', message: 'Pesanan sudah diproses' };
+    const token = { code: kodeAcak_('EFN'), plan: order.plan, days: order.days, usedBy: '', orderCode: order.code };
+    reg.tokens.push(token);
+    order.status = 'LUNAS';
+    order.tokenCode = token.code;
+    writeJsonFile(root, 'master_registry.json', reg);
+    return { status: 'ok', order: order };
+  }
+
+  if (action === 'redeemToken') {
+    const email = String(body.email || '').trim().toLowerCase();
+    const code = String(body.code || '').trim().toUpperCase();
+    const token = reg.tokens.filter(function (t) { return String(t.code).toUpperCase() === code && !t.usedBy; })[0];
+    if (!token) return { status: 'error', message: 'Kode tidak valid atau sudah dipakai' };
+    const file = 'teacher_' + email.replace(/[^a-z0-9]/g, '_') + '.json';
+    const saved = readJsonFile(root, file, null);
+    let teacher = reg.teachers.filter(function (t) { return String(t.email).toLowerCase() === email; })[0];
+    if (!teacher && saved && saved.teacherRecord) teacher = Object.assign({}, saved.teacherRecord);
+    if (!teacher) return { status: 'error', message: 'Akun guru tidak ditemukan. Sinkronkan data dari perangkat guru dahulu.' };
+    const today = new Date();
+    const dasar = teacher.expiresAt && teacher.expiresAt > tanggalISO_(today) ? new Date(teacher.expiresAt + 'T00:00:00+07:00') : today;
+    dasar.setDate(dasar.getDate() + Number(token.days || 30));
+    teacher.expiresAt = tanggalISO_(dasar);
+    teacher.plan = token.plan;
+    teacher.status = 'ACTIVE';
+    token.usedBy = email;
+    const order = token.orderCode ? reg.orders.filter(function (o) { return o.code === token.orderCode; })[0] : null;
+    if (order) order.status = 'SELESAI';
+    const idx = reg.teachers.findIndex(function (t) { return String(t.email).toLowerCase() === email; });
+    if (idx >= 0) reg.teachers[idx] = teacher; else reg.teachers.push(teacher);
+    writeJsonFile(root, 'master_registry.json', reg);
+    if (saved) { saved.teacherRecord = teacher; writeJsonFile(root, file, saved); }
+    return { status: 'ok', teacherRecord: teacher };
+  }
+
+  if (action === 'setPrices') {
+    if (!adminOk_(body)) return { status: 'error', message: 'Kunci admin salah' };
+    const prices = body.prices || {};
+    Object.keys(PAKET_DEFAULT_).forEach(function (k) {
+      if (prices[k] && Number(prices[k].harga) >= 0) reg.prices[k] = { harga: Number(prices[k].harga) };
+    });
+    if (body.paymentInfo !== undefined) reg.paymentInfo = String(body.paymentInfo).slice(0, 500);
+    writeJsonFile(root, 'master_registry.json', reg);
+    return { status: 'ok', paket: hargaPaket_(reg), paymentInfo: reg.paymentInfo || '' };
+  }
+
+  if (action === 'listOrders') {
+    if (!adminOk_(body)) return { status: 'error', message: 'Kunci admin salah' };
+    return { status: 'ok', orders: reg.orders, paket: hargaPaket_(reg), paymentInfo: reg.paymentInfo || '' };
+  }
+
+  if (action === 'setPermissions') {
+    if (!adminOk_(body)) return { status: 'error', message: 'Kunci admin salah' };
+    const email = String(body.email || '').trim().toLowerCase();
+    const file = 'teacher_' + email.replace(/[^a-z0-9]/g, '_') + '.json';
+    const saved = readJsonFile(root, file, null);
+    if (!saved) return { status: 'error', message: 'Guru belum pernah sinkron ke cloud' };
+    const grades = (body.editGrades || []).filter(function (g) { return ['VII', 'VIII', 'IX'].indexOf(g) >= 0; });
+    saved.permissions = { editGrades: grades };
+    writeJsonFile(root, file, saved);
+    return { status: 'ok', editGrades: grades };
+  }
+
+  if (action === 'adminGetSpace') {
+    if (!adminOk_(body)) return { status: 'error', message: 'Kunci admin salah' };
+    const email = String(body.email || '').trim().toLowerCase();
+    const saved = readJsonFile(root, 'teacher_' + email.replace(/[^a-z0-9]/g, '_') + '.json', null);
+    if (!saved) return { status: 'error', message: 'Guru belum pernah sinkron ke cloud' };
+    return { status: 'ok', interaktifEdits: (saved.teacherSpace && saved.teacherSpace.interaktifEdits) || {}, editGrades: (saved.permissions && saved.permissions.editGrades) || [] };
+  }
+
+  if (action === 'adminSaveEdits') {
+    if (!adminOk_(body)) return { status: 'error', message: 'Kunci admin salah' };
+    const email = String(body.email || '').trim().toLowerCase();
+    const file = 'teacher_' + email.replace(/[^a-z0-9]/g, '_') + '.json';
+    const saved = readJsonFile(root, file, null);
+    if (!saved || !saved.teacherSpace) return { status: 'error', message: 'Guru belum pernah sinkron ke cloud' };
+    saved.teacherSpace.interaktifEdits = body.edits || {};
+    writeJsonFile(root, file, saved);
+    return { status: 'ok' };
+  }
+
+  return null;
+}
+
 function doGet(e) {
   return ContentService
     .createTextOutput(JSON.stringify({ status: 'ok', service: 'English For Nusantara Sheets & Drive Active' }))
@@ -675,10 +860,13 @@ function doPost(e) {
     const root = getOrCreateRootFolder();
 
     // Aksi yang menulis data dikunci agar beberapa pengirim tidak saling menimpa
-    if (action === 'syncTeacherDriveBackup' || action === 'adminSync') {
+    if (['syncTeacherDriveBackup', 'adminSync', 'createOrder', 'confirmOrder', 'redeemToken', 'setPrices', 'setPermissions', 'adminSaveEdits'].indexOf(action) >= 0) {
       lock = LockService.getScriptLock();
       lock.waitLock(30000);
     }
+
+    const lisensi = lisensiAksi_(action, body, root);
+    if (lisensi) return jsonResponse(lisensi);
 
     // 1. Simpan Backup Ruang Guru (digabung dengan data tersimpan) + Tulis Otomatis ke Google Sheets
     if (action === 'syncTeacherDriveBackup') {
@@ -696,15 +884,22 @@ function doPost(e) {
         senderRole,
         body.studentName
       );
+      if (senderRole !== 'student') {
+        const jenjangGuru = (saved && saved.permissions && saved.permissions.editGrades) || [];
+        const sEdits = saved && saved.teacherSpace ? saved.teacherSpace.interaktifEdits : null;
+        mergedSpace.interaktifEdits = batasiEditMateri_(sEdits, body.teacherSpace.interaktifEdits, jenjangGuru);
+      }
       // Data lisensi guru hanya boleh diubah oleh guru, bukan oleh siswa
       const teacherRecord = senderRole === 'student'
         ? ((saved && saved.teacherRecord) || body.teacherRecord || null)
         : (body.teacherRecord || (saved && saved.teacherRecord) || null);
 
+      const lisensiSimpan = senderRole === 'student' ? teacherRecord : jagaLisensi_(teacherRecord, saved);
       const fileUrl = writeJsonFile(root, safeFileName, {
         teacherKey: email,
-        teacherRecord: teacherRecord,
+        teacherRecord: lisensiSimpan,
         teacherSpace: mergedSpace,
+        permissions: saved && saved.permissions ? saved.permissions : undefined,
         updatedAt: new Date().toISOString()
       });
 
@@ -712,9 +907,11 @@ function doPost(e) {
       if (!registry.teachers) registry.teachers = [];
       if (!registry.classIndex) registry.classIndex = {};
       if (teacherRecord && senderRole !== 'student') {
+        // Lisensi (paket, masa berlaku, status) dijaga server: salinan lokal tidak boleh memundurkannya
+        const rekamRegistry = jagaLisensi_(teacherRecord, { teacherRecord: registry.teachers.filter(t => String(t.email).toLowerCase() === email)[0] || null });
         const idx = registry.teachers.findIndex(t => String(t.email).toLowerCase() === email);
-        if (idx >= 0) registry.teachers[idx] = teacherRecord;
-        else registry.teachers.push(teacherRecord);
+        if (idx >= 0) registry.teachers[idx] = rekamRegistry;
+        else registry.teachers.push(rekamRegistry);
       }
 
       const rombels = mergedSpace.rombels || {};
@@ -753,7 +950,8 @@ function doPost(e) {
       return jsonResponse({
         status: 'ok',
         teacherRecord: saved.teacherRecord,
-        teacherSpace: saved.teacherSpace
+        teacherSpace: saved.teacherSpace,
+        permissions: saved.permissions || { editGrades: [] }
       });
     }
 
@@ -798,10 +996,14 @@ function doPost(e) {
       const allSpaces = loadAllTeacherSpacesMap(root);
       syncToGoogleSheets(root, registry, allSpaces);
 
+      const reg2 = getRegistry_(root);
       return jsonResponse({
         status: 'ok',
         teachers: registry.teachers,
-        tokens: registry.tokens
+        tokens: registry.tokens,
+        orders: reg2.orders,
+        prices: hargaPaket_(reg2),
+        paymentInfo: reg2.paymentInfo || ''
       });
     }
 
